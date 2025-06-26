@@ -3,9 +3,10 @@ import { View, StyleSheet, TextInput, ActivityIndicator } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useFocusEffect } from '@react-navigation/native';
 import { RootStackParamList } from '../App';
-import Colors from '../constants/Colors';
-import ButtonInput from '../components/ButtonInput';
-import { generateContent } from '../core/api';
+import Colors from '@constants/Colors';
+import ButtonInput from '@components/ButtonInput';
+import { generateContent } from '@core/api';
+import ModalNoText from '@components/ModalNoText';
 
 const HomeScreen = ({ navigation }: HomeScreenProps) => {
   // console.log('HomeScreen rendered');
@@ -44,6 +45,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
 
   return (
     <View style={styles.main}>
+      <ModalNoText visible={modal} onRequestClose={() => setModal(false)} />
       <TextInput
         style={styles.textInput}
         placeholder="Enter your word"
@@ -60,7 +62,11 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
           color={Colors.default.activityIndicator}
         />
       )}
-      <ButtonInput disabled={isLoading} onPress={handlePress} />
+      <ButtonInput
+        title="generate"
+        disabled={isLoading}
+        onPress={handlePress}
+      />
     </View>
   );
 };

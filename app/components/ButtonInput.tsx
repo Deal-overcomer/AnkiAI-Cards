@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, Button, ButtonProps } from 'react-native';
-import Colors from '../constants/Colors';
+import Colors from '@constants/Colors';
 
 type ButtonInputProps = Partial<ButtonProps> & {
   color?: string;
@@ -10,7 +10,7 @@ type ButtonInputProps = Partial<ButtonProps> & {
 const ButtonInput = React.memo(
   ({
     color = Colors.default.buttonInput,
-    title = 'Generate description',
+    title = '',
     ...rest
   }: ButtonInputProps) => {
     // console.log('ButtonInput rendered');

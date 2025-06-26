@@ -1,27 +1,43 @@
-import React, { useState } from 'react';
-import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import React, { useCallback } from 'react';
+import { View, Text, ScrollView, StyleSheet, Pressable } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../App';
-import Colors from '../constants/Colors';
+import Colors from '@constants/Colors';
 
 const ResultScreen = ({ route }: ResultScreenProps) => {
   // console.log('ResultScreen rendered');
 
+  const [openIndex, setOpenIndex] = React.useState<number[]>([]);
+
+  const toggleOpenIndex = useCallback((idk: number) => {
+    setOpenIndex(prev =>
+      prev.includes(idk) ? prev.filter(item => item !== idk) : [...prev, idk],
+    );
+  }, []);
+
   return (
     <View style={styles.main}>
-      <ScrollView>
+      <ScrollView contentContainerStyle={{ paddingBottom: '100%' }}>
         {route.params.posData.map((value, index) => (
           <View style={styles.viewPos} key={`${index}`}>
             <Text style={styles.textPos}>{value.partOfSpeech}</Text>
             <Text style={styles.textDefinition}>{value.definition}</Text>
-            <View style={styles.viewExamples} key="examples">
-              {value.examples.map((value, index) => (
-                <Text key={index} style={styles.textExample}>
-                  {value}
-                </Text>
-              ))}
-            </View>
+            <Pressable onPress={() => toggleOpenIndex(index)}>
+              {openIndex.includes(index) ? (
+                <View style={styles.viewExamples} key="examples">
+                  {value.examples.map((value, index) => (
+                    <Text key={index} style={styles.textExample}>
+                      {value}
+                    </Text>
+                  ))}
+                </View>
+              ) : (
+                <View style={styles.viewExamples} key="examples">
+                  <Text style={styles.textExample}>show examples ▼</Text>
+                </View>
+              )}
+            </Pressable>
           </View>
         ))}
       </ScrollView>

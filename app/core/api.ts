@@ -1,7 +1,7 @@
-import { API_KEY, model } from '../constants/API';
+import { API_KEY, model } from '@constants/API';
 import { GoogleGenAI } from '@google/genai';
-import { HomeScreenNavigationProp } from '../screens/HomeScreen';
-import { language, levelOfLanguage } from '../constants/Language';
+import { HomeScreenNavigationProp } from '@screens/HomeScreen';
+import { language, levelOfLanguage } from '@constants/Language';
 
 const gemini = new GoogleGenAI({ apiKey: API_KEY });
 

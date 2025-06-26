@@ -6,6 +6,7 @@ const Colors = {
     activityIndicator: '#0fc4b5',
     posBackround: '#104e5a',
     examplesBackround: '#125764',
+    modalView: '#572481c5',
   },
 };
 

@@ -2,10 +2,10 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from '@screens/HomeScreen';
-import ResultScreen from './screens/ResultScreen';
-import { ApiResponse } from './core/api';
-import Colors from './constants/Colors';
-import CustomBackButton from './components/CustomBackButton';
+import ResultScreen from '@screens/ResultScreen';
+import { ApiResponse } from '@core/api';
+import Colors from '@constants/Colors';
+import CustomBackButton from '@components/CustomBackButton';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
