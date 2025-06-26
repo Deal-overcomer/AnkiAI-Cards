@@ -12,11 +12,15 @@ const ButtonInput = React.memo(
     color = Colors.default.buttonInput,
     title = 'Generate description',
     ...rest
-  }: ButtonInputProps) => (
-    <View style={styles.buttionView}>
-      <Button {...rest} title={title} color={color} />
-    </View>
-  ),
+  }: ButtonInputProps) => {
+    // console.log('ButtonInput rendered');
+
+    return (
+      <View style={styles.buttionView}>
+        <Button {...rest} title={title} color={color} />
+      </View>
+    );
+  },
 );
 
 const styles = StyleSheet.create({

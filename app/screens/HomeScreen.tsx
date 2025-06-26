@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { View, StyleSheet, TextInput, ActivityIndicator } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useFocusEffect } from '@react-navigation/native';
@@ -8,21 +8,25 @@ import ButtonInput from '../components/ButtonInput';
 import { generateContent } from '../core/api';
 
 const HomeScreen = ({ navigation }: HomeScreenProps) => {
+  // console.log('HomeScreen rendered');
+
+  const [modal, setModal] = useState(false);
   const [text, setText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const textInputRef = React.useRef<TextInput>(null);
+  const textRef = React.useRef<string>(text);
 
   const handlePress = useCallback(async () => {
-    if (text.trim() && !isLoading) {
+    if (textRef.current.trim() && !isLoading) {
       await generateContent({
-        prompt: text.trim().toLowerCase(),
+        prompt: textRef.current.trim().toLowerCase(),
         setIsLoading: setIsLoading,
         navigation: navigation,
       });
     } else {
-      console.warn('Please enter a word'); // TODO: It's working bad and I don't know why
+      setModal(true);
     }
-  }, [navigation, text, isLoading]);
+  }, [navigation, isLoading]);
 
   useFocusEffect(
     useCallback(() => {
@@ -34,13 +38,17 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
     }, []),
   );
 
+  useEffect(() => {
+    textRef.current = text;
+  }, [text]);
+
   return (
     <View style={styles.main}>
       <TextInput
         style={styles.textInput}
         placeholder="Enter your word"
         onChangeText={setText}
-        onEndEditing={handlePress}
+        onSubmitEditing={handlePress}
         ref={textInputRef}
         value={text}
         editable={!isLoading}

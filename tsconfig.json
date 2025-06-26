@@ -1,3 +1,12 @@
 {
-  "extends": "@react-native/typescript-config"
+  "extends": "@react-native/typescript-config",
+  "compilerOptions": {
+    "paths": {
+      "@assets/*": ["./app/assets/*"],
+      "@components/*": ["./app/components/*"],
+      "@constants/*": ["./app/constants/*"],
+      "@screens/*": ["./app/screens/*"],
+      "@core/*": ["./app/core/*"]
+    }
+  }
 }

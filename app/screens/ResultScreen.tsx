@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -5,16 +6,20 @@ import { RootStackParamList } from '../App';
 import Colors from '../constants/Colors';
 
 const ResultScreen = ({ route }: ResultScreenProps) => {
+  // console.log('ResultScreen rendered');
+
   return (
     <View style={styles.main}>
       <ScrollView>
         {route.params.posData.map((value, index) => (
-          <View style={styles.viewPos} key={`${value.partOfSpeech}_${index}`}>
+          <View style={styles.viewPos} key={`${index}`}>
             <Text style={styles.textPos}>{value.partOfSpeech}</Text>
             <Text style={styles.textDefinition}>{value.definition}</Text>
             <View style={styles.viewExamples} key="examples">
-              {value.examples.map(value => (
-                <Text style={styles.textExample}>{value}</Text> // FIXME: Why warning here?
+              {value.examples.map((value, index) => (
+                <Text key={index} style={styles.textExample}>
+                  {value}
+                </Text>
               ))}
             </View>
           </View>
