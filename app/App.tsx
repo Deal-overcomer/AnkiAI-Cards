@@ -10,6 +10,8 @@ import CustomBackButton from '@components/CustomBackButton';
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 // TODO: сделать обработку ошибок в отдельном компоненте
+// TODO: добавить выбор уровня языка, модели нейросети и вставка АПИ ключа.
+// TODO: сделать экспорт для карточек анки
 const App = () => {
   return (
     <NavigationContainer>
