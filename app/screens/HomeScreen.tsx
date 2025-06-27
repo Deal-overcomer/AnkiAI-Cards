@@ -63,7 +63,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
         />
       )}
       <ButtonInput
-        title="generate"
+        title="GENERATE"
         disabled={isLoading}
         onPress={handlePress}
       />

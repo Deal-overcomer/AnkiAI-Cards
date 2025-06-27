@@ -9,6 +9,7 @@ import CustomBackButton from '@components/CustomBackButton';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
+// TODO: сделать обработку ошибок в отдельном компоненте
 const App = () => {
   return (
     <NavigationContainer>

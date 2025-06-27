@@ -5,8 +5,9 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../App';
 import Colors from '@constants/Colors';
 
+// TODO: add reanimated
 const ResultScreen = ({ route }: ResultScreenProps) => {
-  // console.log('ResultScreen rendered');
+  console.log('ResultScreen rendered');
 
   const [openIndex, setOpenIndex] = React.useState<number[]>([]);
 
@@ -31,6 +32,7 @@ const ResultScreen = ({ route }: ResultScreenProps) => {
                       {value}
                     </Text>
                   ))}
+                  <Text style={styles.textExample}>▲</Text>
                 </View>
               ) : (
                 <View style={styles.viewExamples} key="examples">

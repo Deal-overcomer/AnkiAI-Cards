@@ -3,6 +3,7 @@ import { GoogleGenAI } from '@google/genai';
 import { HomeScreenNavigationProp } from '@screens/HomeScreen';
 import { language, levelOfLanguage } from '@constants/Language';
 
+// TODO: ограничить кол-во времени на запрос, чтобы не зависало приложение
 const gemini = new GoogleGenAI({ apiKey: API_KEY });
 
 export const generateContent = async ({

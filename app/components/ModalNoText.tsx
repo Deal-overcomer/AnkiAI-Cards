@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
   },
   view: {
     height: 200,
-    width: 400,
+    width: '90%',
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: Colors.default.modalView,
