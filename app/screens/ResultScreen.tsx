@@ -4,12 +4,19 @@ import { RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../App';
 import Colors from '@constants/Colors';
+import Animated, {
+  LinearTransition,
+  Easing,
+  FadeIn,
+  FadeOut,
+} from 'react-native-reanimated';
 
-// TODO: add reanimated
+// const ANIMATION_DURATION = 300;
+// const COLLAPSED_HEIGHT = 40;
+
 const ResultScreen = ({ route }: ResultScreenProps) => {
-  console.log('ResultScreen rendered');
-
   const [openIndex, setOpenIndex] = React.useState<number[]>([]);
+  const duration: number = 150;
 
   const toggleOpenIndex = useCallback((idk: number) => {
     setOpenIndex(prev =>
@@ -21,26 +28,55 @@ const ResultScreen = ({ route }: ResultScreenProps) => {
     <View style={styles.main}>
       <ScrollView contentContainerStyle={{ paddingBottom: '100%' }}>
         {route.params.posData.map((value, index) => (
-          <View style={styles.viewPos} key={`${index}`}>
+          <Animated.View
+            layout={LinearTransition.easing(Easing.inOut(Easing.ease)).duration(
+              duration,
+            )}
+            style={styles.viewPos}
+            key={`${index}`}
+          >
             <Text style={styles.textPos}>{value.partOfSpeech}</Text>
             <Text style={styles.textDefinition}>{value.definition}</Text>
             <Pressable onPress={() => toggleOpenIndex(index)}>
-              {openIndex.includes(index) ? (
-                <View style={styles.viewExamples} key="examples">
-                  {value.examples.map((value, index) => (
-                    <Text key={index} style={styles.textExample}>
-                      {value}
-                    </Text>
-                  ))}
-                  <Text style={styles.textExample}>▲</Text>
-                </View>
-              ) : (
-                <View style={styles.viewExamples} key="examples">
-                  <Text style={styles.textExample}>show examples ▼</Text>
-                </View>
-              )}
+              <Animated.View
+                layout={LinearTransition.easing(
+                  Easing.inOut(Easing.ease),
+                ).duration(duration)}
+                style={styles.viewExamples}
+                key="examples"
+              >
+                {openIndex.includes(index) ? (
+                  <>
+                    {value.examples.map((value, index) => (
+                      <Animated.Text
+                        entering={FadeIn.duration(duration)}
+                        exiting={FadeOut.duration(duration)}
+                        key={index}
+                        style={styles.textExample}
+                      >
+                        {value}
+                      </Animated.Text>
+                    ))}
+                    <Animated.Text
+                      entering={FadeIn.duration(duration)}
+                      exiting={FadeOut.duration(duration)}
+                      style={styles.textExample}
+                    >
+                      ▲
+                    </Animated.Text>
+                  </>
+                ) : (
+                  <Animated.Text
+                    entering={FadeIn.duration(duration)}
+                    exiting={FadeOut.duration(duration)}
+                    style={styles.textExample}
+                  >
+                    show examples ▼
+                  </Animated.Text>
+                )}
+              </Animated.View>
             </Pressable>
-          </View>
+          </Animated.View>
         ))}
       </ScrollView>
     </View>
@@ -67,6 +103,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     borderRadius: 20,
     padding: 5,
+    overflow: 'hidden',
   },
   textPos: {
     textAlign: 'center',

@@ -1,5 +1,7 @@
-const { getDefaultConfig, mergeConfig } = require('@react-native/metro-config');
-const path = require('path');
+const { getDefaultConfig } = require('@react-native/metro-config');
+const {
+  wrapWithReanimatedMetroConfig,
+} = require('react-native-reanimated/metro-config');
 
 /**
  * Metro configuration
@@ -8,6 +10,6 @@ const path = require('path');
  * @type {import('@react-native/metro-config').MetroConfig}
  */
 
-const configs = [getDefaultConfig(__dirname)];
+const defaultConfig = getDefaultConfig(__dirname);
 
-module.exports = mergeConfig(...configs);
+module.exports = wrapWithReanimatedMetroConfig(defaultConfig);

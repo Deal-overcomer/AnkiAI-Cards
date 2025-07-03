@@ -1,18 +1,36 @@
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {
+  createNativeStackNavigator,
+  NativeStackNavigationProp,
+} from '@react-navigation/native-stack';
 import HomeScreen from '@screens/HomeScreen';
 import ResultScreen from '@screens/ResultScreen';
-import { ApiResponse } from '@core/api';
+import { ApiResponseProps } from '@core/api';
 import Colors from '@constants/Colors';
-import CustomBackButton from '@components/CustomBackButton';
+import CustomBackButton from '@components/buttons/CustomBackButton';
+import ErrorCatchScreen, { ErrorCatchProps } from '@screens/ErrorCatchScreen';
+import SettingsScreen from '@screens/SettingsScreen';
+import { InitSettings } from '@core/settings';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-// TODO: сделать обработку ошибок в отдельном компоненте
-// TODO: добавить выбор уровня языка, модели нейросети и вставка АПИ ключа.
-// TODO: сделать экспорт для карточек анки
+// TODO: добавить выбор АПИ ключа.
+// TODO: сделать экспорт для карточек анки, с генерацией изображения.
 const App = () => {
+  useEffect(() => {
+    async () => {
+      await InitSettings();
+    };
+  }, []);
+
+  const BackButton = useCallback(
+    (navigation: NativeStackNavigationProp<any>) => {
+      return <CustomBackButton onPress={() => navigation.goBack()} />;
+    },
+    [],
+  );
+
   return (
     <NavigationContainer>
       <Stack.Navigator>
@@ -29,10 +47,32 @@ const App = () => {
             headerTitleStyle: { fontSize: 54, fontWeight: 'bold' },
             title: route.params.word,
             headerTitleAlign: 'center',
-            headerTintColor: '#000',
-            headerLeft: () => (
-              <CustomBackButton onPress={() => navigation.goBack()} />
-            ),
+            headerTintColor: '#000000',
+            headerLeft: () => BackButton(navigation),
+          })}
+        />
+        <Stack.Screen
+          name="Error"
+          component={ErrorCatchScreen}
+          options={({ navigation }) => ({
+            title: 'error',
+            headerStyle: { backgroundColor: Colors.default.main },
+            headerTitleStyle: { fontSize: 54, fontWeight: 'bold' },
+            headerTitleAlign: 'center',
+            headerTintColor: '#000000',
+            headerLeft: () => BackButton(navigation),
+          })}
+        />
+        <Stack.Screen
+          name="Settings"
+          component={SettingsScreen}
+          options={({ navigation }) => ({
+            title: 'Settings',
+            headerStyle: { backgroundColor: Colors.default.main },
+            headerTitleStyle: { fontSize: 54, fontWeight: 'bold' },
+            headerTitleAlign: 'center',
+            headerTintColor: '#000000',
+            headerLeft: () => BackButton(navigation),
           })}
         />
       </Stack.Navigator>
@@ -42,7 +82,9 @@ const App = () => {
 
 export type RootStackParamList = {
   Home: undefined;
-  Result: ApiResponse;
+  Result: ApiResponseProps;
+  Error: ErrorCatchProps;
+  Settings: undefined;
 };
 
 export default App;

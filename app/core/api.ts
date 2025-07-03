@@ -1,10 +1,10 @@
-import { API_KEY, model } from '@constants/API';
 import { GoogleGenAI } from '@google/genai';
 import { HomeScreenNavigationProp } from '@screens/HomeScreen';
-import { language, levelOfLanguage } from '@constants/Language';
+import { getSettings } from './settings';
 
-// TODO: ограничить кол-во времени на запрос, чтобы не зависало приложение
-const gemini = new GoogleGenAI({ apiKey: API_KEY });
+const gemini = new GoogleGenAI({
+  apiKey: 'AIzaSyAk984YPd_AKYfds3GH0PLb5P7rfDVA-JY',
+}); // TODO: add API key
 
 export const generateContent = async ({
   prompt,
@@ -13,6 +13,7 @@ export const generateContent = async ({
 }: GenerateContentProps): Promise<void> => {
   setIsLoading(true);
 
+  const settings = await getSettings();
   const content = `
     Generate me a JSON object for the word "${prompt}".
     The JSON should follow this interface:
@@ -28,19 +29,20 @@ export const generateContent = async ({
     };
     
     Return ONLY the JSON object.
-    Reponse in ${language} language, use only ${levelOfLanguage} words.
+    Reponse in ${settings.language} language, use only ${settings.levelOfLanguage} words. 
     Make many parts of speech, in order: nouns, verbs, adjectives, adverbs, conjunctions, 
     prepositions, interjections, pronouns, determiners, etc.
-    Don't make double POS, make 'noun 1st, noun 2nd, noun 3rd', etc.
+    Don't make double POS, make 'noun-soft_thing, noun-wild_animal, verb-lift_hands', etc.
+    Make 3 examples.
 `;
 
   try {
     const response: any = await gemini.models.generateContent({
-      model: model,
+      model: settings.model,
       contents: content,
     });
 
-    const data: ApiResponse = JSON.parse(
+    const data: ApiResponseProps = JSON.parse(
       response.text.replaceAll('```', '').replace('json', ''),
     );
 
@@ -48,14 +50,14 @@ export const generateContent = async ({
       word: data.word,
       posData: data.posData,
     });
-  } catch (error) {
-    console.error('API Error:', error);
+  } catch (error: any) {
+    navigation.navigate('Error', { error: error });
   } finally {
     setIsLoading(false);
   }
 };
 
-export type ApiResponse = {
+export type ApiResponseProps = {
   word: string;
   posData: [
     {

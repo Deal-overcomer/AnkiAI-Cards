@@ -4,16 +4,15 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useFocusEffect } from '@react-navigation/native';
 import { RootStackParamList } from '../App';
 import Colors from '@constants/Colors';
-import ButtonInput from '@components/ButtonInput';
+import ButtonInput from '@components/buttons/ButtonInput';
 import { generateContent } from '@core/api';
-import ModalNoText from '@components/ModalNoText';
+import ModalViewMini from '@components/ModalViewMini';
+import SettingButton from '@components/buttons/SettingButton';
 
 const HomeScreen = ({ navigation }: HomeScreenProps) => {
-  // console.log('HomeScreen rendered');
-
-  const [modal, setModal] = useState(false);
   const [text, setText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [modalText, setModalText] = useState(false);
   const textInputRef = React.useRef<TextInput>(null);
   const textRef = React.useRef<string>(text);
 
@@ -25,9 +24,13 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
         navigation: navigation,
       });
     } else {
-      setModal(true);
+      setModalText(true);
     }
   }, [navigation, isLoading]);
+
+  const handleModalTextClose = useCallback(() => {
+    setModalText(false);
+  }, []);
 
   useFocusEffect(
     useCallback(() => {
@@ -45,7 +48,15 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
 
   return (
     <View style={styles.main}>
-      <ModalNoText visible={modal} onRequestClose={() => setModal(false)} />
+      <ModalViewMini
+        text="Please enter a word to generate"
+        visible={modalText}
+        onRequestClose={handleModalTextClose}
+      />
+      <SettingButton
+        disabled={isLoading}
+        onPress={() => navigation.navigate('Settings')}
+      />
       <TextInput
         style={styles.textInput}
         placeholder="Enter your word"

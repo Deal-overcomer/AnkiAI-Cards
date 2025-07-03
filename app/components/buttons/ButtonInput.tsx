@@ -2,14 +2,8 @@ import React from 'react';
 import { StyleSheet, Text, Pressable, PressableProps } from 'react-native';
 import Colors from '@constants/Colors';
 
-type ButtonInputProps = Partial<PressableProps> & {
-  title?: string | undefined;
-  disabled?: boolean | undefined;
-  color?: string | undefined;
-};
-
 const ButtonInput = React.memo(
-  ({ title = '', disabled, color, ...rest }: ButtonInputProps) => {
+  ({ title = '', disabled, color, width = 200, ...rest }: ButtonInputProps) => {
     // console.log('ButtonInput rendered');
 
     return (
@@ -18,6 +12,7 @@ const ButtonInput = React.memo(
         disabled={disabled}
         style={({ pressed }) => [
           { backgroundColor: color || Colors.default.buttonInput },
+          { width: width },
           styles.buttionView,
           disabled && styles.buttonDisabled,
           pressed && !disabled && styles.buttonPressed,
@@ -33,7 +28,6 @@ const ButtonInput = React.memo(
 
 const styles = StyleSheet.create({
   buttionView: {
-    width: 200,
     height: 40,
     justifyContent: 'center',
     alignItems: 'center',
@@ -46,9 +40,16 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 500,
   },
-  buttonPressed: { transform: [{ scale: 0.95 }], elevation: 15, opacity: 0.8 },
-  buttonDisabled: { backgroundColor: '#444444' },
-  textDisabled: { color: '#6e6e6e' },
+  buttonPressed: { transform: [{ scale: 0.95 }], elevation: 5 },
+  buttonDisabled: { backgroundColor: '#6e6e6e' },
+  textDisabled: { color: '#919191' },
 });
+
+type ButtonInputProps = Partial<PressableProps> & {
+  title?: string | undefined;
+  disabled?: boolean | undefined;
+  color?: string | undefined;
+  width?: number | undefined;
+};
 
 export default ButtonInput;
