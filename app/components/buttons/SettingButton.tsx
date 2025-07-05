@@ -14,7 +14,7 @@ const SettingsFab = ({ onPress, style, disabled }: Props) => (
         disabled && styles.fabDisabled,
       ]}
       disabled={disabled}
-      accessibilityLabel="Открыть настройки"
+      accessibilityLabel="Open settings"
     >
       <Svg width={60} height={60} viewBox="0 0 24 24" fill="none">
         <Path

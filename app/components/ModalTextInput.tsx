@@ -6,6 +6,7 @@ import {
   View,
   StyleSheet,
   TextInput,
+  KeyboardAvoidingView,
 } from 'react-native';
 import ButtonInput from './buttons/ButtonInput';
 import Colors from '@constants/Colors';
@@ -34,7 +35,7 @@ const ModalTextInput = React.memo(
         animationType="fade"
         transparent={true}
       >
-        <View style={styles.overlay}>
+        <KeyboardAvoidingView style={styles.overlay}>
           <View style={styles.view}>
             {label ? <Text style={styles.text}>{label}</Text> : null}
             <TextInput
@@ -45,7 +46,9 @@ const ModalTextInput = React.memo(
               placeholder={placeholder}
               placeholderTextColor="#888"
               autoFocus
+              textAlign="center"
             />
+
             <View style={{ flexDirection: 'row', gap: 30 }}>
               <ButtonInput
                 title="Cancel"
@@ -61,7 +64,7 @@ const ModalTextInput = React.memo(
               />
             </View>
           </View>
-        </View>
+        </KeyboardAvoidingView>
       </Modal>
     );
   },
@@ -93,7 +96,7 @@ const styles = StyleSheet.create({
   },
   input: {
     width: '90%',
-    height: 44,
+    height: 50,
     borderRadius: 12,
     borderWidth: 1,
     borderColor: '#aaa',

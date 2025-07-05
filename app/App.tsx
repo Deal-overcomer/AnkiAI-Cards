@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import {
   createNativeStackNavigator,
@@ -11,19 +11,12 @@ import Colors from '@constants/Colors';
 import CustomBackButton from '@components/buttons/CustomBackButton';
 import ErrorCatchScreen, { ErrorCatchProps } from '@screens/ErrorCatchScreen';
 import SettingsScreen from '@screens/SettingsScreen';
-import { InitSettings } from '@core/settings';
+import { SettingsProps } from '@components/ApiSetting';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-// TODO: добавить выбор АПИ ключа.
 // TODO: сделать экспорт для карточек анки, с генерацией изображения.
 const App = () => {
-  useEffect(() => {
-    async () => {
-      await InitSettings();
-    };
-  }, []);
-
   const BackButton = useCallback(
     (navigation: NativeStackNavigationProp<any>) => {
       return <CustomBackButton onPress={() => navigation.goBack()} />;
@@ -84,7 +77,7 @@ export type RootStackParamList = {
   Home: undefined;
   Result: ApiResponseProps;
   Error: ErrorCatchProps;
-  Settings: undefined;
+  Settings: SettingsProps;
 };
 
 export default App;

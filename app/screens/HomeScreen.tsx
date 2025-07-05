@@ -8,6 +8,7 @@ import ButtonInput from '@components/buttons/ButtonInput';
 import { generateContent } from '@core/api';
 import ModalViewMini from '@components/ModalViewMini';
 import SettingButton from '@components/buttons/SettingButton';
+import { initApiKey, InitSettings } from '@core/settings';
 
 const HomeScreen = ({ navigation }: HomeScreenProps) => {
   const [text, setText] = useState('');
@@ -46,6 +47,14 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
     textRef.current = text;
   }, [text]);
 
+  useEffect(() => {
+    const init = async () => {
+      await InitSettings();
+      await initApiKey({ navigation: navigation });
+    };
+    init();
+  }, [navigation]);
+
   return (
     <View style={styles.main}>
       <ModalViewMini
@@ -55,7 +64,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
       />
       <SettingButton
         disabled={isLoading}
-        onPress={() => navigation.navigate('Settings')}
+        onPress={() => navigation.navigate('Settings', { firstInit: false })}
       />
       <TextInput
         style={styles.textInput}

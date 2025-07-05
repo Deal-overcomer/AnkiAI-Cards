@@ -1,10 +1,6 @@
 import { GoogleGenAI } from '@google/genai';
 import { HomeScreenNavigationProp } from '@screens/HomeScreen';
-import { getSettings } from './settings';
-
-const gemini = new GoogleGenAI({
-  apiKey: 'AIzaSyAk984YPd_AKYfds3GH0PLb5P7rfDVA-JY',
-}); // TODO: add API key
+import { getApiKey, getSettings } from './settings';
 
 export const generateContent = async ({
   prompt,
@@ -12,6 +8,9 @@ export const generateContent = async ({
   navigation,
 }: GenerateContentProps): Promise<void> => {
   setIsLoading(true);
+
+  const apiKey = await getApiKey();
+  const gemini = new GoogleGenAI({ apiKey: apiKey as string });
 
   const settings = await getSettings();
   const content = `
