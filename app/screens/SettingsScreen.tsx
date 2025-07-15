@@ -12,6 +12,10 @@ const SettingsScreen = ({ route }: SettingsScreenProps) => {
     <View style={styles.view}>
       <ScrollView contentContainerStyle={{ paddingBottom: '100%' }}>
         <Setting
+        setting='language'
+        settingName='Language'
+        options={Option.languages}/>
+        <Setting
           setting="levelOfLanguage"
           settingName="English level"
           options={Option.englishLevels}

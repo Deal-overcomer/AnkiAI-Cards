@@ -5,3 +5,4 @@ export const geminiModels = [
   'gemini-2.5-flash',
   'gemini-2.5-pro',
 ];
+export const languages = ['English', 'Spanish', 'French', 'German', 'Russian'];

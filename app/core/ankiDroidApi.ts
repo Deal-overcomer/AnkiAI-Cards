@@ -1,6 +1,6 @@
 import AnkiDroid from '@deal-overcomer/react-native-ankidroid';
 
-const sample = async () => {
+const example = async () => {
   await AnkiDroid.requestPermission();
   // Name of deck which will be created in AnkiDroid
   const deckName = 'English';
@@ -10,8 +10,6 @@ const sample = async () => {
   const dbDeckReference = 'com.your.app.decks';
   // Used to save a reference to this model in the SharedPreferences (can be any string)
   const dbModelReference = 'com.your.app.models';
-  // Optional space separated list of tags to add to every note
-  const tags = ['english', 'ankiDroidApi', 'react-native'];
   // List of field names that will be used in AnkiDroid model
   const modelFields = [
     'Keyword',
@@ -135,7 +133,6 @@ const sample = async () => {
     name: modelName,
     dbReference: dbModelReference,
     fields: modelFields,
-    tags,
     cardNames,
     questionFormat,
     answerFormat,
@@ -153,7 +150,7 @@ const sample = async () => {
   const valueFields = [
     'map',
     '',
-    'shows your point{{c1}}',
+    'shows your point{{c1::}}',
     'pass me ur {{c1::map}}',
     'карта',
   ];
