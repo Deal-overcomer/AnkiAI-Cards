@@ -9,7 +9,7 @@ const ErrorCatchsreen = ({ route }: ErrorScreenNavigationProps) => {
   return (
     <View style={styles.view}>
       <ScrollView
-        contentContainerStyle={{ paddingBottom: '100%', paddingTop: '30%' }}
+        contentContainerStyle={{ paddingBottom: '100%', paddingTop: '30%' }} // TODO: проверить паддинг
       >
         <Text style={styles.textName}>{route.params.error?.name}</Text>
         <Text style={styles.textMessage}>{route.params.error?.message}</Text>

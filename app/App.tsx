@@ -7,7 +7,6 @@ import {
 import HomeScreen from '@screens/HomeScreen';
 import ResultScreen from '@screens/ResultScreen';
 import { ApiResponseProps } from '@core/api';
-import Colors from '@constants/Colors';
 import CustomBackButton from '@components/buttons/CustomBackButton';
 import ErrorCatchScreen, { ErrorCatchProps } from '@screens/ErrorCatchScreen';
 import SettingsScreen from '@screens/SettingsScreen';
@@ -39,7 +38,6 @@ const App = () => {
           options={({ route, navigation }) => ({
             headerTransparent: true,
             headerBlurEffect: 'systemThinMaterialDark',
-            headerStyle: styles.header,
             headerTitleStyle: styles.headerTitle,
             title: route.params.word,
             headerTitleAlign: 'center',
@@ -54,7 +52,6 @@ const App = () => {
             headerTransparent: true,
             headerBlurEffect: 'systemThinMaterialDark',
             title: 'error',
-            headerStyle: styles.header,
             headerTitleStyle: styles.headerTitle,
             headerTitleAlign: 'center',
             headerTintColor: '#000000',
@@ -68,7 +65,6 @@ const App = () => {
             headerTransparent: true,
             headerBlurEffect: 'systemThinMaterialDark',
             title: 'Settings',
-            // headerStyle: styles.header,
             headerTitleStyle: styles.headerTitle,
             headerTitleAlign: 'center',
             headerTintColor: '#000000',
@@ -81,7 +77,6 @@ const App = () => {
 };
 
 const styles = StyleSheet.create({
-  header: { backgroundColor: Colors.default.main },
   headerTitle: { fontSize: 36, fontWeight: 'bold' },
 });
 

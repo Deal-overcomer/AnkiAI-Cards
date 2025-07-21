@@ -20,7 +20,7 @@ const SettingsScreen = ({ route }: SettingsScreenProps) => {
         />
         <Setting
           setting="levelOfLanguage"
-          settingName="English level"
+          settingName="Language level"
           options={Option.englishLevels}
         />
         <Setting
