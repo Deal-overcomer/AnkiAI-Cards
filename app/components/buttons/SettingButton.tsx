@@ -45,12 +45,14 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.default.buttonInput,
     justifyContent: 'center',
     alignItems: 'center',
-    elevation: 10,
     alignSelf: 'flex-end',
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
   },
   fabPressed: {
     transform: [{ scale: 0.95 }],
-    elevation: 5,
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
   },
   fabDisabled: {
     backgroundColor: '#6e6e6e',

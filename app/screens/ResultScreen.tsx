@@ -26,7 +26,9 @@ const ResultScreen = ({ route }: ResultScreenProps) => {
 
   return (
     <View style={styles.main}>
-      <ScrollView contentContainerStyle={{ paddingBottom: '100%' }}>
+      <ScrollView
+        contentContainerStyle={{ paddingBottom: '100%', paddingTop: '25%' }}
+      >
         {route.params.posData.map((value, index) => (
           <Animated.View
             layout={LinearTransition.easing(Easing.inOut(Easing.ease)).duration(
@@ -96,7 +98,8 @@ const styles = StyleSheet.create({
     marginInline: 10,
     borderRadius: 40,
     padding: 5,
-    elevation: 10,
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
   },
   viewExamples: {
     backgroundColor: Colors.default.examplesBackround,

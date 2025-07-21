@@ -12,6 +12,7 @@ import CustomBackButton from '@components/buttons/CustomBackButton';
 import ErrorCatchScreen, { ErrorCatchProps } from '@screens/ErrorCatchScreen';
 import SettingsScreen from '@screens/SettingsScreen';
 import { SettingsProps } from '@components/ApiSetting';
+import { StyleSheet } from 'react-native';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -36,8 +37,10 @@ const App = () => {
           name="Result"
           component={ResultScreen}
           options={({ route, navigation }) => ({
-            headerStyle: { backgroundColor: Colors.default.main },
-            headerTitleStyle: { fontSize: 54, fontWeight: 'bold' },
+            headerTransparent: true,
+            headerBlurEffect: 'systemThinMaterialDark',
+            headerStyle: styles.header,
+            headerTitleStyle: styles.headerTitle,
             title: route.params.word,
             headerTitleAlign: 'center',
             headerTintColor: '#000000',
@@ -48,9 +51,11 @@ const App = () => {
           name="Error"
           component={ErrorCatchScreen}
           options={({ navigation }) => ({
+            headerTransparent: true,
+            headerBlurEffect: 'systemThinMaterialDark',
             title: 'error',
-            headerStyle: { backgroundColor: Colors.default.main },
-            headerTitleStyle: { fontSize: 54, fontWeight: 'bold' },
+            headerStyle: styles.header,
+            headerTitleStyle: styles.headerTitle,
             headerTitleAlign: 'center',
             headerTintColor: '#000000',
             headerLeft: () => BackButton(navigation),
@@ -60,9 +65,11 @@ const App = () => {
           name="Settings"
           component={SettingsScreen}
           options={({ navigation }) => ({
+            headerTransparent: true,
+            headerBlurEffect: 'systemThinMaterialDark',
             title: 'Settings',
-            headerStyle: { backgroundColor: Colors.default.main },
-            headerTitleStyle: { fontSize: 54, fontWeight: 'bold' },
+            // headerStyle: styles.header,
+            headerTitleStyle: styles.headerTitle,
             headerTitleAlign: 'center',
             headerTintColor: '#000000',
             headerLeft: () => BackButton(navigation),
@@ -72,6 +79,11 @@ const App = () => {
     </NavigationContainer>
   );
 };
+
+const styles = StyleSheet.create({
+  header: { backgroundColor: Colors.default.main },
+  headerTitle: { fontSize: 36, fontWeight: 'bold' },
+});
 
 export type RootStackParamList = {
   Home: undefined;

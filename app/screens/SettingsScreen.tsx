@@ -10,7 +10,9 @@ import { RouteProp } from '@react-navigation/native';
 const SettingsScreen = ({ route }: SettingsScreenProps) => {
   return (
     <View style={styles.view}>
-      <ScrollView contentContainerStyle={{ paddingBottom: '100%' }}>
+      <ScrollView
+        contentContainerStyle={{ paddingBottom: '100%', paddingTop: '30%' }}
+      >
         <Setting
           setting="language"
           settingName="Language"
@@ -35,7 +37,7 @@ const SettingsScreen = ({ route }: SettingsScreenProps) => {
 const styles = StyleSheet.create({
   view: {
     flex: 1,
-    padding: 16,
+    // padding: 16,
     backgroundColor: Colors.default.main,
   },
 });

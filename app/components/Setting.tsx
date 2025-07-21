@@ -64,7 +64,6 @@ const Setting = ({ setting, settingName, options }: SettingProps) => {
       <View style={styles.settings}>
         <Picker
           selectedValue={selectedValue}
-          mode="dropdown"
           onValueChange={value => setSelectedValue(value)}
         >
           {options.map(option => (
@@ -100,18 +99,25 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     backgroundColor: Colors.default.posBackround,
     padding: 10,
-    elevation: 10,
+    marginHorizontal: 16,
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
     borderRadius: 10,
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
   },
-  textName: { fontSize: 20 },
+  textName: {
+    fontSize: 20,
+    width: '100%',
+    textAlign: 'center',
+    marginBottom: 10,
+  },
   textSetting: { fontSize: 18, color: '#000' },
   settings: {
     backgroundColor: Colors.default.examplesBackround,
-    width: '55%',
-    borderRadius: 10,
+    width: '70%',
+    borderRadius: 20,
   },
 });
 

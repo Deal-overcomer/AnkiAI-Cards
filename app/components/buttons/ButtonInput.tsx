@@ -33,14 +33,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 20,
     borderRadius: 10,
-    elevation: 10,
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
   },
   buttonText: {
     color: '#000',
     fontSize: 18,
     fontWeight: 500,
   },
-  buttonPressed: { transform: [{ scale: 0.95 }], elevation: 5 },
+  buttonPressed: {
+    transform: [{ scale: 0.95 }],
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+  },
   buttonDisabled: { backgroundColor: '#6e6e6e' },
   textDisabled: { color: '#919191' },
 });
