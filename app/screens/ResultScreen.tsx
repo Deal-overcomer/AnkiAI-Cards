@@ -27,7 +27,7 @@ const ResultScreen = ({ route }: ResultScreenProps) => {
   return (
     <View style={styles.main}>
       <ScrollView
-        contentContainerStyle={{ paddingBottom: '100%', paddingTop: '25%' }}
+        contentContainerStyle={{ paddingBottom: '100%', paddingTop: '30%' }}
       >
         {route.params.posData.map((value, index) => (
           <Animated.View

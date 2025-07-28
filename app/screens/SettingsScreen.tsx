@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { View, ScrollView, StyleSheet } from 'react-native';
 import Colors from '@constants/Colors';
 import Setting from '@components/Setting';
 import * as Option from '@constants/Options';

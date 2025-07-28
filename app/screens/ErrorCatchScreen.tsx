@@ -5,11 +5,11 @@ import Colors from '@constants/Colors';
 
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 
-const ErrorCatchsreen = ({ route }: ErrorScreenNavigationProps) => {
+const ErrorCatchScreen = ({ route }: ErrorScreenNavigationProps) => {
   return (
     <View style={styles.view}>
       <ScrollView
-        contentContainerStyle={{ paddingBottom: '100%', paddingTop: '30%' }} // TODO: проверить паддинг
+        contentContainerStyle={{ paddingBottom: '100%', paddingTop: '30%' }}
       >
         <Text style={styles.textName}>{route.params.error?.name}</Text>
         <Text style={styles.textMessage}>{route.params.error?.message}</Text>
@@ -56,4 +56,4 @@ interface ErrorScreenNavigationProps {
   route: ErrorScreenRootProp;
 }
 
-export default ErrorCatchsreen;
+export default ErrorCatchScreen;
