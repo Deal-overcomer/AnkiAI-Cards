@@ -33,11 +33,7 @@ const SettingsScreen = ({ route }: SettingsScreenProps) => {
 };
 
 const styles = StyleSheet.create({
-  view: {
-    flex: 1,
-    padding: 16,
-    backgroundColor: Colors.default.main,
-  },
+  view: { flex: 1, backgroundColor: Colors.default.main },
 });
 
 export type SettingScreenNavigationProp = NativeStackNavigationProp<

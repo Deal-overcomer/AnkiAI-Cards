@@ -97,7 +97,8 @@ const Setting = ({ setting, settingName, options }: SettingProps) => {
 
 const styles = StyleSheet.create({
   view: {
-    marginBottom: 12,
+    marginHorizontal: 16,
+    marginTop: 12,
     backgroundColor: Colors.default.posBackround,
     padding: 10,
     elevation: 10,

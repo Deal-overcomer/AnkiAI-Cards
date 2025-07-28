@@ -56,7 +56,8 @@ const ApiSetting = ({ firstInit }: SettingsProps) => {
 
 const styles = StyleSheet.create({
   view: {
-    marginBottom: 12,
+    marginTop: 12,
+    marginHorizontal: 16,
     backgroundColor: Colors.default.posBackround,
     padding: 10,
     elevation: 10,
