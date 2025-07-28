@@ -1,9 +1,9 @@
 import AnkiDroid from '@deal-overcomer/react-native-ankidroid';
 
-const example = async () => {
+AnkiDroid.uploadMediaFromUri;
+const addCard = async (deckName: string, newCard: ankiDroidCard) => {
   await AnkiDroid.requestPermission();
   // Name of deck which will be created in AnkiDroid
-  const deckName = 'English';
   // Name of model which will be created in AnkiDroid (can be any string)
   const modelName = 'English  Img+cloze+native_word';
   // Used to save a reference to this deck in the SharedPreferences (can be any string)
@@ -139,21 +139,7 @@ const example = async () => {
     css,
   };
 
-  `
-    'Keyword',
-    'IMG',
-    'Definition',
-    'Example',
-    'Native_word'
-    `;
-
-  const valueFields = [
-    'map',
-    '',
-    'shows your point{{c1::}}',
-    'pass me ur {{c1::map}}',
-    'карта',
-  ];
+  const valueFields = Object.values(newCard);
 
   const settings = {
     modelId: undefined,
@@ -166,4 +152,12 @@ const example = async () => {
 
   myAnkiDeck.addNote(valueFields, modelFields);
   // returns a promise that returns the added note ID
+};
+
+type ankiDroidCard = {
+  keyword: string;
+  img: string;
+  definition: string;
+  example: string;
+  native_word: string;
 };

@@ -5,7 +5,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { RootStackParamList } from '../App';
 import Colors from '@constants/Colors';
 import ButtonInput from '@components/buttons/ButtonInput';
-import { generateContent } from '@core/api';
+import { generateContent } from '@core/generatorAI';
 import ModalViewMini from '@components/ModalViewMini';
 import SettingButton from '@components/buttons/SettingButton';
 import { initApiKey, InitSettings } from '@core/settings';

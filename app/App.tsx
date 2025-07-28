@@ -6,7 +6,7 @@ import {
 } from '@react-navigation/native-stack';
 import HomeScreen from '@screens/HomeScreen';
 import ResultScreen from '@screens/ResultScreen';
-import { ApiResponseProps } from '@core/api';
+import { ApiResponseProps } from '@core/generatorAI';
 import Colors from '@constants/Colors';
 import CustomBackButton from '@components/buttons/CustomBackButton';
 import ErrorCatchScreen, { ErrorCatchProps } from '@screens/ErrorCatchScreen';
