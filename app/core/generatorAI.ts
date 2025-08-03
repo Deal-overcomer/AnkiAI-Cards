@@ -49,8 +49,11 @@ export const generateContent = async ({
       word: data.word,
       posData: data.posData,
     });
-  } catch (error: any) {
-    navigation.navigate('Error', { error: error });
+  } catch (error) {
+    console.error('Error generating content:', error);
+    navigation.navigate('Error', {
+      error: error instanceof Error ? error : new Error(String(error)),
+    });
   } finally {
     setIsLoading(false);
   }

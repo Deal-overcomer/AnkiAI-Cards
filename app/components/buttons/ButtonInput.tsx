@@ -11,11 +11,10 @@ const ButtonInput = React.memo(
         {...rest}
         disabled={disabled}
         style={({ pressed }) => [
-          { backgroundColor: color || Colors.default.buttonInput },
-          { width: width },
-          styles.buttionView,
+          { backgroundColor: color || Colors.default.buttonInput, width },
+          styles.buttonView,
           disabled && styles.buttonDisabled,
-          pressed && !disabled && styles.buttonPressed,
+          pressed && styles.buttonPressed,
         ]}
       >
         <Text style={[styles.buttonText, disabled && styles.textDisabled]}>
@@ -27,7 +26,7 @@ const ButtonInput = React.memo(
 );
 
 const styles = StyleSheet.create({
-  buttionView: {
+  buttonView: {
     height: 40,
     justifyContent: 'center',
     alignItems: 'center',
@@ -46,10 +45,10 @@ const styles = StyleSheet.create({
 });
 
 type ButtonInputProps = Partial<PressableProps> & {
-  title?: string | undefined;
-  disabled?: boolean | undefined;
-  color?: string | undefined;
-  width?: number | undefined;
+  title?: string;
+  disabled?: boolean;
+  color?: string;
+  width?: number;
 };
 
 export default ButtonInput;

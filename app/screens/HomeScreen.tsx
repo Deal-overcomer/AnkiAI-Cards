@@ -21,8 +21,8 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
     if (textRef.current.trim() && !isLoading) {
       await generateContent({
         prompt: textRef.current.trim().toLowerCase(),
-        setIsLoading: setIsLoading,
-        navigation: navigation,
+        setIsLoading,
+        navigation,
       });
     } else {
       setModalText(true);

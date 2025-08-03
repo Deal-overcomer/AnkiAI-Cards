@@ -40,6 +40,8 @@ export interface Settings {
   language: string;
   levelOfLanguage: string;
   model: string;
+  countOfImages: string;
+  imageResolution: string;
 }
 
 interface initApiKey {

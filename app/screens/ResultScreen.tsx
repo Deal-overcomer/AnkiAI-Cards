@@ -11,9 +11,6 @@ import Animated, {
   FadeOut,
 } from 'react-native-reanimated';
 
-// const ANIMATION_DURATION = 300;
-// const COLLAPSED_HEIGHT = 40;
-
 const ResultScreen = ({ route }: ResultScreenProps) => {
   const [openIndex, setOpenIndex] = React.useState<number[]>([]);
   const duration: number = 150;

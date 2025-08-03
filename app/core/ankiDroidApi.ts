@@ -1,6 +1,7 @@
 import AnkiDroid from '@deal-overcomer/react-native-ankidroid';
+import { Result } from '@deal-overcomer/react-native-ankidroid/dist/types';
+import { HomeScreenNavigationProp } from '@screens/HomeScreen';
 
-AnkiDroid.uploadMediaFromUri;
 const addCard = async (deckName: string, newCard: ankiDroidCard) => {
   await AnkiDroid.requestPermission();
   // Name of deck which will be created in AnkiDroid
@@ -18,7 +19,7 @@ const addCard = async (deckName: string, newCard: ankiDroidCard) => {
     'Example',
     'Native_word',
   ];
-  // List of card names that will be used in AnkiDroid (one for each direction of learning)
+  // List of card names that will be used in Anki Droid (one for each direction of learning)
   const cardNames = ['Cloze 1'];
   // CSS to share between all the cards (optional).
   const css = `
@@ -153,6 +154,36 @@ const addCard = async (deckName: string, newCard: ankiDroidCard) => {
   myAnkiDeck.addNote(valueFields, modelFields);
   // returns a promise that returns the added note ID
 };
+
+const uploadMedia = async ({
+  mediaUrl,
+  fileName,
+  navigation,
+}: uploadMediaProps): Promise<Result<string> | undefined> => {
+  try {
+    await AnkiDroid.requestPermission();
+    const uploadMedia = await AnkiDroid.uploadMediaFromUri(
+      mediaUrl,
+      fileName,
+      'image',
+    );
+    return uploadMedia;
+  } catch (error) {
+    console.error('Error uploading media:', error);
+    navigation.navigate('Error', {
+      error: {
+        name: 'Upload Media Error',
+        message: error instanceof Error ? error.message : String(error),
+      },
+    });
+  }
+};
+
+interface uploadMediaProps {
+  mediaUrl: string;
+  fileName: string;
+  navigation: HomeScreenNavigationProp;
+}
 
 type ankiDroidCard = {
   keyword: string;

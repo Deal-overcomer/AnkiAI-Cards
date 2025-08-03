@@ -26,6 +26,16 @@ const SettingsScreen = ({ route }: SettingsScreenProps) => {
           settingName="AI model"
           options={Option.geminiModels}
         />
+        <Setting
+          setting="countOfImages"
+          settingName="Count of images"
+          options={Option.countOfImages}
+        />
+        <Setting
+          setting="imageResolution"
+          settingName="Image resolution"
+          options={Option.imageResolutions}
+        />
         <ApiSetting firstInit={route.params.firstInit} />
       </ScrollView>
     </View>
