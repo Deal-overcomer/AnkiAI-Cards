@@ -1,3 +1,4 @@
+const { withMonicon } = require('@monicon/metro');
 const { getDefaultConfig } = require('@react-native/metro-config');
 const {
   wrapWithReanimatedMetroConfig,
@@ -11,5 +12,9 @@ const {
  */
 
 const defaultConfig = getDefaultConfig(__dirname);
+const configWithMonicon = withMonicon(defaultConfig, {
+  icons: ['mdi:home'],
+  collections: [],
+});
 
-module.exports = wrapWithReanimatedMetroConfig(defaultConfig);
+module.exports = wrapWithReanimatedMetroConfig(configWithMonicon);

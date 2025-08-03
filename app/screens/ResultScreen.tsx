@@ -10,9 +10,11 @@ import Animated, {
   FadeIn,
   FadeOut,
 } from 'react-native-reanimated';
+import Monicon from '@monicon/native';
 
 const ResultScreen = ({ route }: ResultScreenProps) => {
   const [openIndex, setOpenIndex] = React.useState<number[]>([]);
+  const [selectedList, setSelectedList] = React.useState<number[]>([]);
   const duration: number = 150;
 
   const toggleOpenIndex = useCallback((idk: number) => {

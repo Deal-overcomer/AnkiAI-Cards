@@ -2,7 +2,7 @@ import AnkiDroid from '@deal-overcomer/react-native-ankidroid';
 import { Result } from '@deal-overcomer/react-native-ankidroid/dist/types';
 import { HomeScreenNavigationProp } from '@screens/HomeScreen';
 
-const addCard = async (deckName: string, newCard: ankiDroidCard) => {
+export const addCard = async (deckName: string, newCard: ankiDroidCard) => {
   await AnkiDroid.requestPermission();
   // Name of deck which will be created in AnkiDroid
   // Name of model which will be created in AnkiDroid (can be any string)
@@ -155,7 +155,7 @@ const addCard = async (deckName: string, newCard: ankiDroidCard) => {
   // returns a promise that returns the added note ID
 };
 
-const uploadMedia = async ({
+export const uploadMedia = async ({
   mediaUrl,
   fileName,
   navigation,

@@ -1,13 +1,17 @@
 import { GoogleGenAI, Modality } from '@google/genai';
 import { getApiKey, getSettings } from './settings';
 import { HomeScreenNavigationProp } from '@screens/HomeScreen';
+import RNFS from 'react-native-fs';
 
-const generateImage = async (
+export const generateImages = async (
   name: string,
   navigation: HomeScreenNavigationProp,
-): Promise<void> => {
+): Promise<string[]> => {
+  const imagePaths: string[] = [];
   const settings = await getSettings();
-  const prompt = `Create ${settings.countOfImages} different images of word "${name}" in a 3d rendered style.
+
+  const prompt = `
+  Create ${settings.countOfImages} different images of word "${name}" in a 3d rendered style.
   Use only ${settings.imageResolution} resolution.`;
 
   try {
@@ -29,16 +33,45 @@ const generateImage = async (
     ) {
       for (const part of response.candidates[0].content.parts) {
         const imageData = part.inlineData?.data;
-        // TODO: save imageData to storage
+        if (imageData) {
+          const fileName = `image_${name}_${Date.now()}.png`;
+          const filePath = `${RNFS.DocumentDirectoryPath}/${fileName}`;
+
+          await RNFS.writeFile(filePath, imageData, 'base64');
+          imagePaths.push(filePath);
+        } else {
+          throw new Error('generateImage error: invalid response format');
+        }
       }
-    } else {
-      throw new Error('generateImage error: invalid response format');
     }
   } catch (error) {
     console.error('Error generating image:', error);
     navigation.navigate('Error', {
       error: {
         name: 'Image Generation Error',
+        message: error instanceof Error ? error.message : String(error),
+      },
+    });
+  }
+  return imagePaths;
+};
+
+export const cleanupTempImages = async (
+  imagePaths: string[],
+  navigation: HomeScreenNavigationProp,
+): Promise<void> => {
+  try {
+    for (const path of imagePaths) {
+      const exists = await RNFS.exists(path);
+      if (exists) {
+        await RNFS.unlink(path);
+      }
+    }
+  } catch (error) {
+    console.error('Error cleaning up temp images:', error);
+    navigation.navigate('Error', {
+      error: {
+        name: 'Cleanup temp Error',
         message: error instanceof Error ? error.message : String(error),
       },
     });

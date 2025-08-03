@@ -8,5 +8,6 @@
       "@screens/*": ["./app/screens/*"],
       "@core/*": ["./app/core/*"]
     }
-  }
+  },
+  "include": ["./.monicon/*.d.ts", "**/*.tsx", "**/*.ts", "**/*.js", "**/*.jsx"]
 }

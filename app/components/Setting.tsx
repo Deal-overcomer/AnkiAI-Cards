@@ -6,6 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import DefauiltSetting from '@constants/DefaultSettings';
 import ModalTextInput from '@components/ModalTextInput';
 
+// BUG: settings don't save permanently
 const Setting = ({ setting, settingName, options }: SettingProps) => {
   const [selectedValue, setSelectedValue] = React.useState('');
   const [createdOption, setCreatedOption] = React.useState('');

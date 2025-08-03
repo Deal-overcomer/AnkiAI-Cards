@@ -14,6 +14,8 @@
   "dependencies": {
     "@deal-overcomer/react-native-ankidroid": "^0.6.2",
     "@google/genai": "^1.6.0",
+    "@monicon/metro": "^1.2.2",
+    "@monicon/native": "^1.2.2",
     "@react-native-clipboard/clipboard": "^1.16.3",
     "@react-native-community/masked-view": "^0.1.11",
     "@react-native-picker/picker": "^2.11.1",
@@ -25,12 +27,14 @@
     "react-native-fs": "^2.20.0",
     "react-native-gesture-handler": "^2.26.0",
     "react-native-safe-area-context": "^5.4.1",
-    "react-native-screens": "^4.11.1"
+    "react-native-screens": "^4.11.1",
+    "react-native-svg": "^15.12.1"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
     "@babel/preset-env": "^7.25.3",
     "@babel/runtime": "^7.25.0",
+    "@iconify/json": "^2.2.365",
     "@react-native-async-storage/async-storage": "^2.2.0",
     "@react-native-community/cli": "19.0.0",
     "@react-native-community/cli-platform-android": "19.0.0",
@@ -49,7 +53,6 @@
     "prettier": "2.8.8",
     "react-native-keychain": "^10.0.0",
     "react-native-reanimated": "^3.18.0",
-    "react-native-svg": "^15.12.0",
     "react-test-renderer": "19.1.0",
     "typescript": "5.0.4"
   },
