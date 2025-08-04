@@ -6,6 +6,7 @@ const defaultSettings: Settings = {
   model: 'gemini-2.5-flash',
   countOfImages: '5',
   imageResolution: '512x384',
+  settingsInitialized: 'true',
 };
 
 export default defaultSettings;

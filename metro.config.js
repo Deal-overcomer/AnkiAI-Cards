@@ -17,4 +17,8 @@ const configWithMonicon = withMonicon(defaultConfig, {
   collections: [],
 });
 
-module.exports = wrapWithReanimatedMetroConfig(configWithMonicon);
+const customConfig = {
+  ...configWithMonicon,
+};
+
+module.exports = wrapWithReanimatedMetroConfig(customConfig);
