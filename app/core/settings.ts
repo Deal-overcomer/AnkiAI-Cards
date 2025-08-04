@@ -19,6 +19,7 @@ export async function getApiKey(): Promise<string | null> {
   return creds ? creds.password : null;
 }
 
+// BUG: Every time settings are fetched, the default settings are returned.
 export const InitSettings = async () => {
   const setting = await AsyncStorage.getItem(defaultSettings.model);
   if (!setting) {
@@ -28,11 +29,7 @@ export const InitSettings = async () => {
 };
 
 export const getSettings = async (): Promise<Settings> => {
-  const entries = await AsyncStorage.multiGet([
-    'language',
-    'levelOfLanguage',
-    'model',
-  ]);
+  const entries = await AsyncStorage.multiGet(Object.keys(defaultSettings));
   return Object.fromEntries(entries) as Record<keyof Settings, string>;
 };
 
