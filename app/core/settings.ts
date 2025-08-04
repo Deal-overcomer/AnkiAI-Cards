@@ -19,10 +19,11 @@ export async function getApiKey(): Promise<string | null> {
   return creds ? creds.password : null;
 }
 
-// BUG: Every time settings are fetched, the default settings are returned.
 export const InitSettings = async () => {
-  const setting = await AsyncStorage.getItem(defaultSettings.model);
+  const setting = await AsyncStorage.getItem('settingsInitialized');
+
   if (!setting) {
+    console.log('Settings not initialized, setting default values');
     const entries = Object.entries(defaultSettings);
     await AsyncStorage.multiSet(entries);
   }
@@ -37,6 +38,7 @@ export interface Settings {
   language: string;
   levelOfLanguage: string;
   model: string;
+  settingsInitialized: string;
 }
 
 interface initApiKey {
