@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 import Colors from '@constants/Colors';
 
+// TODO: поменять кнопку на pressable компонент
 const CustomBackButton = React.memo(({ ...props }: TouchableOpacityProps) => {
   // console.log('CustomBackButton rendered');
 

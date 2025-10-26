@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import {
   createNativeStackNavigator,
@@ -11,11 +11,11 @@ import Colors from '@constants/Colors';
 import CustomBackButton from '@components/buttons/CustomBackButton';
 import ErrorCatchScreen, { ErrorCatchProps } from '@screens/ErrorCatchScreen';
 import SettingsScreen from '@screens/SettingsScreen';
+import CardEditorScreen from '@screens/CardEditorScreen';
 import { SettingsProps } from '@components/ApiSetting';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-// TODO: сделать экспорт для карточек анки, с генерацией изображения.
 const App = () => {
   const BackButton = useCallback(
     (navigation: NativeStackNavigationProp<any>) => {
@@ -68,6 +68,18 @@ const App = () => {
             headerLeft: () => BackButton(navigation),
           })}
         />
+        <Stack.Screen
+          name="CardEditor"
+          component={CardEditorScreen}
+          options={({ navigation }) => ({
+            title: 'Edit Card',
+            headerStyle: { backgroundColor: Colors.default.main },
+            headerTitleStyle: { fontSize: 54, fontWeight: 'bold' },
+            headerTitleAlign: 'center',
+            headerTintColor: '#000000',
+            headerLeft: () => BackButton(navigation),
+          })}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -78,6 +90,7 @@ export type RootStackParamList = {
   Result: ApiResponseProps;
   Error: ErrorCatchProps;
   Settings: SettingsProps;
+  CardEditor: ApiResponseProps & { selectedSet: Array<number> };
 };
 
 export default App;

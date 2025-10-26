@@ -5,20 +5,14 @@ import { HomeScreenNavigationProp } from '@screens/HomeScreen';
 export const addCard = async (deckName: string, newCard: ankiDroidCard) => {
   await AnkiDroid.requestPermission();
   // Name of deck which will be created in AnkiDroid
-  // Name of model which will be created in AnkiDroid (can be any string)
+  // Name of a model which will be created in AnkiDroid (can be any string)
   const modelName = 'English  Img+cloze+native_word';
   // Used to save a reference to this deck in the SharedPreferences (can be any string)
-  const dbDeckReference = 'com.your.app.decks';
+  const dbDeckReference = 'com.anki.ai.decks';
   // Used to save a reference to this model in the SharedPreferences (can be any string)
-  const dbModelReference = 'com.your.app.models';
+  const dbModelReference = 'com.anki.ai.models';
   // List of field names that will be used in AnkiDroid model
-  const modelFields = [
-    'Keyword',
-    'IMG',
-    'Definition',
-    'Example',
-    'Native_word',
-  ];
+  const modelFields = ['Keyword', 'IMG', 'Definition', 'Example'];
   // List of card names that will be used in Anki Droid (one for each direction of learning)
   const cardNames = ['Cloze 1'];
   // CSS to share between all the cards (optional).
@@ -115,7 +109,6 @@ export const addCard = async (deckName: string, newCard: ankiDroidCard) => {
 
     <!hr id=answer>
 
-    <div class=Russian><span>{{Native_word}}</span></div>
     {{tts en_US:Keyword}}
     {{tts en_US:cloze:Definition}}
     {{tts en_US:cloze:Example}}
@@ -140,7 +133,14 @@ export const addCard = async (deckName: string, newCard: ankiDroidCard) => {
     css,
   };
 
-  const valueFields = Object.values(newCard);
+  const fieldOrder: (keyof ankiDroidCard)[] = [
+    'keyword',
+    'img',
+    'definition',
+    'example',
+  ];
+
+  const valueFields = fieldOrder.map(field => newCard[field]);
 
   const settings = {
     modelId: undefined,
@@ -185,10 +185,9 @@ interface uploadMediaProps {
   navigation: HomeScreenNavigationProp;
 }
 
-type ankiDroidCard = {
+export type ankiDroidCard = {
   keyword: string;
   img: string;
   definition: string;
   example: string;
-  native_word: string;
 };

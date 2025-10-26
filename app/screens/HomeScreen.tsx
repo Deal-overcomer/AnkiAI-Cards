@@ -8,17 +8,21 @@ import ButtonInput from '@components/buttons/ButtonInput';
 import { generateContent } from '@core/generatorAI';
 import ModalViewMini from '@components/ModalViewMini';
 import SettingButton from '@components/buttons/SettingButton';
-import { initApiKey, InitSettings } from '@core/settings';
+import { getApiKey, initApiKey, InitSettings } from '@core/settings';
 
 const HomeScreen = ({ navigation }: HomeScreenProps) => {
   const [text, setText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [modalText, setModalText] = useState(false);
+  const [modalApi, setModalApi] = useState(false);
   const textInputRef = React.useRef<TextInput>(null);
   const textRef = React.useRef<string>(text);
 
   const handlePress = useCallback(async () => {
-    if (textRef.current.trim() && !isLoading) {
+    const apiKey = await getApiKey();
+    if (!apiKey) {
+      setModalApi(true);
+    } else if (textRef.current.trim() && !isLoading) {
       await generateContent({
         prompt: textRef.current.trim().toLowerCase(),
         setIsLoading,
@@ -29,8 +33,9 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
     }
   }, [navigation, isLoading]);
 
-  const handleModalTextClose = useCallback(() => {
+  const handleCloseModals = useCallback(() => {
     setModalText(false);
+    setModalApi(false);
   }, []);
 
   useFocusEffect(
@@ -60,7 +65,12 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
       <ModalViewMini
         text="Please enter a word to generate"
         visible={modalText}
-        onRequestClose={handleModalTextClose}
+        onRequestClose={handleCloseModals}
+      />
+      <ModalViewMini
+        text="Please enter your API key"
+        visible={modalApi}
+        onRequestClose={handleCloseModals}
       />
       <SettingButton
         disabled={isLoading}

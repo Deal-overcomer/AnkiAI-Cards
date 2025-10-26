@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { View, Text, ScrollView, StyleSheet, Pressable } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -11,21 +11,61 @@ import Animated, {
   FadeOut,
 } from 'react-native-reanimated';
 import Monicon from '@monicon/native';
+import ButtonInput from '@components/buttons/ButtonInput';
 
-const ResultScreen = ({ route }: ResultScreenProps) => {
-  const [openIndex, setOpenIndex] = React.useState<number[]>([]);
-  const [selectedList, setSelectedList] = React.useState<number[]>([]);
+const ResultScreen = ({ navigation, route }: ResultScreenProps) => {
+  const [openIndex, setOpenIndex] = React.useState<Set<number>>(new Set());
+  const [selectedSet, setSelectedSet] = React.useState<Set<number>>(new Set());
+  const selectedSetRef = useRef(selectedSet);
   const duration: number = 150;
 
-  const toggleOpenIndex = useCallback((idk: number) => {
-    setOpenIndex(prev =>
-      prev.includes(idk) ? prev.filter(item => item !== idk) : [...prev, idk],
-    );
+  const toggleOpenIndex = useCallback((index: number) => {
+    setOpenIndex(prev => {
+      if (prev.has(index)) {
+        const tempSet = new Set(prev);
+        tempSet.delete(index);
+        return tempSet;
+      } else {
+        return new Set(prev).add(index);
+      }
+    });
   }, []);
+
+  useEffect(() => {
+    selectedSetRef.current = selectedSet;
+  }, [selectedSet]);
+
+  const toggleSelectedList = useCallback((index: number) => {
+    setSelectedSet(prev => {
+      if (prev.has(index)) {
+        const tempSet = new Set(prev);
+        tempSet.delete(index);
+        return tempSet;
+      } else {
+        return new Set(prev).add(index);
+      }
+    });
+  }, []);
+
+  const handleOpenCardEditor = useCallback(
+    ({ route, navigation }: ResultScreenProps) => {
+      navigation.navigate('CardEditor', {
+        posData: route.params.posData,
+        word: route.params.word,
+        selectedSet: Array.from(selectedSetRef.current),
+      });
+    },
+    [],
+  );
 
   return (
     <View style={styles.main}>
-      <ScrollView contentContainerStyle={{ paddingBottom: '100%' }}>
+      <ScrollView
+        contentContainerStyle={{
+          paddingBottom: '100%',
+          alignItems: 'center',
+        }}
+      >
         {route.params.posData.map((value, index) => (
           <Animated.View
             layout={LinearTransition.easing(Easing.inOut(Easing.ease)).duration(
@@ -34,8 +74,15 @@ const ResultScreen = ({ route }: ResultScreenProps) => {
             style={styles.viewPos}
             key={`${index}`}
           >
-            <Text style={styles.textPos}>{value.partOfSpeech}</Text>
-            <Text style={styles.textDefinition}>{value.definition}</Text>
+            {selectedSet.has(index) && (
+              <View style={styles.icon}>
+                <Monicon name="mdi:check-outline" size={30} />
+              </View>
+            )}
+            <Pressable onPress={() => toggleSelectedList(index)}>
+              <Text style={styles.textPos}>{value.partOfSpeech}</Text>
+              <Text style={styles.textDefinition}>{value.definition}</Text>
+            </Pressable>
             <Pressable onPress={() => toggleOpenIndex(index)}>
               <Animated.View
                 layout={LinearTransition.easing(
@@ -44,7 +91,7 @@ const ResultScreen = ({ route }: ResultScreenProps) => {
                 style={styles.viewExamples}
                 key="examples"
               >
-                {openIndex.includes(index) ? (
+                {openIndex.has(index) ? (
                   <>
                     {value.examples.map((value, index) => (
                       <Animated.Text
@@ -77,6 +124,14 @@ const ResultScreen = ({ route }: ResultScreenProps) => {
             </Pressable>
           </Animated.View>
         ))}
+        <ButtonInput
+          disabled={selectedSet.size === 0}
+          title="Add to flashcards"
+          fontsize={36}
+          width={360}
+          height={60}
+          onPress={() => handleOpenCardEditor({ navigation, route })}
+        />
       </ScrollView>
     </View>
   );
@@ -86,13 +141,11 @@ const styles = StyleSheet.create({
   main: {
     flex: 1,
     backgroundColor: Colors.default.main,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   viewPos: {
+    width: '95%',
     marginTop: 20,
     backgroundColor: Colors.default.posBackround,
-    marginInline: 10,
     borderRadius: 40,
     padding: 5,
     elevation: 10,
@@ -119,6 +172,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 20,
   },
+  icon: { position: 'absolute', right: 24, top: 4 },
 });
 
 type ResultSceenNavigationProp = NativeStackNavigationProp<

@@ -13,7 +13,7 @@ const {
 
 const defaultConfig = getDefaultConfig(__dirname);
 const configWithMonicon = withMonicon(defaultConfig, {
-  icons: ['mdi:home'],
+  icons: ['mdi:check-outline'],
   collections: [],
 });
 

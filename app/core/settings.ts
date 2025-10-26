@@ -4,6 +4,21 @@ import * as Keychain from 'react-native-keychain';
 import { HomeScreenNavigationProp } from '@screens/HomeScreen';
 
 export const initApiKey = async ({ navigation }: initApiKey) => {
+  // TODO: delete after tests
+  navigation.navigate('Result', {
+    word: 'apple',
+    posData: [
+      {
+        partOfSpeech: 'fruit',
+        definition: 'a green or red fruit.',
+        definitionCloze: 'a green or red fruit.',
+        examples: ['eat an apple', 'eat an apple'],
+        examplesCloze: ['eat at {{c1:apple}}', 'eat at {{c1:apple}}'],
+      },
+    ],
+  });
+  //
+
   const apiKey = await Keychain.getGenericPassword();
   if (!apiKey) {
     navigation.navigate('Settings', { firstInit: true });
@@ -48,9 +63,11 @@ const debugSettings = async () => {
 (global as any).debugSettings = debugSettings;
 
 export interface Settings {
+  deckName: string;
   language: string;
   levelOfLanguage: string;
   model: string;
+  imageGenerationMode: string;
   countOfImages: string;
   imageResolution: string;
   settingsInitialized: string;

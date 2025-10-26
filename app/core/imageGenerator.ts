@@ -1,46 +1,72 @@
-import { GoogleGenAI, Modality } from '@google/genai';
+import { GoogleGenAI } from '@google/genai';
 import { getApiKey, getSettings } from './settings';
-import { HomeScreenNavigationProp } from '@screens/HomeScreen';
 import RNFS from 'react-native-fs';
+import { CardEditorScreenNavProp } from '@screens/CardEditorScreen';
+import ImageResizer from 'react-native-image-resizer';
 
-export const generateImages = async (
-  name: string,
-  navigation: HomeScreenNavigationProp,
-): Promise<string[]> => {
+// TODO: добавить альтернативную нейросеть для генерации
+export const generateImages = async ({
+  word,
+  definition,
+  pos,
+  navigation,
+}: generateImagesProps): Promise<string[]> => {
   const imagePaths: string[] = [];
   const settings = await getSettings();
+  const width = Number(settings.imageResolution.match(/^\d*/));
+  const height = Number(settings.imageResolution.match(/\d*$/));
 
-  const prompt = `
-  Create ${settings.countOfImages} different images of word "${name}" in a 3d rendered style.
-  Use only ${settings.imageResolution} resolution.`;
+  if (settings.imageGenerationMode === 'no image') {
+    console.log('Image generation is disabled in settings.');
+    return [];
+  }
+
+  const prompt = `Create a visual illustration that represents the concept: ${word} but without any labels!
+
+  STRICT REQUIREMENTS:
+  - NO TEXT of any kind in the image
+  - NO WORDS written anywhere
+  - NO LETTERS or symbols
+  - PURELY VISUAL representation only
+  - Show the concept through objects, actions, or scenes
+  
+  - Part of speech: ${pos}
+  
+  This is for visual memory association. The image must be completely text-free
+  and show only visual elements that represent the meaning: ${definition}
+  
+  Style: clean, simple, no text overlays, no captions, no labels.`;
 
   try {
     const apiKey = await getApiKey();
     const genAI = new GoogleGenAI({ apiKey: apiKey as string });
 
-    const response = await genAI.models.generateContent({
-      model: 'gemini-2.0-flash-preview-image-generation',
-      contents: prompt,
+    const response = await genAI.models.generateImages({
+      model: settings.imageGenerationMode,
+      prompt,
       config: {
-        responseModalities: [Modality.IMAGE],
+        numberOfImages: Number(settings.countOfImages),
+        aspectRatio: '4:3',
       },
     });
 
-    if (
-      response.candidates &&
-      response.candidates[0].content &&
-      Array.isArray(response.candidates[0].content.parts)
-    ) {
-      for (const part of response.candidates[0].content.parts) {
-        const imageData = part.inlineData?.data;
-        if (imageData) {
-          const fileName = `image_${name}_${Date.now()}.png`;
-          const filePath = `${RNFS.DocumentDirectoryPath}/${fileName}`;
+    if (response.generatedImages && response.generatedImages.length > 0) {
+      for (let image in response.generatedImages) {
+        const generatedImage = response.generatedImages[image];
+        if (generatedImage.image?.imageBytes) {
+          const fileName = `temp_${word}_${Date.now()}.png`;
+          const filePath = `${RNFS.CachesDirectoryPath}/${fileName}`;
+          await RNFS.writeFile(
+            filePath,
+            generatedImage.image.imageBytes,
+            'base64',
+          );
 
-          await RNFS.writeFile(filePath, imageData, 'base64');
-          imagePaths.push(filePath);
+          const resizedImage = await resizeImage(filePath, width, height);
+          imagePaths.push(resizedImage.path);
+          await RNFS.unlink(filePath);
         } else {
-          throw new Error('generateImage error: invalid response format');
+          throw new Error('generateImage error: invalid response');
         }
       }
     }
@@ -53,12 +79,36 @@ export const generateImages = async (
       },
     });
   }
+
   return imagePaths;
+};
+
+const resizeImage = async (
+  imagePath: string,
+  width: number,
+  height: number,
+) => {
+  const quality = 90;
+
+  return await ImageResizer.createResizedImage(
+    imagePath,
+    width,
+    height,
+    'PNG',
+    quality,
+    0, // rotation
+    undefined, // outputPath
+    false, // keepMeta
+    {
+      mode: 'stretch',
+      onlyScaleDown: false,
+    },
+  );
 };
 
 export const cleanupTempImages = async (
   imagePaths: string[],
-  navigation: HomeScreenNavigationProp,
+  navigation: CardEditorScreenNavProp,
 ): Promise<void> => {
   try {
     for (const path of imagePaths) {
@@ -77,3 +127,10 @@ export const cleanupTempImages = async (
     });
   }
 };
+
+interface generateImagesProps {
+  word: string;
+  pos: string;
+  definition: string;
+  navigation: CardEditorScreenNavProp;
+}

@@ -1,7 +1,7 @@
 import { ScrollView, StyleSheet, View } from 'react-native';
 import Colors from '@constants/Colors';
 import Setting from '@components/Setting';
-import * as Option from '@constants/Options';
+import * as Options from '@constants/Options';
 import ApiSetting from '@components/ApiSetting';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../App';
@@ -12,29 +12,39 @@ const SettingsScreen = ({ route }: SettingsScreenProps) => {
     <View style={styles.view}>
       <ScrollView contentContainerStyle={{ paddingBottom: '100%' }}>
         <Setting
+          setting="deckName"
+          settingName="Deck name"
+          options={Options.deckNames}
+        />
+        <Setting
           setting="language"
           settingName="Language"
-          options={Option.languages}
+          options={Options.languages}
         />
         <Setting
           setting="levelOfLanguage"
           settingName="Language level"
-          options={Option.englishLevels}
+          options={Options.englishLevels}
         />
         <Setting
           setting="model"
           settingName="AI model"
-          options={Option.geminiModels}
+          options={Options.models}
+        />
+        <Setting
+          setting="imageGenerationMode"
+          settingName="Image mode"
+          options={Options.imageGenerationModes}
         />
         <Setting
           setting="countOfImages"
           settingName="Count of images"
-          options={Option.countOfImages}
+          options={Options.countOfImages}
         />
         <Setting
           setting="imageResolution"
           settingName="Image resolution"
-          options={Option.imageResolutions}
+          options={Options.imageResolutions}
         />
         <ApiSetting firstInit={route.params.firstInit} />
       </ScrollView>
