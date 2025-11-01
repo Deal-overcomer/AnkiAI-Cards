@@ -4,13 +4,7 @@ import RNFS from 'react-native-fs';
 import { CardEditorScreenNavProp } from '@screens/CardEditorScreen';
 import ImageResizer from 'react-native-image-resizer';
 
-// TODO: добавить альтернативную нейросеть для генерации
-export const generateImages = async ({
-  word,
-  definition,
-  pos,
-  navigation,
-}: generateImagesProps): Promise<string[]> => {
+export const generateImages = async ({ word, definition, pos, navigation }: generateImagesProps): Promise<string[]> => {
   const imagePaths: string[] = [];
   const settings = await getSettings();
   const width = Number(settings.imageResolution.match(/^\d*/));
@@ -56,11 +50,7 @@ export const generateImages = async ({
         if (generatedImage.image?.imageBytes) {
           const fileName = `temp_${word}_${Date.now()}.png`;
           const filePath = `${RNFS.CachesDirectoryPath}/${fileName}`;
-          await RNFS.writeFile(
-            filePath,
-            generatedImage.image.imageBytes,
-            'base64',
-          );
+          await RNFS.writeFile(filePath, generatedImage.image.imageBytes, 'base64');
 
           const resizedImage = await resizeImage(filePath, width, height);
           imagePaths.push(resizedImage.path);
@@ -83,11 +73,7 @@ export const generateImages = async ({
   return imagePaths;
 };
 
-const resizeImage = async (
-  imagePath: string,
-  width: number,
-  height: number,
-) => {
+const resizeImage = async (imagePath: string, width: number, height: number) => {
   const quality = 90;
 
   return await ImageResizer.createResizedImage(
@@ -106,10 +92,7 @@ const resizeImage = async (
   );
 };
 
-export const cleanupTempImages = async (
-  imagePaths: string[],
-  navigation: CardEditorScreenNavProp,
-): Promise<void> => {
+export const cleanupTempImages = async (imagePaths: string[], navigation: CardEditorScreenNavProp): Promise<void> => {
   try {
     for (const path of imagePaths) {
       const exists = await RNFS.exists(path);

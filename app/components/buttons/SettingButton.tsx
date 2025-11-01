@@ -7,12 +7,7 @@ const SettingsFab = ({ onPress, style, disabled }: Props) => (
   <View style={styles.main}>
     <Pressable
       onPress={onPress}
-      style={({ pressed }) => [
-        styles.fab,
-        style,
-        pressed && styles.fabPressed,
-        disabled && styles.fabDisabled,
-      ]}
+      style={({ pressed }) => [styles.fab, style, pressed && styles.fabPressed, disabled && styles.fabDisabled]}
       disabled={disabled}
       accessibilityLabel="Open settings"
     >

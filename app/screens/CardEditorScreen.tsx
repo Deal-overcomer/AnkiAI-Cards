@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import {
   Image,
   View,
@@ -6,6 +6,9 @@ import {
   TextInput,
   StyleSheet,
   TextInputSelectionChangeEvent,
+  FlatList,
+  useWindowDimensions,
+  ActivityIndicator,
 } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../App';
@@ -18,23 +21,37 @@ import * as Options from '@constants/Options';
 import Colors from '@constants/Colors';
 import ButtonInput from '@components/buttons/ButtonInput';
 
-// TODO: допилить логику и добавить горизонтальный список изображений. Inputы нельзя редактировать
+// TODO: Inputы нельзя редактировать
+// TODO: доделать сохранение карт в анки
+// TODO: переместить кнопку cloze на клавиатуру
 const CardEditorScreen = ({ navigation, route }: CardEditorScreenProps) => {
   const selectedArray = route.params.selectedSet;
   const countSet = selectedArray.length;
+  const flatListRef = useRef<FlatList<string> | null>(null);
+
   const [data, setData] = React.useState(route.params.posData);
   const [currentIndex, setCurrentIndex] = React.useState(selectedArray[0]);
   const [ImagePaths, SetImagePaths] = React.useState<{
     [key: number]: string[];
   }>({});
-  //
+  const [selectedImageIndex, setSelectedImageIndex] = React.useState(0);
   const [currentSelection, setCurrentSelection] = React.useState<Selection>();
 
-  const handleToggleSet = useCallback(
+  const { width: screenWidth } = useWindowDimensions();
+  const IMAGE_WIDTH = 250;
+  const IMAGE_MARGIN = 5;
+  const ITEM_WIDTH = IMAGE_WIDTH + IMAGE_MARGIN * 2;
+
+  const handleCreateCard = useCallback(
     (index: number) => {
       const nextIndex = selectedArray.indexOf(index) + 1;
       if (nextIndex < countSet) {
         setCurrentIndex(selectedArray[nextIndex]);
+        setSelectedImageIndex(0);
+        flatListRef.current?.scrollToOffset({
+          offset: 0,
+          animated: true,
+        });
       } else {
         navigation.navigate('Home');
       }
@@ -50,13 +67,11 @@ const CardEditorScreen = ({ navigation, route }: CardEditorScreenProps) => {
     if (currentSelection === undefined) return;
 
     const clozedText = (originalText: string) =>
-      `${originalText.slice(
-        0,
-        selectionIndexes.start,
-      )}{{c1::${originalText.slice(
+      `${originalText.slice(0, selectionIndexes.start)}{{c1::${originalText.slice(
         selectionIndexes.start,
         selectionIndexes.end,
       )}}}${originalText.slice(selectionIndexes.end)}`;
+
     const { selectedField, selectionIndexes } = currentSelection;
 
     setData(prev => {
@@ -69,18 +84,37 @@ const CardEditorScreen = ({ navigation, route }: CardEditorScreenProps) => {
         const result = clozedText(originalText);
         currentItem.definitionCloze = result;
       } else {
-        originalText =
-          currentItem.examplesCloze[Number(selectedField.slice(-1))];
+        const idx = Number(selectedField.slice(-1));
+        originalText = currentItem.examplesCloze[idx];
         const result = clozedText(originalText);
-        currentItem.examplesCloze[Number(selectedField.slice(-1))] = result;
+        currentItem.examplesCloze[idx] = result;
       }
 
       return newData;
     });
   }, [currentSelection, currentIndex]);
 
+  const getSnapToOffsets = useCallback(
+    (numItems: number) => {
+      return Array.from({ length: numItems }, (_, i) => i * ITEM_WIDTH);
+    },
+    [ITEM_WIDTH],
+  );
+
+  const onScrollEnd = useCallback(
+    (event: any) => {
+      const offsetX = event.nativeEvent.contentOffset.x;
+      const index = Math.round(offsetX / ITEM_WIDTH);
+      setSelectedImageIndex(index);
+    },
+    [ITEM_WIDTH],
+  );
+
   useEffect(() => {
+    if (Object.keys(ImagePaths).length > 0) return;
+
     const images = Object() as { [key: number]: string[] };
+
     const getImages = async () => {
       for (const index of selectedArray) {
         images[index] = await generateImages({
@@ -89,40 +123,48 @@ const CardEditorScreen = ({ navigation, route }: CardEditorScreenProps) => {
           definition: route.params.posData[index].definition,
           pos: route.params.posData[index].partOfSpeech,
         });
+        images[index].unshift('');
       }
       SetImagePaths(images);
     };
+
     getImages();
-  }, [navigation, route, selectedArray]);
+  }, [navigation, route, selectedArray, ImagePaths]);
+
+  const renderItem = ({ item }: { item: string }) =>
+    item === '' ? (
+      <Text style={styles.noImage}>No image</Text>
+    ) : (
+      <Image source={{ uri: `file://${item}` }} style={styles.image} />
+    );
 
   return (
     <View style={styles.main}>
       <ScrollView style={styles.second}>
-        <Setting
-          setting="deckName"
-          settingName="Deck name"
-          options={Options.deckNames}
-        />
-        {/* <View style={{ marginVertical: 10 }}>
+        <Setting setting="deckName" settingName="Deck name" options={Options.deckNames} />
+        <View style={styles.imageContainer}>
           {ImagePaths[currentIndex] ? (
-            ImagePaths[currentIndex].map((imagePath, index) => (
-              <Image
-                key={index} 
-                source={{
-                  uri: `file://${imagePath}`,
-                }}
-                style={{ marginBottom: 10, height: 250 }}
-                resizeMode="contain"
-                onError={error => console.log('Image load error:', error)}
-              />
-            ))
+            <FlatList
+              ref={flatListRef}
+              data={ImagePaths[currentIndex]}
+              renderItem={renderItem}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              snapToOffsets={getSnapToOffsets(ImagePaths[currentIndex].length)}
+              decelerationRate="fast"
+              snapToAlignment="center"
+              onMomentumScrollEnd={onScrollEnd}
+              contentContainerStyle={{
+                paddingHorizontal: (screenWidth - ITEM_WIDTH) / 2,
+              }}
+            />
           ) : (
-            <Text>Loading images...</Text>
+            <>
+              <ActivityIndicator style={styles.loadingImages} size="large" color={Colors.default.activityIndicator} />
+            </>
           )}
-        </View> */}
-        <Text style={styles.titleText}>
-          {route.params.posData[currentIndex].partOfSpeech}
-        </Text>
+        </View>
+        <Text style={styles.titleText}>{route.params.posData[currentIndex].partOfSpeech}</Text>
         <TextInput
           onSelectionChange={event =>
             handleSelection({
@@ -152,19 +194,13 @@ const CardEditorScreen = ({ navigation, route }: CardEditorScreenProps) => {
           />
         ))}
       </ScrollView>
-      <ButtonInput
-        title="cloze selected word"
-        fontsize={16}
-        height={30}
-        width={180}
-        onPress={handleClozeSelected}
-      />
+      <ButtonInput title="cloze selected word" fontsize={16} height={30} width={180} onPress={handleClozeSelected} />
       <ButtonInput
         title="Create card"
         width={300}
         height={50}
         fontsize={20}
-        onPress={() => handleToggleSet(currentIndex)}
+        onPress={() => handleCreateCard(currentIndex)}
       />
     </View>
   );
@@ -194,6 +230,26 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.default.examplesBackround,
     borderRadius: 10,
   },
+  imageContainer: {
+    marginVertical: 10,
+  },
+  image: {
+    width: 250,
+    height: 200,
+    margin: 5,
+  },
+  noImage: {
+    width: 250,
+    height: 200,
+    margin: 5,
+    textAlign: 'center',
+    textAlignVertical: 'center',
+    fontSize: 18,
+  },
+  loadingImages: {
+    height: 200,
+    margin: 5,
+  },
 });
 
 type Selection = {
@@ -201,10 +257,7 @@ type Selection = {
   selectionIndexes: { start: number; end: number };
 };
 
-export type CardEditorScreenNavProp = NativeStackNavigationProp<
-  RootStackParamList,
-  'CardEditor'
->;
+export type CardEditorScreenNavProp = NativeStackNavigationProp<RootStackParamList, 'CardEditor'>;
 
 type CardEditorScreenRouteProp = RouteProp<RootStackParamList, 'CardEditor'>;
 

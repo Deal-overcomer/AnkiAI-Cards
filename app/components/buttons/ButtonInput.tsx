@@ -3,15 +3,7 @@ import { StyleSheet, Text, Pressable, PressableProps } from 'react-native';
 import Colors from '@constants/Colors';
 
 const ButtonInput = React.memo(
-  ({
-    title = '',
-    disabled,
-    color,
-    width = 200,
-    height = 40,
-    fontsize = 18,
-    ...rest
-  }: ButtonInputProps) => {
+  ({ title = '', disabled, color, width = 200, height = 40, fontsize = 18, ...rest }: ButtonInputProps) => {
     // console.log('ButtonInput rendered');
 
     return (
@@ -29,15 +21,7 @@ const ButtonInput = React.memo(
           pressed && styles.buttonPressed,
         ]}
       >
-        <Text
-          style={[
-            { fontSize: fontsize },
-            styles.buttonText,
-            disabled && styles.textDisabled,
-          ]}
-        >
-          {title}
-        </Text>
+        <Text style={[{ fontSize: fontsize }, styles.buttonText, disabled && styles.textDisabled]}>{title}</Text>
       </Pressable>
     );
   },

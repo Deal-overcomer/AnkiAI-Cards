@@ -133,12 +133,7 @@ export const addCard = async (deckName: string, newCard: ankiDroidCard) => {
     css,
   };
 
-  const fieldOrder: (keyof ankiDroidCard)[] = [
-    'keyword',
-    'img',
-    'definition',
-    'example',
-  ];
+  const fieldOrder: (keyof ankiDroidCard)[] = ['keyword', 'img', 'definition', 'example'];
 
   const valueFields = fieldOrder.map(field => newCard[field]);
 
@@ -162,11 +157,7 @@ export const uploadMedia = async ({
 }: uploadMediaProps): Promise<Result<string> | undefined> => {
   try {
     await AnkiDroid.requestPermission();
-    const uploadMedia = await AnkiDroid.uploadMediaFromUri(
-      mediaUrl,
-      fileName,
-      'image',
-    );
+    const uploadMedia = await AnkiDroid.uploadMediaFromUri(mediaUrl, fileName, 'image');
     return uploadMedia;
   } catch (error) {
     console.error('Error uploading media:', error);

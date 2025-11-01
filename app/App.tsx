@@ -1,9 +1,6 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import {
-  createNativeStackNavigator,
-  NativeStackNavigationProp,
-} from '@react-navigation/native-stack';
+import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import HomeScreen from '@screens/HomeScreen';
 import ResultScreen from '@screens/ResultScreen';
 import { ApiResponseProps } from '@core/generatorAI';
@@ -17,21 +14,14 @@ import { SettingsProps } from '@components/ApiSetting';
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const App = () => {
-  const BackButton = useCallback(
-    (navigation: NativeStackNavigationProp<any>) => {
-      return <CustomBackButton onPress={() => navigation.goBack()} />;
-    },
-    [],
-  );
+  const BackButton = useCallback((navigation: NativeStackNavigationProp<any>) => {
+    return <CustomBackButton onPress={() => navigation.goBack()} />;
+  }, []);
 
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen
-          name="Home"
-          component={HomeScreen}
-          options={{ headerShown: false }}
-        />
+        <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
         <Stack.Screen
           name="Result"
           component={ResultScreen}

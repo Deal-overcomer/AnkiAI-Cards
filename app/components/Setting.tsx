@@ -10,8 +10,7 @@ const Setting = ({ setting, settingName, options }: SettingProps) => {
   const [selectedValue, setSelectedValue] = React.useState('');
   const [createdOption, setCreatedOption] = React.useState('');
   const [isInitialized, setIsInitialized] = React.useState(false);
-  const [modalTextInputVisible, setModalTextInputVisible] =
-    React.useState(false);
+  const [modalTextInputVisible, setModalTextInputVisible] = React.useState(false);
   const prevSelectedValue = React.useRef(selectedValue);
 
   const handleModalTextInputClose = useCallback(() => {
@@ -62,33 +61,14 @@ const Setting = ({ setting, settingName, options }: SettingProps) => {
       />
       <Text style={styles.textName}>{settingName}</Text>
       <View style={styles.settings}>
-        <Picker
-          selectedValue={selectedValue}
-          mode="dropdown"
-          onValueChange={value => setSelectedValue(value)}
-        >
+        <Picker selectedValue={selectedValue} mode="dropdown" onValueChange={value => setSelectedValue(value)}>
           {options.map(option => (
-            <Picker.Item
-              key={option}
-              label={option}
-              value={option}
-              style={styles.textSetting}
-            />
+            <Picker.Item key={option} label={option} value={option} style={styles.textSetting} />
           ))}
           {createdOption !== '' && (
-            <Picker.Item
-              key={createdOption}
-              label={createdOption}
-              value={createdOption}
-              style={styles.textSetting}
-            />
+            <Picker.Item key={createdOption} label={createdOption} value={createdOption} style={styles.textSetting} />
           )}
-          <Picker.Item
-            key="create_option"
-            value="create_option"
-            label="Create option..."
-            style={styles.textSetting}
-          />
+          <Picker.Item key="create_option" value="create_option" label="Create option..." style={styles.textSetting} />
         </Picker>
       </View>
     </View>

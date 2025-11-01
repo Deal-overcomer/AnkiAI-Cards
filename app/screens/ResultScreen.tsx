@@ -4,12 +4,7 @@ import { RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../App';
 import Colors from '@constants/Colors';
-import Animated, {
-  LinearTransition,
-  Easing,
-  FadeIn,
-  FadeOut,
-} from 'react-native-reanimated';
+import Animated, { LinearTransition, Easing, FadeIn, FadeOut } from 'react-native-reanimated';
 import Monicon from '@monicon/native';
 import ButtonInput from '@components/buttons/ButtonInput';
 
@@ -47,16 +42,13 @@ const ResultScreen = ({ navigation, route }: ResultScreenProps) => {
     });
   }, []);
 
-  const handleOpenCardEditor = useCallback(
-    ({ route, navigation }: ResultScreenProps) => {
-      navigation.navigate('CardEditor', {
-        posData: route.params.posData,
-        word: route.params.word,
-        selectedSet: Array.from(selectedSetRef.current),
-      });
-    },
-    [],
-  );
+  const handleOpenCardEditor = useCallback(({ route, navigation }: ResultScreenProps) => {
+    navigation.navigate('CardEditor', {
+      posData: route.params.posData,
+      word: route.params.word,
+      selectedSet: Array.from(selectedSetRef.current),
+    });
+  }, []);
 
   return (
     <View style={styles.main}>
@@ -68,9 +60,7 @@ const ResultScreen = ({ navigation, route }: ResultScreenProps) => {
       >
         {route.params.posData.map((value, index) => (
           <Animated.View
-            layout={LinearTransition.easing(Easing.inOut(Easing.ease)).duration(
-              duration,
-            )}
+            layout={LinearTransition.easing(Easing.inOut(Easing.ease)).duration(duration)}
             style={styles.viewPos}
             key={`${index}`}
           >
@@ -85,9 +75,7 @@ const ResultScreen = ({ navigation, route }: ResultScreenProps) => {
             </Pressable>
             <Pressable onPress={() => toggleOpenIndex(index)}>
               <Animated.View
-                layout={LinearTransition.easing(
-                  Easing.inOut(Easing.ease),
-                ).duration(duration)}
+                layout={LinearTransition.easing(Easing.inOut(Easing.ease)).duration(duration)}
                 style={styles.viewExamples}
                 key="examples"
               >
@@ -175,10 +163,7 @@ const styles = StyleSheet.create({
   icon: { position: 'absolute', right: 24, top: 4 },
 });
 
-type ResultSceenNavigationProp = NativeStackNavigationProp<
-  RootStackParamList,
-  'Result'
->;
+type ResultSceenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Result'>;
 
 type ResultScreenRouteProp = RouteProp<RootStackParamList, 'Result'>;
 

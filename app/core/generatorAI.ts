@@ -2,11 +2,7 @@ import { GoogleGenAI } from '@google/genai';
 import { HomeScreenNavigationProp } from '@screens/HomeScreen';
 import { getApiKey, getSettings } from './settings';
 
-export const generateContent = async ({
-  prompt,
-  setIsLoading,
-  navigation,
-}: GenerateContentProps): Promise<void> => {
+export const generateContent = async ({ prompt, setIsLoading, navigation }: GenerateContentProps): Promise<void> => {
   setIsLoading(true);
 
   const apiKey = await getApiKey();
@@ -66,9 +62,7 @@ export const generateContent = async ({
       contents: content,
       model: settings.model,
     });
-    const data: ApiResponseProps = JSON.parse(
-      response.replaceAll('```', '').replace('json', ''),
-    );
+    const data: ApiResponseProps = JSON.parse(response.replaceAll('```', '').replace('json', ''));
     navigation.navigate('Result', {
       word: data.word,
       posData: data.posData,
@@ -83,11 +77,7 @@ export const generateContent = async ({
   }
 };
 
-const geminiGetResponse = async ({
-  apiKey,
-  contents,
-  model,
-}: getResponse): Promise<string> => {
+const geminiGetResponse = async ({ apiKey, contents, model }: getResponse): Promise<string> => {
   const gemini = new GoogleGenAI({ apiKey: apiKey as string });
   const response: any = await gemini.models.generateContent({
     model,

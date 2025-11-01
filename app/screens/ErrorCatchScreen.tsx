@@ -42,10 +42,7 @@ export type ErrorCatchProps = {
   error?: Error;
 };
 
-type ErrorScreenNavigationProp = NativeStackNavigationProp<
-  RootStackParamList,
-  'Error'
->;
+type ErrorScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Error'>;
 
 type ErrorScreenRootProp = RouteProp<RootStackParamList, 'Error'>;
 

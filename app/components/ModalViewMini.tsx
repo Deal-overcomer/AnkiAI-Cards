@@ -3,30 +3,18 @@ import { Text, Modal, ModalProps, View, StyleSheet } from 'react-native';
 import ButtonInput from './buttons/ButtonInput';
 import Colors from '@constants/Colors';
 
-const ModalViewMini = React.memo(
-  ({ text, visible, onRequestClose, ...rest }: ModalViewMiniProps) => {
-    return (
-      <Modal
-        {...rest}
-        visible={visible}
-        onRequestClose={onRequestClose}
-        animationType="fade"
-        transparent={true}
-      >
-        <View style={styles.overlay}>
-          <View style={styles.view}>
-            <Text style={styles.text}>{text}</Text>
-            <ButtonInput
-              title="Close"
-              onPress={onRequestClose}
-              color="#00000089"
-            />
-          </View>
+const ModalViewMini = React.memo(({ text, visible, onRequestClose, ...rest }: ModalViewMiniProps) => {
+  return (
+    <Modal {...rest} visible={visible} onRequestClose={onRequestClose} animationType="fade" transparent={true}>
+      <View style={styles.overlay}>
+        <View style={styles.view}>
+          <Text style={styles.text}>{text}</Text>
+          <ButtonInput title="Close" onPress={onRequestClose} color="#00000089" />
         </View>
-      </Modal>
-    );
-  },
-);
+      </View>
+    </Modal>
+  );
+});
 
 const styles = StyleSheet.create({
   overlay: {

@@ -1,26 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Text,
-  Modal,
-  ModalProps,
-  View,
-  StyleSheet,
-  TextInput,
-  KeyboardAvoidingView,
-} from 'react-native';
+import { Text, Modal, ModalProps, View, StyleSheet, TextInput, KeyboardAvoidingView } from 'react-native';
 import ButtonInput from './buttons/ButtonInput';
 import Colors from '@constants/Colors';
 
 const ModalTextInput = React.memo(
-  ({
-    visible,
-    onRequestClose,
-    onSubmit,
-    label,
-    initialValue = '',
-    placeholder = '',
-    ...rest
-  }: ModalTextInputProps) => {
+  ({ visible, onRequestClose, onSubmit, label, initialValue = '', placeholder = '', ...rest }: ModalTextInputProps) => {
     const [value, setValue] = useState(initialValue);
 
     useEffect(() => {
@@ -28,13 +12,7 @@ const ModalTextInput = React.memo(
     }, [initialValue, visible]);
 
     return (
-      <Modal
-        {...rest}
-        visible={visible}
-        onRequestClose={onRequestClose}
-        animationType="fade"
-        transparent={true}
-      >
+      <Modal {...rest} visible={visible} onRequestClose={onRequestClose} animationType="fade" transparent={true}>
         <KeyboardAvoidingView style={styles.overlay}>
           <View style={styles.view}>
             {label ? <Text style={styles.text}>{label}</Text> : null}
@@ -50,18 +28,8 @@ const ModalTextInput = React.memo(
             />
 
             <View style={{ flexDirection: 'row', gap: 30 }}>
-              <ButtonInput
-                title="Cancel"
-                onPress={onRequestClose}
-                color="#00000089"
-                width={100}
-              />
-              <ButtonInput
-                title="OK"
-                onPress={() => onSubmit(value)}
-                color="#00000089"
-                width={160}
-              />
+              <ButtonInput title="Cancel" onPress={onRequestClose} color="#00000089" width={100} />
+              <ButtonInput title="OK" onPress={() => onSubmit(value)} color="#00000089" width={160} />
             </View>
           </View>
         </KeyboardAvoidingView>

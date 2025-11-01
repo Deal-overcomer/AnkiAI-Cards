@@ -8,8 +8,7 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import ModalViewMini from './ModalViewMini';
 
 const ApiSetting = ({ firstInit }: SettingsProps) => {
-  const [modalTextInputVisible, setModalTextInputVisible] =
-    React.useState(firstInit);
+  const [modalTextInputVisible, setModalTextInputVisible] = React.useState(firstInit);
   const [modalViewMiniVisible, setModalViewMiniVisible] = React.useState(false);
 
   const handleOnSubmit = React.useCallback(async (value: string) => {
@@ -43,11 +42,7 @@ const ApiSetting = ({ firstInit }: SettingsProps) => {
       />
       <Text style={styles.textName}>API Key</Text>
       <View style={styles.viewButtons}>
-        <ButtonInput
-          width={150}
-          title="add"
-          onPress={() => setModalTextInputVisible(true)}
-        />
+        <ButtonInput width={150} title="add" onPress={() => setModalTextInputVisible(true)} />
         <ButtonInput width={150} title="copy" onPress={handleOnCopy} />
       </View>
     </View>

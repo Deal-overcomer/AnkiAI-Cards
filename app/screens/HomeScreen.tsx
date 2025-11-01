@@ -62,20 +62,9 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
 
   return (
     <View style={styles.main}>
-      <ModalViewMini
-        text="Please enter a word to generate"
-        visible={modalText}
-        onRequestClose={handleCloseModals}
-      />
-      <ModalViewMini
-        text="Please enter your API key"
-        visible={modalApi}
-        onRequestClose={handleCloseModals}
-      />
-      <SettingButton
-        disabled={isLoading}
-        onPress={() => navigation.navigate('Settings', { firstInit: false })}
-      />
+      <ModalViewMini text="Please enter a word to generate" visible={modalText} onRequestClose={handleCloseModals} />
+      <ModalViewMini text="Please enter your API key" visible={modalApi} onRequestClose={handleCloseModals} />
+      <SettingButton disabled={isLoading} onPress={() => navigation.navigate('Settings', { firstInit: false })} />
       <TextInput
         style={styles.textInput}
         placeholder="Enter your word"
@@ -86,17 +75,9 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
         editable={!isLoading}
       />
       {isLoading && (
-        <ActivityIndicator
-          style={styles.activityIndicator}
-          size="large"
-          color={Colors.default.activityIndicator}
-        />
+        <ActivityIndicator style={styles.activityIndicator} size="large" color={Colors.default.activityIndicator} />
       )}
-      <ButtonInput
-        title="GENERATE"
-        disabled={isLoading}
-        onPress={handlePress}
-      />
+      <ButtonInput title="GENERATE" disabled={isLoading} onPress={handlePress} />
     </View>
   );
 };
@@ -121,10 +102,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export type HomeScreenNavigationProp = NativeStackNavigationProp<
-  RootStackParamList,
-  'Home'
->;
+export type HomeScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
 
 interface HomeScreenProps {
   navigation: HomeScreenNavigationProp;
