@@ -1,5 +1,5 @@
 import { GoogleGenAI } from '@google/genai';
-import { getApiKey, getSettings } from './settings';
+import { getApiKey, getSettings } from '@core/settings';
 import RNFS from 'react-native-fs';
 import { CardEditorScreenNavProp } from '@screens/CardEditorScreen';
 import ImageResizer from 'react-native-image-resizer';

@@ -16,12 +16,12 @@ import { RouteProp } from '@react-navigation/native';
 import { Text } from 'react-native';
 import { generateImages } from '@core/imageGenerator';
 import { addCard } from '@core/ankiDroidApi';
+import { getSettings, Settings } from '@core/settings';
 import Setting from '@components/Setting';
 import * as Options from '@constants/Options';
 import Colors from '@constants/Colors';
 import ButtonInput from '@components/buttons/ButtonInput';
 
-// TODO: Inputы нельзя редактировать
 // TODO: доделать сохранение карт в анки
 // TODO: переместить кнопку cloze на клавиатуру
 const CardEditorScreen = ({ navigation, route }: CardEditorScreenProps) => {
@@ -30,8 +30,9 @@ const CardEditorScreen = ({ navigation, route }: CardEditorScreenProps) => {
   const flatListRef = useRef<FlatList<string> | null>(null);
 
   const [data, setData] = React.useState(route.params.posData);
+  const [settings, setSettings] = React.useState<Settings | undefined>(undefined);
   const [currentIndex, setCurrentIndex] = React.useState(selectedArray[0]);
-  const [ImagePaths, SetImagePaths] = React.useState<{
+  const [ImagePaths, setImagePaths] = React.useState<{
     [key: number]: string[];
   }>({});
   const [selectedImageIndex, setSelectedImageIndex] = React.useState(0);
@@ -111,9 +112,19 @@ const CardEditorScreen = ({ navigation, route }: CardEditorScreenProps) => {
   );
 
   useEffect(() => {
+    const fetchSettings = async () => {
+      const settings = await getSettings();
+      setSettings(settings);
+    };
+
+    fetchSettings();
+  }, []);
+
+  useEffect(() => {
+    if (settings?.imageGenerationMode === 'no image') return;
     if (Object.keys(ImagePaths).length > 0) return;
 
-    const images = Object() as { [key: number]: string[] };
+    const images = Object() as Record<number, string[]>;
 
     const getImages = async () => {
       for (const index of selectedArray) {
@@ -125,11 +136,11 @@ const CardEditorScreen = ({ navigation, route }: CardEditorScreenProps) => {
         });
         images[index].unshift('');
       }
-      SetImagePaths(images);
+      setImagePaths(images);
     };
 
     getImages();
-  }, [navigation, route, selectedArray, ImagePaths]);
+  }, [navigation, route, selectedArray, ImagePaths, settings]);
 
   const renderItem = ({ item }: { item: string }) =>
     item === '' ? (
@@ -142,28 +153,30 @@ const CardEditorScreen = ({ navigation, route }: CardEditorScreenProps) => {
     <View style={styles.main}>
       <ScrollView style={styles.second}>
         <Setting setting="deckName" settingName="Deck name" options={Options.deckNames} />
-        <View style={styles.imageContainer}>
-          {ImagePaths[currentIndex] ? (
-            <FlatList
-              ref={flatListRef}
-              data={ImagePaths[currentIndex]}
-              renderItem={renderItem}
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              snapToOffsets={getSnapToOffsets(ImagePaths[currentIndex].length)}
-              decelerationRate="fast"
-              snapToAlignment="center"
-              onMomentumScrollEnd={onScrollEnd}
-              contentContainerStyle={{
-                paddingHorizontal: (screenWidth - ITEM_WIDTH) / 2,
-              }}
-            />
-          ) : (
-            <>
-              <ActivityIndicator style={styles.loadingImages} size="large" color={Colors.default.activityIndicator} />
-            </>
-          )}
-        </View>
+        {settings?.imageGenerationMode !== 'no image' && (
+          <View style={styles.imageContainer}>
+            {ImagePaths[currentIndex] ? (
+              <FlatList
+                ref={flatListRef}
+                data={ImagePaths[currentIndex]}
+                renderItem={renderItem}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                snapToOffsets={getSnapToOffsets(ImagePaths[currentIndex].length)}
+                decelerationRate="fast"
+                snapToAlignment="center"
+                onMomentumScrollEnd={onScrollEnd}
+                contentContainerStyle={{
+                  paddingHorizontal: (screenWidth - ITEM_WIDTH) / 2,
+                }}
+              />
+            ) : (
+              <>
+                <ActivityIndicator style={styles.loadingImages} size="large" color={Colors.default.activityIndicator} />
+              </>
+            )}
+          </View>
+        )}
         <Text style={styles.titleText}>{route.params.posData[currentIndex].partOfSpeech}</Text>
         <TextInput
           onSelectionChange={event =>
@@ -176,6 +189,13 @@ const CardEditorScreen = ({ navigation, route }: CardEditorScreenProps) => {
           multiline
           style={styles.editableText}
           value={data[currentIndex].definitionCloze}
+          onChange={e =>
+            setData(prev => {
+              const newData = prev;
+              newData[currentIndex].definitionCloze = e.nativeEvent.text;
+              return newData;
+            })
+          }
         />
         <Text style={styles.titleText}>examples</Text>
         {data[currentIndex].examplesCloze.map((examples, index) => (
@@ -191,6 +211,13 @@ const CardEditorScreen = ({ navigation, route }: CardEditorScreenProps) => {
             key={index}
             style={styles.editableText}
             value={examples}
+            onChange={e =>
+              setData(prev => {
+                const newData = prev;
+                newData[currentIndex].examplesCloze[index] = e.nativeEvent.text;
+                return newData;
+              })
+            }
           />
         ))}
       </ScrollView>
