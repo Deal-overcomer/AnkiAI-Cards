@@ -1,26 +1,25 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 import {
   Image,
+  Text,
   View,
   ScrollView,
   TextInput,
   StyleSheet,
-  TextInputSelectionChangeEvent,
   FlatList,
   useWindowDimensions,
   ActivityIndicator,
 } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../App';
 import { RouteProp } from '@react-navigation/native';
-import { Text } from 'react-native';
-import { generateImages } from '@core/imageGenerator';
+import ButtonInput from '@components/buttons/ButtonInput';
+import Setting from '@components/Setting';
+import { cleanupTempImages, generateImages } from '@core/imageGenerator';
 import { addCard } from '@core/ankiDroidApi';
 import { getSettings, Settings } from '@core/settings';
-import Setting from '@components/Setting';
 import * as Options from '@constants/Options';
 import Colors from '@constants/Colors';
-import ButtonInput from '@components/buttons/ButtonInput';
+import { RootStackParamList } from '../App';
 
 // TODO: доделать сохранение карт в анки
 // TODO: переместить кнопку cloze на клавиатуру
@@ -44,7 +43,17 @@ const CardEditorScreen = ({ navigation, route }: CardEditorScreenProps) => {
   const ITEM_WIDTH = IMAGE_WIDTH + IMAGE_MARGIN * 2;
 
   const handleCreateCard = useCallback(
-    (index: number) => {
+    async (index: number) => {
+      console.log(settings);
+
+      // TODO: в settings.deckName прихдоит пустая стринга
+      await addCard(settings?.deckName ?? 'Default', {
+        keyword: route.params.word,
+        img: '',
+        definition: data[index].definitionCloze,
+        examples: data[index].examplesCloze,
+      });
+
       const nextIndex = selectedArray.indexOf(index) + 1;
       if (nextIndex < countSet) {
         setCurrentIndex(selectedArray[nextIndex]);
@@ -55,9 +64,10 @@ const CardEditorScreen = ({ navigation, route }: CardEditorScreenProps) => {
         });
       } else {
         navigation.navigate('Home');
+        await cleanupTempImages(Object.values(ImagePaths).flat(), navigation);
       }
     },
-    [navigation, selectedArray, countSet],
+    [navigation, selectedArray, countSet, settings, data, route.params.word, ImagePaths],
   );
 
   const handleSelection = useCallback((selection: Selection) => {
@@ -153,7 +163,7 @@ const CardEditorScreen = ({ navigation, route }: CardEditorScreenProps) => {
     <View style={styles.main}>
       <ScrollView style={styles.second}>
         <Setting setting="deckName" settingName="Deck name" options={Options.deckNames} />
-        {settings?.imageGenerationMode !== 'no image' && (
+        {settings && settings?.imageGenerationMode !== 'no image' && (
           <View style={styles.imageContainer}>
             {ImagePaths[currentIndex] ? (
               <FlatList
@@ -189,13 +199,15 @@ const CardEditorScreen = ({ navigation, route }: CardEditorScreenProps) => {
           multiline
           style={styles.editableText}
           value={data[currentIndex].definitionCloze}
-          onChange={e =>
+          onChange={e => {
+            const text = e.nativeEvent.text;
+
             setData(prev => {
               const newData = prev;
-              newData[currentIndex].definitionCloze = e.nativeEvent.text;
+              newData[currentIndex].definitionCloze = text;
               return newData;
-            })
-          }
+            });
+          }}
         />
         <Text style={styles.titleText}>examples</Text>
         {data[currentIndex].examplesCloze.map((examples, index) => (
@@ -211,13 +223,15 @@ const CardEditorScreen = ({ navigation, route }: CardEditorScreenProps) => {
             key={index}
             style={styles.editableText}
             value={examples}
-            onChange={e =>
+            onChange={e => {
+              const text = e.nativeEvent.text;
+
               setData(prev => {
                 const newData = prev;
-                newData[currentIndex].examplesCloze[index] = e.nativeEvent.text;
+                newData[currentIndex].examplesCloze[index] = text;
                 return newData;
-              })
-            }
+              });
+            }}
           />
         ))}
       </ScrollView>

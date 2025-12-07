@@ -133,9 +133,12 @@ export const addCard = async (deckName: string, newCard: ankiDroidCard) => {
     css,
   };
 
-  const fieldOrder: (keyof ankiDroidCard)[] = ['keyword', 'img', 'definition', 'example'];
+  const fieldOrder: (keyof ankiDroidCard)[] = ['keyword', 'img', 'definition', 'examples'];
 
-  const valueFields = fieldOrder.map(field => newCard[field]);
+  const valueFields = fieldOrder.map(field => {
+    const value = newCard[field];
+    return Array.isArray(value) ? value.join('\n') : value;
+  });
 
   const settings = {
     modelId: undefined,
@@ -180,5 +183,5 @@ export type ankiDroidCard = {
   keyword: string;
   img: string;
   definition: string;
-  example: string;
+  examples: string[];
 };

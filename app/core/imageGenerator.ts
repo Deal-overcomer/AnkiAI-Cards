@@ -4,7 +4,7 @@ import RNFS from 'react-native-fs';
 import { CardEditorScreenNavProp } from '@screens/CardEditorScreen';
 import ImageResizer from 'react-native-image-resizer';
 
-export const generateImages = async ({ word, definition, pos, navigation }: generateImagesProps): Promise<string[]> => {
+export const generateImages = async ({ word, definition, pos, navigation }: generateImagesProps) => {
   const imagePaths: string[] = [];
   const settings = await getSettings();
   const width = Number(settings.imageResolution.match(/^\d*/));
@@ -100,6 +100,8 @@ export const cleanupTempImages = async (imagePaths: string[], navigation: CardEd
         await RNFS.unlink(path);
       }
     }
+
+    console.log('Temporary images cleaned up successfully.');
   } catch (error) {
     console.error('Error cleaning up temp images:', error);
     navigation.navigate('Error', {
