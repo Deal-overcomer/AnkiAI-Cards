@@ -1,22 +1,21 @@
 import AnkiDroid from '@deal-overcomer/react-native-ankidroid';
-import { Result } from '@deal-overcomer/react-native-ankidroid/dist/types';
-import { HomeScreenNavigationProp } from '@screens/HomeScreen';
+import { CardEditorScreenNavProp } from '@screens/CardEditorScreen.tsx';
 
 export const addCard = async (deckName: string, newCard: ankiDroidCard) => {
-  await AnkiDroid.requestPermission();
-  // Name of deck which will be created in AnkiDroid
-  // Name of a model which will be created in AnkiDroid (can be any string)
-  const modelName = 'English  Img+cloze+native_word';
-  // Used to save a reference to this deck in the SharedPreferences (can be any string)
-  const dbDeckReference = 'com.anki.ai.decks';
-  // Used to save a reference to this model in the SharedPreferences (can be any string)
-  const dbModelReference = 'com.anki.ai.models';
-  // List of field names that will be used in AnkiDroid model
-  const modelFields = ['Keyword', 'IMG', 'Definition', 'Example'];
-  // List of card names that will be used in Anki Droid (one for each direction of learning)
-  const cardNames = ['Cloze 1'];
-  // CSS to share between all the cards (optional).
-  const css = `
+	await AnkiDroid.requestPermission();
+	// Name of deck which will be created in AnkiDroid
+	// Name of a model which will be created in AnkiDroid (can be any string)
+	const modelName = 'English  Img+cloze+native_word';
+	// Used to save a reference to this deck in the SharedPreferences (can be any string)
+	const dbDeckReference = 'com.anki.ai.decks';
+	// Used to save a reference to this model in the SharedPreferences (can be any string)
+	const dbModelReference = 'com.anki.ai.models';
+	// List of field names that will be used in AnkiDroid model
+	const modelFields = ['Keyword', 'IMG', 'Definition', 'Example'];
+	// List of card names that will be used in Anki Droid (one for each direction of learning)
+	const cardNames = ['Cloze 1'];
+	// CSS to share between all the cards (optional).
+	const css = `
     .card {
     font-family: arial;
     line-height: 1.75em;
@@ -84,8 +83,8 @@ export const addCard = async (deckName: string, newCard: ankiDroidCard) => {
     font-size: 23px;
     }
     `;
-  // Template for the question of each card
-  const questionFmt1 = `
+	// Template for the question of each card
+	const questionFmt1 = `
     <script>document.getElementById('Deck').innerHTML="{{Deck}}".replace("::"," &minus; ");</script>
 
 
@@ -95,9 +94,9 @@ export const addCard = async (deckName: string, newCard: ankiDroidCard) => {
     
     {{type:Keyword}}
     `;
-  const questionFormat = [questionFmt1];
-  // Template for the answer (this example is identical for both sides)
-  const answerFmt1 = `
+	const questionFormat = [questionFmt1];
+	// Template for the answer (this example is identical for both sides)
+	const answerFmt1 = `
     <script>document.getElementById('Deck').innerHTML="{{Deck}}".replace("::"," &minus; ");</script>
 
 
@@ -113,75 +112,78 @@ export const addCard = async (deckName: string, newCard: ankiDroidCard) => {
     {{tts en_US:cloze:Definition}}
     {{tts en_US:cloze:Example}}
     `;
-  const answerFormat = [answerFmt1];
+	const answerFormat = [answerFmt1];
 
-  //////////////////
-  // ADDING NOTES //
-  //////////////////
+	const deckProperties = {
+		name: deckName,
+		dbReference: dbDeckReference,
+	};
+	const modelProperties = {
+		name: modelName,
+		dbReference: dbModelReference,
+		fields: modelFields,
+		cardNames,
+		questionFormat,
+		answerFormat,
+		css,
+	};
 
-  const deckProperties = {
-    name: deckName,
-    dbReference: dbDeckReference,
-  };
-  const modelProperties = {
-    name: modelName,
-    dbReference: dbModelReference,
-    fields: modelFields,
-    cardNames,
-    questionFormat,
-    answerFormat,
-    css,
-  };
+	const fieldOrder: (keyof ankiDroidCard)[] = ['keyword', 'img', 'definition', 'examples'];
 
-  const fieldOrder: (keyof ankiDroidCard)[] = ['keyword', 'img', 'definition', 'examples'];
+	const valueFields = fieldOrder.map(field => {
+		const value = newCard[field];
+		return Array.isArray(value) ? value.join('\n') : value;
+	});
 
-  const valueFields = fieldOrder.map(field => {
-    const value = newCard[field];
-    return Array.isArray(value) ? value.join('\n') : value;
-  });
+	const settings = {
+		modelId: undefined,
+		modelProperties: modelProperties,
+		deckId: undefined,
+		deckProperties: deckProperties,
+	};
 
-  const settings = {
-    modelId: undefined,
-    modelProperties: modelProperties,
-    deckId: undefined,
-    deckProperties: deckProperties,
-  };
+	const myAnkiDeck = new AnkiDroid(settings);
 
-  const myAnkiDeck = new AnkiDroid(settings);
-
-  myAnkiDeck.addNote(valueFields, modelFields);
-  // returns a promise that returns the added note ID
+	myAnkiDeck.addNote(valueFields, modelFields);
+	// returns a promise that returns the added note ID
 };
 
-export const uploadMedia = async ({
-  mediaUrl,
-  fileName,
-  navigation,
-}: uploadMediaProps): Promise<Result<string> | undefined> => {
-  try {
-    await AnkiDroid.requestPermission();
-    const uploadMedia = await AnkiDroid.uploadMediaFromUri(mediaUrl, fileName, 'image');
-    return uploadMedia;
-  } catch (error) {
-    console.error('Error uploading media:', error);
-    navigation.navigate('Error', {
-      error: {
-        name: 'Upload Media Error',
-        message: error instanceof Error ? error.message : String(error),
-      },
-    });
-  }
+export const uploadMedia = async ({ mediaUrl, fileName, navigation }: uploadMediaProps): Promise<string> => {
+	try {
+		await AnkiDroid.requestPermission();
+		const [error, value] = await AnkiDroid.uploadMediaFromUri(mediaUrl, fileName, 'image');
+
+		if (error) {
+			navigation.navigate('Error', {
+				error: {
+					name: 'Upload Media Error',
+					message: String(error),
+				},
+			});
+		}
+
+		return value ?? '';
+	} catch (error) {
+		console.error('Error uploading media:', error);
+		navigation.navigate('Error', {
+			error: {
+				name: 'Upload Media Error',
+				message: error instanceof Error ? error.message : String(error),
+			},
+		});
+		return '';
+	}
 };
 
 interface uploadMediaProps {
-  mediaUrl: string;
-  fileName: string;
-  navigation: HomeScreenNavigationProp;
+	mediaUrl: string;
+	fileName: string;
+	navigation: CardEditorScreenNavProp;
 }
 
 export type ankiDroidCard = {
-  keyword: string;
-  img: string;
-  definition: string;
-  examples: string[];
+	keyword: string;
+	img: string;
+	definition: string;
+	examples: string[];
 };

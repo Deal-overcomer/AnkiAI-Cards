@@ -1,111 +1,125 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { View, StyleSheet, TextInput, ActivityIndicator } from 'react-native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useFocusEffect } from '@react-navigation/native';
-import { RootStackParamList } from '../App';
-import Colors from '@constants/Colors';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import ButtonInput from '@components/buttons/ButtonInput';
-import { generateContent } from '@core/generatorAI';
 import ModalViewMini from '@components/ModalViewMini';
 import SettingButton from '@components/buttons/SettingButton';
 import { getApiKey, initApiKey, InitSettings } from '@core/settings';
+import { generateContent } from '@core/generatorAI';
+import { RootStackParamList } from '../App';
+import Colors from '@constants/Colors';
 
 const HomeScreen = ({ navigation }: HomeScreenProps) => {
-  const [text, setText] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [modalText, setModalText] = useState(false);
-  const [modalApi, setModalApi] = useState(false);
-  const textInputRef = React.useRef<TextInput>(null);
-  const textRef = React.useRef<string>(text);
+	const [text, setText] = useState('');
+	const [isLoading, setIsLoading] = useState(false);
+	const [modalText, setModalText] = useState(false);
+	const [modalApi, setModalApi] = useState(false);
+	const textInputRef = React.useRef<TextInput>(null);
+	const textRef = React.useRef<string>(text);
 
-  const handlePress = useCallback(async () => {
-    const apiKey = await getApiKey();
-    if (!apiKey) {
-      setModalApi(true);
-    } else if (textRef.current.trim() && !isLoading) {
-      await generateContent({
-        prompt: textRef.current.trim().toLowerCase(),
-        setIsLoading,
-        navigation,
-      });
-    } else {
-      setModalText(true);
-    }
-  }, [navigation, isLoading]);
+	const handlePress = useCallback(async () => {
+		const apiKey = await getApiKey();
+		if (!apiKey) {
+			setModalApi(true);
+		} else if (textRef.current.trim() && !isLoading) {
+			await generateContent({
+				prompt: textRef.current.trim().toLowerCase(),
+				setIsLoading,
+				navigation,
+			});
+		} else {
+			setModalText(true);
+		}
+	}, [navigation, isLoading]);
 
-  const handleCloseModals = useCallback(() => {
-    setModalText(false);
-    setModalApi(false);
-  }, []);
+	const handleCloseModals = useCallback(() => {
+		setModalText(false);
+		setModalApi(false);
+	}, []);
 
-  useFocusEffect(
-    useCallback(() => {
-      setText('');
-      const timer = setTimeout(() => {
-        textInputRef.current?.focus();
-      }, 100);
-      return () => clearTimeout(timer);
-    }, []),
-  );
+	useFocusEffect(
+		useCallback(() => {
+			setText('');
+			const timer = setTimeout(() => {
+				textInputRef.current?.focus();
+			}, 100);
+			return () => clearTimeout(timer);
+		}, []),
+	);
 
-  useEffect(() => {
-    textRef.current = text;
-  }, [text]);
+	useEffect(() => {
+		textRef.current = text;
+	}, [text]);
 
-  useEffect(() => {
-    const init = async () => {
-      await InitSettings();
-      await initApiKey({ navigation: navigation });
-    };
-    init();
-  }, [navigation]);
+	useEffect(() => {
+		const init = async () => {
+			await InitSettings();
+			await initApiKey({ navigation: navigation });
+		};
+		init();
 
-  return (
-    <View style={styles.main}>
-      <ModalViewMini text="Please enter a word to generate" visible={modalText} onRequestClose={handleCloseModals} />
-      <ModalViewMini text="Please enter your API key" visible={modalApi} onRequestClose={handleCloseModals} />
-      <SettingButton disabled={isLoading} onPress={() => navigation.navigate('Settings', { firstInit: false })} />
-      <TextInput
-        style={styles.textInput}
-        placeholder="Enter your word"
-        onChangeText={setText}
-        onSubmitEditing={handlePress}
-        ref={textInputRef}
-        value={text}
-        editable={!isLoading}
-      />
-      {isLoading && (
-        <ActivityIndicator style={styles.activityIndicator} size="large" color={Colors.default.activityIndicator} />
-      )}
-      <ButtonInput title="GENERATE" disabled={isLoading} onPress={handlePress} />
-    </View>
-  );
+		// TODO: delete after tests
+		navigation.navigate('Result', {
+			word: 'apple',
+			posData: [
+				{
+					partOfSpeech: 'fruit',
+					definition: 'a green or red fruit.',
+					definitionCloze: 'a green or red fruit.',
+					examples: ['eat an apple', 'eat an apple'],
+					examplesCloze: ['eat at {{c1::apple}}', 'eat at {{c1::apple}}'],
+				},
+			],
+		});
+	}, [navigation]);
+
+	return (
+		<View style={styles.main}>
+			<ModalViewMini text="Please enter a word to generate" visible={modalText} onRequestClose={handleCloseModals} />
+			<ModalViewMini text="Please enter your API key" visible={modalApi} onRequestClose={handleCloseModals} />
+			<SettingButton disabled={isLoading} onPress={() => navigation.navigate('Settings', { firstInit: false })} />
+			<TextInput
+				style={styles.textInput}
+				placeholder="Enter your word"
+				onChangeText={setText}
+				onSubmitEditing={handlePress}
+				ref={textInputRef}
+				value={text}
+				editable={!isLoading}
+			/>
+			{isLoading && (
+				<ActivityIndicator style={styles.activityIndicator} size="large" color={Colors.default.activityIndicator} />
+			)}
+			<ButtonInput title="GENERATE" disabled={isLoading} onPress={handlePress} />
+		</View>
+	);
 };
 
 const styles = StyleSheet.create({
-  main: {
-    flex: 1,
-    backgroundColor: Colors.default.main,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  textInput: {
-    backgroundColor: Colors.default.textInput,
-    width: 350,
-    borderRadius: 100,
-    textAlign: 'center',
-    color: 'black',
-    fontSize: 20,
-  },
-  activityIndicator: {
-    marginTop: 20,
-  },
+	main: {
+		flex: 1,
+		backgroundColor: Colors.default.main,
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+	textInput: {
+		backgroundColor: Colors.default.textInput,
+		width: 350,
+		borderRadius: 100,
+		textAlign: 'center',
+		color: 'black',
+		fontSize: 20,
+	},
+	activityIndicator: {
+		marginTop: 20,
+	},
 });
 
 export type HomeScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
 
 interface HomeScreenProps {
-  navigation: HomeScreenNavigationProp;
+	navigation: HomeScreenNavigationProp;
 }
 
 export default HomeScreen;

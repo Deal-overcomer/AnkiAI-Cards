@@ -3,11 +3,11 @@ import { HomeScreenNavigationProp } from '@screens/HomeScreen';
 import { getApiKey, getSettings } from './settings';
 
 export const generateContent = async ({ prompt, setIsLoading, navigation }: GenerateContentProps): Promise<void> => {
-  setIsLoading(true);
+	setIsLoading(true);
 
-  const apiKey = await getApiKey();
-  const settings = await getSettings();
-  const content = `
+	const apiKey = await getApiKey();
+	const settings = await getSettings();
+	const content = `
     Generate me a JSON object for the word "${prompt}".
     The JSON should follow this interface:
     {
@@ -33,6 +33,7 @@ export const generateContent = async ({ prompt, setIsLoading, navigation }: Gene
     Make the definitionCloze and examplesCloze by removing the word from the definition and examples,
     replacing it with '{{c1::word}}' and pay attention to the correct form of the word,
     also you can just add {{c1::}} in the end if sentence doesn't have the word.
+    Always enter two double dotes and 'c1::' for cloze deletions.
     For example: 
     {
       word: "run";
@@ -56,58 +57,58 @@ export const generateContent = async ({ prompt, setIsLoading, navigation }: Gene
     };
 `;
 
-  try {
-    let response = await geminiGetResponse({
-      apiKey,
-      contents: content,
-      model: settings.model,
-    });
-    const data: ApiResponseProps = JSON.parse(response.replaceAll('```', '').replace('json', ''));
-    navigation.navigate('Result', {
-      word: data.word,
-      posData: data.posData,
-    });
-  } catch (error) {
-    console.error('Error generating content:', error);
-    navigation.navigate('Error', {
-      error: error instanceof Error ? error : new Error(String(error)),
-    });
-  } finally {
-    setIsLoading(false);
-  }
+	try {
+		let response = await geminiGetResponse({
+			apiKey,
+			contents: content,
+			model: settings.model,
+		});
+		const data: ApiResponseProps = JSON.parse(response.replaceAll('```', '').replace('json', ''));
+		navigation.navigate('Result', {
+			word: data.word,
+			posData: data.posData,
+		});
+	} catch (error) {
+		console.error('Error generating content:', error);
+		navigation.navigate('Error', {
+			error: error instanceof Error ? error : new Error(String(error)),
+		});
+	} finally {
+		setIsLoading(false);
+	}
 };
 
 const geminiGetResponse = async ({ apiKey, contents, model }: getResponse): Promise<string> => {
-  const gemini = new GoogleGenAI({ apiKey: apiKey as string });
-  const response: any = await gemini.models.generateContent({
-    model,
-    contents,
-  });
+	const gemini = new GoogleGenAI({ apiKey: apiKey as string });
+	const response: any = await gemini.models.generateContent({
+		model,
+		contents,
+	});
 
-  return response.text;
+	return response.text;
 };
 
 export type ApiResponseProps = {
-  word: string;
-  posData: [
-    {
-      partOfSpeech: string;
-      definition: string;
-      definitionCloze: string;
-      examples: string[];
-      examplesCloze: string[];
-    },
-  ];
+	word: string;
+	posData: [
+		{
+			partOfSpeech: string;
+			definition: string;
+			definitionCloze: string;
+			examples: string[];
+			examplesCloze: string[];
+		},
+	];
 };
 
 interface GenerateContentProps {
-  prompt: string;
-  setIsLoading: (isLoading: boolean) => void;
-  navigation: HomeScreenNavigationProp;
+	prompt: string;
+	setIsLoading: (isLoading: boolean) => void;
+	navigation: HomeScreenNavigationProp;
 }
 
 type getResponse = {
-  apiKey: string | null;
-  contents: string;
-  model: string;
+	apiKey: string | null;
+	contents: string;
+	model: string;
 };
