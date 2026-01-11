@@ -1,8 +1,11 @@
 import { GoogleGenAI } from '@google/genai';
+import OpenAI from 'openai';
 import { getApiKey, getSettings } from '@core/settings';
 import RNFS from 'react-native-fs';
 import { CardEditorScreenNavProp } from '@screens/CardEditorScreen';
 import ImageResizer from 'react-native-image-resizer';
+
+const openai = new OpenAI({ apiKey: 'dsadas' });
 
 export const generateImages = async ({ word, definition, pos, navigation }: generateImagesProps) => {
 	const imagePaths: string[] = [];

@@ -1,4 +1,6 @@
 import { GoogleGenAI } from '@google/genai';
+import OpenAI from 'openai';
+
 import { HomeScreenNavigationProp } from '@screens/HomeScreen';
 import { getApiKey, getSettings } from './settings';
 
@@ -58,11 +60,12 @@ export const generateContent = async ({ prompt, setIsLoading, navigation }: Gene
 `;
 
 	try {
-		let response = await geminiGetResponse({
-			apiKey,
-			contents: content,
-			model: settings.model,
-		});
+		let response = '';
+		if (settings.model.includes('gemini')) {
+			response = await geminiGetResponse({ apiKey, content, model: settings.model });
+		} else if (settings.model.includes('gpt')) {
+			response = await openAIGetResponse({ apiKey, content, model: settings.model });
+		}
 		const data: ApiResponseProps = JSON.parse(response.replaceAll('```', '').replace('json', ''));
 		navigation.navigate('Result', {
 			word: data.word,
@@ -78,14 +81,24 @@ export const generateContent = async ({ prompt, setIsLoading, navigation }: Gene
 	}
 };
 
-const geminiGetResponse = async ({ apiKey, contents, model }: getResponse): Promise<string> => {
+const geminiGetResponse = async ({ apiKey, content, model }: getResponse): Promise<string> => {
 	const gemini = new GoogleGenAI({ apiKey: apiKey as string });
 	const response: any = await gemini.models.generateContent({
 		model,
-		contents,
+		contents: content,
 	});
 
 	return response.text;
+};
+
+const openAIGetResponse = async ({ apiKey, content, model }: getResponse): Promise<string> => {
+	const openai = new OpenAI({ apiKey: apiKey as string });
+	const response = await openai.responses.create({
+		model,
+		input: content,
+	});
+
+	return response.output_text;
 };
 
 export type ApiResponseProps = {
@@ -109,6 +122,6 @@ interface GenerateContentProps {
 
 type getResponse = {
 	apiKey: string | null;
-	contents: string;
+	content: string;
 	model: string;
 };
