@@ -57,21 +57,8 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
 			await InitSettings();
 			await initApiKey({ navigation: navigation });
 		};
-		init();
 
-		// TODO: delete after tests
-		navigation.navigate('Result', {
-			word: 'apple',
-			posData: [
-				{
-					partOfSpeech: 'fruit',
-					definition: 'a green or red fruit.',
-					definitionCloze: 'a green or red fruit.',
-					examples: ['eat an apple', 'eat an apple'],
-					examplesCloze: ['eat at {{c1::apple}}', 'eat at {{c1::apple}}'],
-				},
-			],
-		});
+		init();
 	}, [navigation]);
 
 	return (

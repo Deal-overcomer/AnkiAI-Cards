@@ -11,6 +11,7 @@ import SettingsScreen from '@screens/SettingsScreen';
 import CardEditorScreen from '@screens/CardEditorScreen';
 import { ApiResponseProps } from '@core/generatorAI';
 import Colors from '@constants/Colors';
+import 'react-native-url-polyfill/auto';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 

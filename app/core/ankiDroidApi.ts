@@ -132,7 +132,7 @@ export const addCard = async (deckName: string, newCard: ankiDroidCard) => {
 
 	const valueFields = fieldOrder.map(field => {
 		const value = newCard[field];
-		return Array.isArray(value) ? value.join('\n') : value;
+		return Array.isArray(value) ? value.join('<br>') : value;
 	});
 
 	const settings = {

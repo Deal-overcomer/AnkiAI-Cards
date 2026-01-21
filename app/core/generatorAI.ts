@@ -1,5 +1,5 @@
 import { GoogleGenAI } from '@google/genai';
-import OpenAI from 'openai';
+import { OpenAI } from 'openai';
 
 import { HomeScreenNavigationProp } from '@screens/HomeScreen';
 import { getApiKey, getSettings } from './settings';
@@ -93,10 +93,7 @@ const geminiGetResponse = async ({ apiKey, content, model }: getResponse): Promi
 
 const openAIGetResponse = async ({ apiKey, content, model }: getResponse): Promise<string> => {
 	const openai = new OpenAI({ apiKey: apiKey as string });
-	const response = await openai.responses.create({
-		model,
-		input: content,
-	});
+	const response = await openai.responses.create({ model, input: content });
 
 	return response.output_text;
 };

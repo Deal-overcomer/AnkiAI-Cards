@@ -42,7 +42,7 @@ const ApiSetting = ({ firstInit }: SettingsProps) => {
 			/>
 			<Text style={styles.textName}>API Key</Text>
 			<View style={styles.viewButtons}>
-				<ButtonInput width={150} title="add" onPress={() => setModalTextInputVisible(true)} />
+				<ButtonInput width={150} title="enter" onPress={() => setModalTextInputVisible(true)} />
 				<ButtonInput width={150} title="copy" onPress={handleOnCopy} />
 			</View>
 		</View>
