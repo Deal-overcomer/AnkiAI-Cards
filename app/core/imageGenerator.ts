@@ -1,11 +1,9 @@
 import { GoogleGenAI } from '@google/genai';
-import OpenAI from 'openai';
+import { OpenAI } from 'openai';
 import { getApiKey, getSettings } from '@core/settings';
 import RNFS from 'react-native-fs';
 import { CardEditorScreenNavProp } from '@screens/CardEditorScreen';
 import ImageResizer from 'react-native-image-resizer';
-
-const openai = new OpenAI({ apiKey: 'dsadas' });
 
 export const generateImages = async ({ word, definition, pos, navigation }: generateImagesProps) => {
 	const imagePaths: string[] = [];
@@ -34,10 +32,36 @@ export const generateImages = async ({ word, definition, pos, navigation }: gene
   
   Style: clean, simple, no text overlays, no captions, no labels.`;
 
-	try {
-		const apiKey = await getApiKey();
-		const genAI = new GoogleGenAI({ apiKey: apiKey as string });
+	const openAIGetImage = async ({ apiKey }: getResponse) => {
+		const openai = new OpenAI({ apiKey: apiKey || '' });
 
+		const response = await openai.images.generate({
+			model: settings.imageGenerationMode,
+			prompt,
+			n: Number(settings.countOfImages),
+			size: settings.imageGenerationMode.includes('dall') ? '1024x1024' : '1536x1024',
+			response_format: 'b64_json',
+		});
+
+		if (response.data && response.data.length > 0) {
+			for (const image of response.data) {
+				if (image.b64_json) {
+					const fileName = `temp_${word}_${Date.now()}.png`;
+					const filePath = `${RNFS.CachesDirectoryPath}/${fileName}`;
+					await RNFS.writeFile(filePath, image.b64_json, 'base64');
+
+					const resizedImage = await resizeImage(filePath, width, height);
+					imagePaths.push(resizedImage.path);
+					await RNFS.unlink(filePath);
+				} else {
+					throw new Error('generateImage error: invalid response');
+				}
+			}
+		}
+	};
+
+	const geminiGetImage = async ({ apiKey }: getResponse) => {
+		const genAI = new GoogleGenAI({ apiKey: apiKey || '' });
 		const response = await genAI.models.generateImages({
 			model: settings.imageGenerationMode,
 			prompt,
@@ -63,6 +87,14 @@ export const generateImages = async ({ word, definition, pos, navigation }: gene
 				}
 			}
 		}
+	};
+
+	try {
+		const apiKey = await getApiKey();
+
+		if (settings.imageGenerationMode.includes('dall-e') || settings.imageGenerationMode.includes('chatgpt-image'))
+			await openAIGetImage({ apiKey });
+		else if (settings.imageGenerationMode.includes('imagen')) await geminiGetImage({ apiKey });
 	} catch (error) {
 		console.error('Error generating image:', error);
 		navigation.navigate('Error', {
@@ -114,6 +146,10 @@ export const cleanupTempImages = async (imagePaths: string[], navigation: CardEd
 			},
 		});
 	}
+};
+
+type getResponse = {
+	apiKey: string | null;
 };
 
 interface generateImagesProps {

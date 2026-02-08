@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ModalTextInput from '@components/ModalTextInput';
-import DefauiltSetting from '@constants/DefaultSettings';
+import DefaultSetting from '@constants/DefaultSettings';
 import Colors from '@constants/Colors';
 
 const Setting = ({ setting, settingName, options, onChange = () => {} }: SettingProps) => {
@@ -46,6 +46,7 @@ const Setting = ({ setting, settingName, options, onChange = () => {} }: Setting
 			prevSelectedValue.current = selectedValue;
 			const saveValue = async () => {
 				await AsyncStorage.setItem(setting, selectedValue);
+				if (selectedValue === 'dall-e-3') await AsyncStorage.setItem('countOfImages', '1');
 			};
 			saveValue();
 			onChange();
@@ -98,7 +99,7 @@ const styles = StyleSheet.create({
 });
 
 type SettingProps = {
-	setting: keyof typeof DefauiltSetting;
+	setting: keyof typeof DefaultSetting;
 	settingName: string;
 	options: string[];
 	onChange?: () => void;

@@ -148,7 +148,9 @@ export const addCard = async (deckName: string, newCard: ankiDroidCard) => {
 	// returns a promise that returns the added note ID
 };
 
-export const uploadMedia = async ({ mediaUrl, fileName, navigation }: uploadMediaProps): Promise<string> => {
+export const uploadMedia = async ({ mediaUrl, fileName, navigation }: uploadMediaProps) => {
+	console.log('Uploading media:', { mediaUrl, fileName });
+
 	try {
 		await AnkiDroid.requestPermission();
 		const [error, value] = await AnkiDroid.uploadMediaFromUri(mediaUrl, fileName, 'image');
@@ -184,6 +186,6 @@ interface uploadMediaProps {
 export type ankiDroidCard = {
 	keyword: string;
 	img: string;
-	definition: string;
+	definition: string[];
 	examples: string[];
 };

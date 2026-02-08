@@ -42,9 +42,9 @@ const CardEditorScreen = ({ navigation, route }: CardEditorScreenProps) => {
 	const handleCreateCard = useCallback(
 		async (index: number) => {
 			let img = '';
-			if (settings?.imageGenerationMode !== 'no image') {
+			if (settings?.imageGenerationMode !== 'no image' && selectedImageIndex) {
 				img = await uploadMedia({
-					mediaUrl: imagePathsRef.current[index][selectedImageIndex],
+					mediaUrl: 'fdsfdsfds', // TODO:	Fix this bug
 					fileName: `image_${route.params.word}_${crypto.randomUUID()}.jpg`,
 					navigation,
 				});
@@ -53,7 +53,7 @@ const CardEditorScreen = ({ navigation, route }: CardEditorScreenProps) => {
 			await addCard(settings?.deckName || 'Default', {
 				keyword: route.params.word,
 				img,
-				definition: data[index].definitionCloze,
+				definition: [data[index].partOfSpeech, data[index].definitionCloze],
 				examples: data[index].examplesCloze,
 			});
 
@@ -69,7 +69,7 @@ const CardEditorScreen = ({ navigation, route }: CardEditorScreenProps) => {
 				navigation.navigate('Home');
 			}
 		},
-		[navigation, selectedArray, countSet, settings, data, route.params.word],
+		[navigation, selectedArray, selectedImageIndex, countSet, settings, data, route.params.word],
 	);
 
 	const handleSelection = useCallback((selection: Selection) => {
@@ -90,7 +90,7 @@ const CardEditorScreen = ({ navigation, route }: CardEditorScreenProps) => {
 		setData(prev => {
 			const newData: typeof prev = [...prev];
 			const currentItem = newData[currentIndex];
-			let originalText = String();
+			let originalText = '';
 
 			if (selectedField === 'definition') {
 				originalText = currentItem.definitionCloze;
@@ -147,6 +147,7 @@ const CardEditorScreen = ({ navigation, route }: CardEditorScreenProps) => {
 		if (settings?.imageGenerationMode === 'no image') return;
 		if (Object.keys(imagePaths).length > 0) return;
 
+		console.log('Generating images...');
 		const images = Object() as Record<number, string[]>;
 
 		const getImages = async () => {
@@ -163,7 +164,7 @@ const CardEditorScreen = ({ navigation, route }: CardEditorScreenProps) => {
 		};
 
 		getImages();
-	}, [navigation, route, selectedArray, imagePaths, settings]);
+	}, [imagePaths]);
 
 	const renderItem = ({ item }: { item: string }) =>
 		item === '' ? (

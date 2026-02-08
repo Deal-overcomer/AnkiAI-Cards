@@ -82,7 +82,7 @@ export const generateContent = async ({ prompt, setIsLoading, navigation }: Gene
 };
 
 const geminiGetResponse = async ({ apiKey, content, model }: getResponse): Promise<string> => {
-	const gemini = new GoogleGenAI({ apiKey: apiKey as string });
+	const gemini = new GoogleGenAI({ apiKey: apiKey || '' });
 	const response: any = await gemini.models.generateContent({
 		model,
 		contents: content,
@@ -92,7 +92,7 @@ const geminiGetResponse = async ({ apiKey, content, model }: getResponse): Promi
 };
 
 const openAIGetResponse = async ({ apiKey, content, model }: getResponse): Promise<string> => {
-	const openai = new OpenAI({ apiKey: apiKey as string });
+	const openai = new OpenAI({ apiKey: apiKey || '' });
 	const response = await openai.responses.create({ model, input: content });
 
 	return response.output_text;
