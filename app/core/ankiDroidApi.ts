@@ -15,6 +15,8 @@ export const addCard = async (deckName: string, newCard: ankiDroidCard) => {
 	// List of card names that will be used in Anki Droid (one for each direction of learning)
 	const cardNames = ['Cloze 1'];
 	// CSS to share between all the cards (optional).
+
+	// TODO: вынести в отдельный файл
 	const css = `
     .card {
     font-family: arial;

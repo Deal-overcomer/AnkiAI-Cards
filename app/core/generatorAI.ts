@@ -63,10 +63,11 @@ export const generateContent = async ({ prompt, setIsLoading, navigation }: Gene
 	try {
 		let response = '';
 		if (sdkMode === 'gemini') {
-			response = await geminiGetResponse({ apiKey, content, model: settings.model });
+			response = await geminiGetResponse({ apiKey, content, model: modelName });
 		} else if (sdkMode === 'openai') {
-			response = await openAIGetResponse({ apiKey, content, model: settings.model });
+			response = await openAIGetResponse({ apiKey, content, model: modelName });
 		} else if (sdkMode === 'openrouter') {
+			response = (await openRouterGetResponse({ apiKey, content, model: modelName })) || '';
 		}
 
 		const data: ApiResponseProps = JSON.parse(response.replaceAll('```', '').replace('json', ''));
@@ -99,6 +100,16 @@ const openAIGetResponse = async ({ apiKey, content, model }: getResponse): Promi
 	const response = await openai.responses.create({ model, input: content });
 
 	return response.output_text;
+};
+
+const openRouterGetResponse = async ({ apiKey, content, model }: getResponse): Promise<string | null> => {
+	const openai = new OpenAI({ baseURL: 'https://openrouter.ai/api/v1', apiKey: apiKey || '' });
+	const response = await openai.chat.completions.create({
+		model,
+		messages: [{ role: 'user', content }],
+	});
+
+	return response.choices[0].message.content;
 };
 
 export type ApiResponseProps = {
