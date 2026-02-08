@@ -8,6 +8,8 @@ import ImageResizer from 'react-native-image-resizer';
 export const generateImages = async ({ word, definition, pos, navigation }: generateImagesProps) => {
 	const imagePaths: string[] = [];
 	const settings = await getSettings();
+	const sdkMode = /^\w*/.exec(settings.imageGenerationMode)?.[0];
+	const modelName = /(?<=[/]).*$/.exec(settings.imageGenerationMode)?.[0];
 	const width = Number(settings.imageResolution.match(/^\d*/));
 	const height = Number(settings.imageResolution.match(/\d*$/));
 
@@ -32,30 +34,62 @@ export const generateImages = async ({ word, definition, pos, navigation }: gene
   
   Style: clean, simple, no text overlays, no captions, no labels.`;
 
+	const writeBase64ToFile = async (base64Data: string | undefined) => {
+		if (base64Data) {
+			const fileName = `temp_${word}_${crypto.randomUUID()}.png`;
+			const filePath = `${RNFS.CachesDirectoryPath}/${fileName}`;
+			await RNFS.writeFile(filePath, base64Data, 'base64');
+
+			const resizedImage = await resizeImage(filePath, width, height);
+			imagePaths.push(resizedImage.path);
+			await RNFS.unlink(filePath);
+		} else {
+			throw new Error('generateImage error: invalid response');
+		}
+	};
+
 	const openAIGetImage = async ({ apiKey }: getResponse) => {
 		const openai = new OpenAI({ apiKey: apiKey || '' });
 
 		const response = await openai.images.generate({
-			model: settings.imageGenerationMode,
+			model: modelName || '',
 			prompt,
 			n: Number(settings.countOfImages),
-			size: settings.imageGenerationMode.includes('dall') ? '1024x1024' : '1536x1024',
+			size: modelName?.includes('dall') ? '1024x1024' : '1536x1024',
 			response_format: 'b64_json',
 		});
 
 		if (response.data && response.data.length > 0) {
 			for (const image of response.data) {
-				if (image.b64_json) {
-					const fileName = `temp_${word}_${Date.now()}.png`;
-					const filePath = `${RNFS.CachesDirectoryPath}/${fileName}`;
-					await RNFS.writeFile(filePath, image.b64_json, 'base64');
+				await writeBase64ToFile(image?.b64_json);
+			}
+		}
+	};
 
-					const resizedImage = await resizeImage(filePath, width, height);
-					imagePaths.push(resizedImage.path);
-					await RNFS.unlink(filePath);
-				} else {
-					throw new Error('generateImage error: invalid response');
-				}
+	const openRouterGetImage = async ({ apiKey }: getResponse) => {
+		const openai = new OpenAI({ baseURL: 'https://openrouter.ai/api/v1', apiKey: apiKey || '' });
+
+		const response = await openai.chat.completions.create({
+			model: modelName || '',
+			messages: [
+				{
+					role: 'user',
+					content: 'Generate a beautiful sunset over mountains',
+				},
+			],
+			// @ts-ignore - OpenAI SDK может не знать о параметре modalities
+			modalities: ['image'],
+			image_config: {
+				aspect_ratio: '4:3',
+			},
+			n: Number(settings.countOfImages),
+		});
+
+		// @ts-ignore
+		if (response.choices[0].message?.images) {
+			// @ts-ignore
+			for (const image of response.choices[0].message?.images) {
+				await writeBase64ToFile(image.image_url.image);
 			}
 		}
 	};
@@ -63,7 +97,7 @@ export const generateImages = async ({ word, definition, pos, navigation }: gene
 	const geminiGetImage = async ({ apiKey }: getResponse) => {
 		const genAI = new GoogleGenAI({ apiKey: apiKey || '' });
 		const response = await genAI.models.generateImages({
-			model: settings.imageGenerationMode,
+			model: modelName || '',
 			prompt,
 			config: {
 				numberOfImages: Number(settings.countOfImages),
@@ -74,17 +108,7 @@ export const generateImages = async ({ word, definition, pos, navigation }: gene
 		if (response.generatedImages && response.generatedImages.length > 0) {
 			for (let image in response.generatedImages) {
 				const generatedImage = response.generatedImages[image];
-				if (generatedImage.image?.imageBytes) {
-					const fileName = `temp_${word}_${Date.now()}.png`;
-					const filePath = `${RNFS.CachesDirectoryPath}/${fileName}`;
-					await RNFS.writeFile(filePath, generatedImage.image.imageBytes, 'base64');
-
-					const resizedImage = await resizeImage(filePath, width, height);
-					imagePaths.push(resizedImage.path);
-					await RNFS.unlink(filePath);
-				} else {
-					throw new Error('generateImage error: invalid response');
-				}
+				await writeBase64ToFile(generatedImage.image?.imageBytes);
 			}
 		}
 	};
@@ -92,9 +116,9 @@ export const generateImages = async ({ word, definition, pos, navigation }: gene
 	try {
 		const apiKey = await getApiKey();
 
-		if (settings.imageGenerationMode.includes('dall-e') || settings.imageGenerationMode.includes('chatgpt-image'))
-			await openAIGetImage({ apiKey });
-		else if (settings.imageGenerationMode.includes('imagen')) await geminiGetImage({ apiKey });
+		if (sdkMode === 'openai') await openAIGetImage({ apiKey });
+		else if (sdkMode === 'gemini') await geminiGetImage({ apiKey });
+		else if (sdkMode === 'openrouter') await openRouterGetImage({ apiKey });
 	} catch (error) {
 		console.error('Error generating image:', error);
 		navigation.navigate('Error', {
