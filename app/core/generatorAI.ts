@@ -1,14 +1,15 @@
 import { GoogleGenAI } from '@google/genai';
 import { OpenAI } from 'openai';
-
 import { HomeScreenNavigationProp } from '@screens/HomeScreen';
 import { getApiKey, getSettings } from './settings';
+import { parseImageMode } from '@utils/parseImageMode';
 
 export const generateContent = async ({ prompt, setIsLoading, navigation }: GenerateContentProps): Promise<void> => {
 	setIsLoading(true);
 
 	const apiKey = await getApiKey();
 	const settings = await getSettings();
+	const [sdkMode, modelName] = parseImageMode(settings.imageGenerationMode);
 	const content = `
     Generate me a JSON object for the word "${prompt}".
     The JSON should follow this interface:
@@ -16,7 +17,7 @@ export const generateContent = async ({ prompt, setIsLoading, navigation }: Gene
       word: string;
       posData: [
         {
-          partOfSpeech: string;1
+          partOfSpeech: string;
           definition: string;
           definitionCloze: string;
           examples: string[];
@@ -45,7 +46,7 @@ export const generateContent = async ({ prompt, setIsLoading, navigation }: Gene
           definition: "To move swiftly on foot.";
           definitionCloze: "To move swiftly on foot.{{c1::}}";
           examples: [
-            "I like to run in the park.",d
+            "I like to run in the park.",
             "She runs very fast.",
             "Why are you running away?"
           ];
@@ -61,11 +62,13 @@ export const generateContent = async ({ prompt, setIsLoading, navigation }: Gene
 
 	try {
 		let response = '';
-		if (settings.model.includes('gemini')) {
+		if (sdkMode === 'gemini') {
 			response = await geminiGetResponse({ apiKey, content, model: settings.model });
-		} else if (settings.model.includes('gpt')) {
+		} else if (sdkMode === 'openai') {
 			response = await openAIGetResponse({ apiKey, content, model: settings.model });
+		} else if (sdkMode === 'openrouter') {
 		}
+
 		const data: ApiResponseProps = JSON.parse(response.replaceAll('```', '').replace('json', ''));
 		navigation.navigate('Result', {
 			word: data.word,

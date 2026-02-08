@@ -4,12 +4,12 @@ import { getApiKey, getSettings } from '@core/settings';
 import RNFS from 'react-native-fs';
 import { CardEditorScreenNavProp } from '@screens/CardEditorScreen';
 import ImageResizer from 'react-native-image-resizer';
+import { parseImageMode } from '@utils/parseImageMode';
 
 export const generateImages = async ({ word, definition, pos, navigation }: generateImagesProps) => {
 	const imagePaths: string[] = [];
 	const settings = await getSettings();
-	const sdkMode = /^\w*/.exec(settings.imageGenerationMode)?.[0];
-	const modelName = /(?<=[/]).*$/.exec(settings.imageGenerationMode)?.[0];
+	const [sdkMode, modelName] = parseImageMode(settings.imageGenerationMode);
 	const width = Number(settings.imageResolution.match(/^\d*/));
 	const height = Number(settings.imageResolution.match(/\d*$/));
 
@@ -52,10 +52,10 @@ export const generateImages = async ({ word, definition, pos, navigation }: gene
 		const openai = new OpenAI({ apiKey: apiKey || '' });
 
 		const response = await openai.images.generate({
-			model: modelName || '',
+			model: modelName,
 			prompt,
 			n: Number(settings.countOfImages),
-			size: modelName?.includes('dall') ? '1024x1024' : '1536x1024',
+			size: modelName.includes('dall') ? '1024x1024' : '1536x1024',
 			response_format: 'b64_json',
 		});
 
@@ -70,14 +70,14 @@ export const generateImages = async ({ word, definition, pos, navigation }: gene
 		const openai = new OpenAI({ baseURL: 'https://openrouter.ai/api/v1', apiKey: apiKey || '' });
 
 		const response = await openai.chat.completions.create({
-			model: modelName || '',
+			model: modelName,
 			messages: [
 				{
 					role: 'user',
 					content: 'Generate a beautiful sunset over mountains',
 				},
 			],
-			// @ts-ignore - OpenAI SDK может не знать о параметре modalities
+			// @ts-ignore - OpenAI SDK doesn't have typings for images in chat completions yet
 			modalities: ['image'],
 			image_config: {
 				aspect_ratio: '4:3',
@@ -97,7 +97,7 @@ export const generateImages = async ({ word, definition, pos, navigation }: gene
 	const geminiGetImage = async ({ apiKey }: getResponse) => {
 		const genAI = new GoogleGenAI({ apiKey: apiKey || '' });
 		const response = await genAI.models.generateImages({
-			model: modelName || '',
+			model: modelName,
 			prompt,
 			config: {
 				numberOfImages: Number(settings.countOfImages),
