@@ -55,6 +55,7 @@ const styles = StyleSheet.create({
 		marginHorizontal: 16,
 		backgroundColor: Colors.default.posBackround,
 		padding: 10,
+		paddingBottom: 20,
 		elevation: 10,
 		borderRadius: 10,
 		alignItems: 'center',

@@ -19,7 +19,6 @@ export const models = [
 	'openai/gpt-5.2',
 	'openai/gpt-5.2-chat',
 	'openai/gpt-5.2-pro',
-	'openrouter/meta-llama/llama-3.3-70b-instruct:free',
 	'openrouter/google/gemma-3-27b-it:free',
 	'openrouter/google/gemini-2.5-flash',
 ];

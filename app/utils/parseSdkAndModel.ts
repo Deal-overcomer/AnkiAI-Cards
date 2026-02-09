@@ -1,4 +1,4 @@
-export const parseImageMode = (mode: string) => {
+export const parseSdkAndModel = (mode: string) => {
 	const [sdkMode, ...modelName] = mode.split('/');
 	return [sdkMode, modelName.join('/')] as [SdkModeType, string];
 };

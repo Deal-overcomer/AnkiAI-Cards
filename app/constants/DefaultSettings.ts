@@ -4,7 +4,7 @@ const defaultSettings: Settings = {
 	deckName: 'AnkiAICards',
 	language: 'English',
 	levelOfLanguage: 'B2',
-	model: 'gemini-2.5-flash',
+	model: 'gemini/gemini-2.0-flash-lite',
 	imageGenerationMode: 'no image',
 	countOfImages: '4',
 	imageResolution: '512x384',

@@ -14,12 +14,13 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { KeyboardAwareScrollView, KeyboardStickyView } from 'react-native-keyboard-controller';
 import ButtonInput from '@components/buttons/ButtonInput';
 import Setting from '@components/Setting';
+import { RootStackParamList } from '../App';
 import { cleanupTempImages, generateImages } from '@core/imageGenerator';
 import { addCard, uploadMedia } from '@core/ankiDroidApi';
-import { getSettings, Settings } from '@core/settings';
-import { RootStackParamList } from '../App';
+import { getSettings } from '@core/settings';
 import * as Options from '@constants/Options';
 import Colors from '@constants/Colors';
+import { parseSdkAndModel } from '@utils/parseSdkAndModel.ts';
 
 const CardEditorScreen = ({ navigation, route }: CardEditorScreenProps) => {
 	const selectedArray = route.params.selectedSet;
@@ -28,7 +29,7 @@ const CardEditorScreen = ({ navigation, route }: CardEditorScreenProps) => {
 	const imagePathsRef = useRef({} as { [key: number]: string[] });
 
 	const [data, setData] = React.useState(route.params.posData);
-	const [settings, setSettings] = React.useState<Settings | undefined>(undefined);
+	const [settings, setSettings] = React.useState<{ deckName: string; sdkMode: string } | undefined>(undefined);
 	const [currentIndex, setCurrentIndex] = React.useState(selectedArray[0]);
 	const [imagePaths, setImagePaths] = React.useState<{ [key: number]: string[] }>({});
 	const [selectedImageIndex, setSelectedImageIndex] = React.useState(0);
@@ -42,7 +43,7 @@ const CardEditorScreen = ({ navigation, route }: CardEditorScreenProps) => {
 	const handleCreateCard = useCallback(
 		async (index: number) => {
 			let img = '';
-			if (settings?.imageGenerationMode !== 'no image' && selectedImageIndex) {
+			if (settings?.sdkMode !== 'no image' && selectedImageIndex) {
 				img = await uploadMedia({
 					mediaUrl: 'fdsfdsfds', // TODO:	Fix this bug
 					fileName: `image_${route.params.word}_${crypto.randomUUID()}.jpg`,
@@ -123,11 +124,11 @@ const CardEditorScreen = ({ navigation, route }: CardEditorScreenProps) => {
 		[ITEM_WIDTH],
 	);
 
-	// This sh... works kinda okay
 	const syncSettings = useCallback(async () => {
 		const fetchSettings = async () => {
 			const settings = await getSettings();
-			setSettings(settings);
+			const [sdkMode, _] = parseSdkAndModel(settings.imageGenerationMode);
+			setSettings({ deckName: settings.deckName, sdkMode });
 		};
 
 		await fetchSettings();
@@ -144,7 +145,7 @@ const CardEditorScreen = ({ navigation, route }: CardEditorScreenProps) => {
 	}, [navigation]);
 
 	useEffect(() => {
-		if (settings?.imageGenerationMode === 'no image') return;
+		if (settings?.sdkMode === 'no image') return;
 		if (Object.keys(imagePaths).length > 0) return;
 
 		console.log('Generating images...');
@@ -177,7 +178,7 @@ const CardEditorScreen = ({ navigation, route }: CardEditorScreenProps) => {
 		<View style={styles.main}>
 			<KeyboardAwareScrollView style={styles.second}>
 				<Setting setting="deckName" settingName="Deck name" options={Options.deckNames} onChange={syncSettings} />
-				{settings && settings?.imageGenerationMode !== 'no image' && (
+				{settings && settings?.sdkMode !== 'no image' && (
 					<View style={styles.imageContainer}>
 						{imagePaths[currentIndex] ? (
 							<FlatList

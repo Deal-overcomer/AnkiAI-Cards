@@ -4,22 +4,24 @@ import { getApiKey, getSettings } from '@core/settings';
 import RNFS from 'react-native-fs';
 import { CardEditorScreenNavProp } from '@screens/CardEditorScreen';
 import ImageResizer from 'react-native-image-resizer';
-import { parseImageMode } from '@utils/parseImageMode';
+import { parseSdkAndModel } from '@utils/parseSdkAndModel.ts';
 
 export const generateImages = async ({ word, definition, pos, navigation }: generateImagesProps) => {
 	const imagePaths: string[] = [];
 	const settings = await getSettings();
-	const [sdkMode, modelName] = parseImageMode(settings.imageGenerationMode);
+	const [sdkMode, modelName] = parseSdkAndModel(settings.imageGenerationMode);
 	const width = Number(settings.imageResolution.match(/^\d*/));
 	const height = Number(settings.imageResolution.match(/\d*$/));
 
-	if (settings.imageGenerationMode === 'no image') {
+	if (sdkMode === 'no image') {
 		console.log('Image generation is disabled in settings.');
 		return [];
 	}
 
-	const prompt = `Create a visual illustration that represents the concept: ${word} but without any labels!
-
+	const prompt = `
+	Create a visual illustration that represents the concept: ${word} but without any labels!
+	Make ${settings.countOfImages} different images
+	
   STRICT REQUIREMENTS:
   - NO TEXT of any kind in the image
   - NO WORDS written anywhere
@@ -36,7 +38,7 @@ export const generateImages = async ({ word, definition, pos, navigation }: gene
 
 	const writeBase64ToFile = async (base64Data: string | undefined) => {
 		if (base64Data) {
-			const fileName = `temp_${word}_${crypto.randomUUID()}.png`;
+			const fileName = `temp_${word}_${Date.now()}.png`;
 			const filePath = `${RNFS.CachesDirectoryPath}/${fileName}`;
 			await RNFS.writeFile(filePath, base64Data, 'base64');
 
@@ -74,7 +76,7 @@ export const generateImages = async ({ word, definition, pos, navigation }: gene
 			messages: [
 				{
 					role: 'user',
-					content: 'Generate a beautiful sunset over mountains',
+					content: prompt,
 				},
 			],
 			// @ts-ignore - OpenAI SDK doesn't have typings for images in chat completions yet
@@ -82,14 +84,13 @@ export const generateImages = async ({ word, definition, pos, navigation }: gene
 			image_config: {
 				aspect_ratio: '4:3',
 			},
-			n: Number(settings.countOfImages),
 		});
 
 		// @ts-ignore
 		if (response.choices[0].message?.images) {
 			// @ts-ignore
 			for (const image of response.choices[0].message?.images) {
-				await writeBase64ToFile(image.image_url.image);
+				await writeBase64ToFile(image.image_url.url.split(',')[1]);
 			}
 		}
 	};

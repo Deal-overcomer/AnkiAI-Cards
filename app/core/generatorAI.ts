@@ -2,14 +2,14 @@ import { GoogleGenAI } from '@google/genai';
 import { OpenAI } from 'openai';
 import { HomeScreenNavigationProp } from '@screens/HomeScreen';
 import { getApiKey, getSettings } from './settings';
-import { parseImageMode } from '@utils/parseImageMode';
+import { parseSdkAndModel } from '@utils/parseSdkAndModel.ts';
 
 export const generateContent = async ({ prompt, setIsLoading, navigation }: GenerateContentProps): Promise<void> => {
 	setIsLoading(true);
 
 	const apiKey = await getApiKey();
 	const settings = await getSettings();
-	const [sdkMode, modelName] = parseImageMode(settings.imageGenerationMode);
+	const [sdkMode, modelName] = parseSdkAndModel(settings.model);
 	const content = `
     Generate me a JSON object for the word "${prompt}".
     The JSON should follow this interface:
