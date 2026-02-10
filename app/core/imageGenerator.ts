@@ -19,8 +19,7 @@ export const generateImages = async ({ word, definition, pos, navigation }: gene
 	}
 
 	const prompt = `
-	Create a visual illustration that represents the concept: ${word} but without any labels!
-	Make ${settings.countOfImages} different images
+	Create ${settings.countOfImages} visual illustration that represents the concept: ${word} but without any labels!
 	
   STRICT REQUIREMENTS:
   - NO TEXT of any kind in the image

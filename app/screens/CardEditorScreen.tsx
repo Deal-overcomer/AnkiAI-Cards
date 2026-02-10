@@ -45,8 +45,8 @@ const CardEditorScreen = ({ navigation, route }: CardEditorScreenProps) => {
 			let img = '';
 			if (settings?.sdkMode !== 'no image' && selectedImageIndex) {
 				img = await uploadMedia({
-					mediaUrl: 'fdsfdsfds', // TODO:	Fix this bug
-					fileName: `image_${route.params.word}_${crypto.randomUUID()}.jpg`,
+					mediaUrl: imagePathsRef.current[currentIndex][selectedImageIndex],
+					fileName: `image_${route.params.word}_${Date.now()}.jpg`,
 					navigation,
 				});
 			}
@@ -70,7 +70,7 @@ const CardEditorScreen = ({ navigation, route }: CardEditorScreenProps) => {
 				navigation.navigate('Home');
 			}
 		},
-		[navigation, selectedArray, selectedImageIndex, countSet, settings, data, route.params.word],
+		[selectedArray, selectedImageIndex, countSet, settings, data, route.params.word],
 	);
 
 	const handleSelection = useCallback((selection: Selection) => {
@@ -140,9 +140,9 @@ const CardEditorScreen = ({ navigation, route }: CardEditorScreenProps) => {
 
 	useEffect(() => {
 		return () => {
-			cleanupTempImages(Object.values(imagePathsRef.current).flat(), navigation);
+			cleanupTempImages(Object.values(imagePathsRef.current).flat(), navigation); // TODO не отработало при сохранении карточки
 		};
-	}, [navigation]);
+	}, []);
 
 	useEffect(() => {
 		if (settings?.sdkMode === 'no image') return;
