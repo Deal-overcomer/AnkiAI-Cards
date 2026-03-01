@@ -1,0 +1,96 @@
+export const css = `
+    .card {
+    font-family: arial;
+    line-height: 1.75em;
+    font-size: 18px;
+    text-align: center;
+    color: black;
+    background-color: #f3f3f3;
+    }
+    
+    .Deck {
+    position: absolute; top: 7px; left: 0px; width: 100%;
+    }
+    #Deck {
+    font-size: 8pt; vertical-align: top; line-height: 10pt;
+    }
+    
+    .cloze {
+    font-weight: bold;
+    color: blue;
+    }
+    
+    #typeans {
+    padding-top: 0.5em;
+    text-align: center;
+    max-width: 300px;
+    }
+    input#typeans {
+    border-radius: 9px
+    }
+    IMG {
+    border-radius: 19px;
+    max-height: 248px;
+    }
+    div span {
+    max-width: 900px;
+    display: inline-block;
+    text-align: center;
+    }
+    .Example {
+    font-style: italic;
+    color: gray;
+    font-size: 16px;
+    }
+    
+    /* solarize http://ethanschoonover.com/solarized
+    * http://ospalh.github.io/anki-addons/Scalar.html
+    * http://ospalh.github.io/anki-addons/Compare%20to%20kana.html
+    */
+    
+    .typeBad {
+    color: #dc322f;
+    background-color: #ffadab;
+    font-weight:bold;
+    font-size: 23px;
+    }
+    .typeMissed, .typePass {
+    color: #217dbe;
+    font-weight:bold;
+    font-size: 23px;
+    }
+    .typeGood {
+    background-color: #a4dab2;
+    color: #158d35;
+    font-weight:bold;
+    font-size: 23px;
+    }
+    `;
+
+export const questionFmt1 = `
+    <script>document.getElementById('Deck').innerHTML="{{Deck}}".replace("::"," &minus; ");</script>
+
+
+    <div class=Definition><span>{{cloze:Definition}}</span></div>
+    <div class="IMG">{{IMG}}</div>
+    <div class=Example><span>{{cloze:Example}}</span></div>
+    
+    {{type:Keyword}}
+    `;
+
+export const answerFmt1 = `
+    <script>document.getElementById('Deck').innerHTML="{{Deck}}".replace("::"," &minus; ");</script>
+
+
+    <div class="IMG">{{IMG}}</div>
+    <div class=Definition><span>{{cloze:Definition}}</span></div>
+    <div class=Example><span>{{cloze:Example}}</span></div>
+
+    {{type:Keyword}}
+
+    <!hr id=answer>
+
+    {{tts en_US:Keyword}}
+    {{tts en_US:cloze:Definition}}
+    {{tts en_US:cloze:Example}}
+    `;

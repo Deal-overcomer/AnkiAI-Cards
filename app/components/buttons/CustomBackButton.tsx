@@ -3,7 +3,6 @@ import { StyleSheet, TouchableOpacity, Text, TouchableOpacityProps } from 'react
 import Colors from '@constants/Colors';
 
 const CustomBackButton = React.memo(({ ...props }: TouchableOpacityProps) => {
-  // console.log('CustomBackButton rendered');
 
   return (
     <TouchableOpacity {...props} hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}>

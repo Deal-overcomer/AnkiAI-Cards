@@ -2,12 +2,12 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { View, StyleSheet, TextInput, ActivityIndicator } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../App';
 import ButtonInput from '@components/buttons/ButtonInput';
 import ModalViewMini from '@components/ModalViewMini';
 import SettingButton from '@components/buttons/SettingButton';
 import { getApiKey, initApiKey, InitSettings } from '@core/settings';
 import { generateContent } from '@core/generatorAI';
-import { RootStackParamList } from '../App';
 import Colors from '@constants/Colors';
 
 const HomeScreen = ({ navigation }: HomeScreenProps) => {

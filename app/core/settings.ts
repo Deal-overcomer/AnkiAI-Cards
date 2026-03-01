@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import defaultSettings from '@constants/DefaultSettings';
 import * as Keychain from 'react-native-keychain';
+import defaultSettings from '@constants/DefaultSettings';
 import { HomeScreenNavigationProp } from '@screens/HomeScreen';
 
 export const initApiKey = async ({ navigation }: initApiKey) => {

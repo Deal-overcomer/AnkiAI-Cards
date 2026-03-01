@@ -1,7 +1,7 @@
-import { Pressable, StyleSheet, View, ViewStyle } from 'react-native';
-import Colors from '@constants/Colors';
-import Svg, { Path } from 'react-native-svg';
 import React from 'react';
+import { Pressable, StyleSheet, View, ViewStyle } from 'react-native';
+import Svg, { Path } from 'react-native-svg';
+import Colors from '@constants/Colors';
 
 const SettingsFab = ({ onPress, style, disabled }: Props) => (
 	<View style={styles.main}>

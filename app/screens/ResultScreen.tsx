@@ -38,7 +38,6 @@ const ResultScreen = ({ navigation, route }: ResultScreenProps) => {
 	}, []);
 
 	const handleOpenCardEditor = useCallback(({ route, navigation }: ResultScreenProps) => {
-
 		navigation.navigate('CardEditor', {
 			word: route.params.word,
 			posData: route.params.posData.filter((_, index) => selectedSet.has(index))

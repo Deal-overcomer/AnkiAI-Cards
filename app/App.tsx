@@ -2,6 +2,7 @@ import React, { useCallback } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
+import 'react-native-url-polyfill/auto';
 import CustomBackButton from '@components/buttons/CustomBackButton';
 import { SettingsProps } from '@components/ApiSetting';
 import ErrorCatchScreen, { ErrorCatchProps } from '@screens/ErrorCatchScreen';
@@ -11,7 +12,6 @@ import SettingsScreen from '@screens/SettingsScreen';
 import CardEditorScreen from '@screens/CardEditorScreen';
 import { ApiResponseProps } from '@core/generatorAI';
 import Colors from '@constants/Colors';
-import 'react-native-url-polyfill/auto';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
