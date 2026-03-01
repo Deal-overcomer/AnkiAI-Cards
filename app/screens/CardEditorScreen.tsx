@@ -13,31 +13,29 @@ import Colors from '@constants/Colors';
 
 
 const CardEditorScreen = ({ navigation, route }: CardEditorScreenProps) => {
-	const selectedArray = route.params.selectedSet;
-	const countSet = selectedArray.length;
+	const deckNameRef = React.useRef<string | undefined>(undefined);
 
 	const [data, setData] = React.useState(route.params.posData);
-	const [settings, setSettings] = React.useState<{ deckName: string } | undefined>(undefined);
-	const [currentIndex, setCurrentIndex] = React.useState(selectedArray[0]);
+	const [currentIndex, setCurrentIndex] = React.useState(0);
 	const [currentSelection, setCurrentSelection] = React.useState<Selection>();
 
 	const handleCreateCard = useCallback(
 		async (index: number) => {
-			await addCard(settings?.deckName || 'Default', {
+			await addCard(deckNameRef.current || 'Default', {
 				keyword: route.params.word,
 				img: '',
 				definition: [data[index].partOfSpeech, data[index].definitionCloze],
 				examples: data[index].examplesCloze,
 			});
 
-			const nextIndex = selectedArray.indexOf(index) + 1;
-			if (nextIndex < countSet) {
-				setCurrentIndex(selectedArray[nextIndex]);
+			const nextIndex = currentIndex + 1;
+			if (nextIndex < data.length) {
+				setCurrentIndex(nextIndex);
 			} else {
 				navigation.navigate('Home');
 			}
 		},
-		[selectedArray, countSet, settings, data, route.params.word, navigation],
+		[data, currentIndex, route.params.word, navigation],
 	);
 
 	const handleSelection = useCallback((selection: Selection) => {
@@ -56,7 +54,7 @@ const CardEditorScreen = ({ navigation, route }: CardEditorScreenProps) => {
 		const { selectedField, selectionIndexes } = currentSelection;
 
 		setData(prev => {
-			const newData: typeof prev = [...prev];
+			const newData = [...prev];
 			const currentItem = newData[currentIndex];
 			let originalText = '';
 
@@ -79,7 +77,7 @@ const CardEditorScreen = ({ navigation, route }: CardEditorScreenProps) => {
 	const syncSettings = useCallback(async () => {
 		const fetchSettings = async () => {
 			const settings = await getSettings();
-			setSettings({ deckName: settings.deckName });
+			deckNameRef.current = settings.deckName;
 		};
 		await fetchSettings();
 	}, []);
@@ -104,7 +102,7 @@ const CardEditorScreen = ({ navigation, route }: CardEditorScreenProps) => {
 						const text = e.nativeEvent.text;
 
 						setData(prev => {
-							const newData = prev;
+							const newData = [...prev];
 							newData[currentIndex].definitionCloze = text;
 							return newData;
 						});
@@ -128,7 +126,7 @@ const CardEditorScreen = ({ navigation, route }: CardEditorScreenProps) => {
 							const text = e.nativeEvent.text;
 
 							setData(prev => {
-								const newData = prev;
+								const newData = [...prev];
 								newData[currentIndex].examplesCloze[index] = text;
 								return newData;
 							});

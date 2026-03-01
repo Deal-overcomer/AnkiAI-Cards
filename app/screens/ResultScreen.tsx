@@ -11,7 +11,6 @@ import Colors from '@constants/Colors';
 const ResultScreen = ({ navigation, route }: ResultScreenProps) => {
 	const [openIndex, setOpenIndex] = React.useState<Set<number>>(new Set());
 	const [selectedSet, setSelectedSet] = React.useState<Set<number>>(new Set());
-	const selectedSetRef = useRef(selectedSet);
 	const duration: number = 150;
 
 	const toggleOpenIndex = useCallback((index: number) => {
@@ -26,10 +25,6 @@ const ResultScreen = ({ navigation, route }: ResultScreenProps) => {
 		});
 	}, []);
 
-	useEffect(() => {
-		selectedSetRef.current = selectedSet;
-	}, [selectedSet]);
-
 	const toggleSelectedList = useCallback((index: number) => {
 		setSelectedSet(prev => {
 			if (prev.has(index)) {
@@ -43,12 +38,12 @@ const ResultScreen = ({ navigation, route }: ResultScreenProps) => {
 	}, []);
 
 	const handleOpenCardEditor = useCallback(({ route, navigation }: ResultScreenProps) => {
+
 		navigation.navigate('CardEditor', {
-			posData: route.params.posData,
 			word: route.params.word,
-			selectedSet: Array.from(selectedSetRef.current),
+			posData: route.params.posData.filter((_, index) => selectedSet.has(index))
 		});
-	}, []);
+	}, [selectedSet]);
 
 	return (
 		<View style={styles.main}>

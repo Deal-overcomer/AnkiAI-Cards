@@ -84,7 +84,7 @@ export type RootStackParamList = {
 	Result: ApiResponseProps;
 	Error: ErrorCatchProps;
 	Settings: SettingsProps;
-	CardEditor: ApiResponseProps & { selectedSet: Array<number> };
+	CardEditor: ApiResponseProps;
 };
 
 export default App;

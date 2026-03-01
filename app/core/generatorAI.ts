@@ -114,15 +114,13 @@ const openRouterGetResponse = async ({ apiKey, content, model }: getResponse): P
 
 export type ApiResponseProps = {
 	word: string;
-	posData: [
-		{
-			partOfSpeech: string;
-			definition: string;
-			definitionCloze: string;
-			examples: string[];
-			examplesCloze: string[];
-		},
-	];
+	posData: {
+		partOfSpeech: string;
+		definition: string;
+		definitionCloze: string;
+		examples: string[];
+		examplesCloze: string[];
+	}[];
 };
 
 interface GenerateContentProps {
