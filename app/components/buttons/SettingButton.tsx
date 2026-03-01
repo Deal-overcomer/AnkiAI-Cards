@@ -3,7 +3,7 @@ import { Pressable, StyleSheet, View, ViewStyle } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 import Colors from '@constants/Colors';
 
-const SettingsFab = ({ onPress, style, disabled }: Props) => (
+const SettingsFab = React.memo(({ onPress, style, disabled }: Props) => (
 	<View style={styles.main}>
 		<Pressable
 			onPress={onPress}
@@ -29,7 +29,7 @@ const SettingsFab = ({ onPress, style, disabled }: Props) => (
 			</Svg>
 		</Pressable>
 	</View>
-);
+))
 
 const styles = StyleSheet.create({
 	main: { position: 'absolute', top: 70, right: 25, zIndex: 100 },

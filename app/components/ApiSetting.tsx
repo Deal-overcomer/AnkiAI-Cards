@@ -7,7 +7,7 @@ import ButtonInput from './buttons/ButtonInput';
 import { getApiKey, saveApiKey } from '@core/settings';
 import Colors from '@constants/Colors';
 
-const ApiSetting = ({ firstInit }: SettingsProps) => {
+const ApiSetting = React.memo(({ firstInit }: SettingsProps) => {
 	const [modalTextInputVisible, setModalTextInputVisible] = React.useState(firstInit);
 	const [modalViewMiniVisible, setModalViewMiniVisible] = React.useState(false);
 
@@ -47,7 +47,7 @@ const ApiSetting = ({ firstInit }: SettingsProps) => {
 			</View>
 		</View>
 	);
-};
+})
 
 const styles = StyleSheet.create({
 	view: {

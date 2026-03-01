@@ -6,7 +6,7 @@ import ModalTextInput from '@components/ModalTextInput';
 import DefaultSetting from '@constants/DefaultSettings';
 import Colors from '@constants/Colors';
 
-const Setting = ({ setting, settingName, options, onChange = () => { } }: SettingProps) => {
+const Setting = React.memo(({ setting, settingName, options, onChange = () => { } }: SettingProps) => {
 	const [selectedValue, setSelectedValue] = React.useState('');
 	const [createdOption, setCreatedOption] = React.useState('');
 	const [isInitialized, setIsInitialized] = React.useState(false);
@@ -74,7 +74,7 @@ const Setting = ({ setting, settingName, options, onChange = () => { } }: Settin
 			</View>
 		</View>
 	);
-};
+})
 
 const styles = StyleSheet.create({
 	view: {
