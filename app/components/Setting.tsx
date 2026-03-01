@@ -6,7 +6,7 @@ import ModalTextInput from '@components/ModalTextInput';
 import DefaultSetting from '@constants/DefaultSettings';
 import Colors from '@constants/Colors';
 
-const Setting = ({ setting, settingName, options, onChange = () => {} }: SettingProps) => {
+const Setting = ({ setting, settingName, options, onChange = () => { } }: SettingProps) => {
 	const [selectedValue, setSelectedValue] = React.useState('');
 	const [createdOption, setCreatedOption] = React.useState('');
 	const [isInitialized, setIsInitialized] = React.useState(false);
@@ -46,7 +46,6 @@ const Setting = ({ setting, settingName, options, onChange = () => {} }: Setting
 			prevSelectedValue.current = selectedValue;
 			const saveValue = async () => {
 				await AsyncStorage.setItem(setting, selectedValue);
-				if (selectedValue === 'dall-e-3') await AsyncStorage.setItem('countOfImages', '1');
 			};
 			saveValue();
 			onChange();

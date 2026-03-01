@@ -22,20 +22,4 @@ export const models = [
 	'openrouter/google/gemma-3-27b-it:free',
 	'openrouter/google/gemini-2.5-flash',
 ];
-export const imageGenerationModes = [
-	'no image',
-	'gemini/imagen-3.0-generate-002',
-	'gemini/imagen-4.0-generate-001',
-	'gemini/imagen-4.0-fast-generate-001',
-	'gemini/imagen-4.0-ultra-generate-001',
-	'openai/chatgpt-image-latest',
-	'openai/dall-e-2',
-	'openai/dall-e-3',
-	'openrouter/black-forest-labs/flux.2-flex',
-	'openrouter/black-forest-labs/flux.2-pro',
-	'openrouter/black-forest-labs/flux.2-max',
-	'openrouter/google/gemini-2.5-flash-image',
-];
-export const countOfImages = ['1', '2', '4'];
-export const imageResolutions = ['400x300', '512x384', '768x576'];
 export const languages = ['English', 'Spanish', 'French', 'German', 'Russian'];

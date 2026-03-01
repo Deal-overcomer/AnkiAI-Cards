@@ -1,20 +1,13 @@
 import AnkiDroid from '@deal-overcomer/react-native-ankidroid';
-import { CardEditorScreenNavProp } from '@screens/CardEditorScreen.tsx';
 
 export const addCard = async (deckName: string, newCard: ankiDroidCard) => {
 	await AnkiDroid.requestPermission();
-	// Name of deck which will be created in AnkiDroid
-	// Name of a model which will be created in AnkiDroid (can be any string)
+
 	const modelName = 'English  Img+cloze+native_word';
-	// Used to save a reference to this deck in the SharedPreferences (can be any string)
 	const dbDeckReference = 'com.anki.ai.decks';
-	// Used to save a reference to this model in the SharedPreferences (can be any string)
 	const dbModelReference = 'com.anki.ai.models';
-	// List of field names that will be used in AnkiDroid model
 	const modelFields = ['Keyword', 'IMG', 'Definition', 'Example'];
-	// List of card names that will be used in Anki Droid (one for each direction of learning)
 	const cardNames = ['Cloze 1'];
-	// CSS to share between all the cards (optional).
 
 	// TODO: вынести в отдельный файл
 	const css = `
@@ -85,7 +78,7 @@ export const addCard = async (deckName: string, newCard: ankiDroidCard) => {
     font-size: 23px;
     }
     `;
-	// Template for the question of each card
+
 	const questionFmt1 = `
     <script>document.getElementById('Deck').innerHTML="{{Deck}}".replace("::"," &minus; ");</script>
 
@@ -96,8 +89,9 @@ export const addCard = async (deckName: string, newCard: ankiDroidCard) => {
     
     {{type:Keyword}}
     `;
+
 	const questionFormat = [questionFmt1];
-	// Template for the answer (this example is identical for both sides)
+
 	const answerFmt1 = `
     <script>document.getElementById('Deck').innerHTML="{{Deck}}".replace("::"," &minus; ");</script>
 
@@ -114,6 +108,7 @@ export const addCard = async (deckName: string, newCard: ankiDroidCard) => {
     {{tts en_US:cloze:Definition}}
     {{tts en_US:cloze:Example}}
     `;
+
 	const answerFormat = [answerFmt1];
 
 	const deckProperties = {
@@ -146,44 +141,8 @@ export const addCard = async (deckName: string, newCard: ankiDroidCard) => {
 
 	const myAnkiDeck = new AnkiDroid(settings);
 
-	myAnkiDeck.addNote(valueFields, modelFields);
-	// returns a promise that returns the added note ID
+	await myAnkiDeck.addNote(valueFields, modelFields);
 };
-
-export const uploadMedia = async ({ mediaUrl, fileName, navigation }: uploadMediaProps) => {
-	console.log('Uploading media:', { mediaUrl, fileName });
-
-	try {
-		await AnkiDroid.requestPermission();
-		const [error, value] = await AnkiDroid.uploadMediaFromUri(mediaUrl, fileName, 'image');
-
-		if (error) {
-			navigation.navigate('Error', {
-				error: {
-					name: 'Upload Media Error',
-					message: String(error),
-				},
-			});
-		}
-
-		return value ?? '';
-	} catch (error) {
-		console.error('Error uploading media:', error);
-		navigation.navigate('Error', {
-			error: {
-				name: 'Upload Media Error',
-				message: error instanceof Error ? error.message : String(error),
-			},
-		});
-		return '';
-	}
-};
-
-interface uploadMediaProps {
-	mediaUrl: string;
-	fileName: string;
-	navigation: CardEditorScreenNavProp;
-}
 
 export type ankiDroidCard = {
 	keyword: string;

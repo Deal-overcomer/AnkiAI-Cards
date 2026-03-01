@@ -1,59 +1,31 @@
-import React, { useCallback, useEffect, useRef } from 'react';
-import {
-	Image,
-	Text,
-	View,
-	TextInput,
-	StyleSheet,
-	FlatList,
-	useWindowDimensions,
-	ActivityIndicator,
-} from 'react-native';
+import React, { useCallback } from 'react';
+import { Text, View, TextInput, StyleSheet } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { KeyboardAwareScrollView, KeyboardStickyView } from 'react-native-keyboard-controller';
 import ButtonInput from '@components/buttons/ButtonInput';
 import Setting from '@components/Setting';
 import { RootStackParamList } from '../App';
-import { cleanupTempImages, generateImages } from '@core/imageGenerator';
-import { addCard, uploadMedia } from '@core/ankiDroidApi';
+import { addCard } from '@core/ankiDroidApi';
 import { getSettings } from '@core/settings';
 import * as Options from '@constants/Options';
 import Colors from '@constants/Colors';
-import { parseSdkAndModel } from '@utils/parseSdkAndModel.ts';
+
 
 const CardEditorScreen = ({ navigation, route }: CardEditorScreenProps) => {
 	const selectedArray = route.params.selectedSet;
 	const countSet = selectedArray.length;
-	const flatListRef = useRef<FlatList<string> | null>(null);
-	const imagePathsRef = useRef({} as { [key: number]: string[] });
 
 	const [data, setData] = React.useState(route.params.posData);
-	const [settings, setSettings] = React.useState<{ deckName: string; sdkMode: string } | undefined>(undefined);
+	const [settings, setSettings] = React.useState<{ deckName: string } | undefined>(undefined);
 	const [currentIndex, setCurrentIndex] = React.useState(selectedArray[0]);
-	const [imagePaths, setImagePaths] = React.useState<{ [key: number]: string[] }>({});
-	const [selectedImageIndex, setSelectedImageIndex] = React.useState(0);
 	const [currentSelection, setCurrentSelection] = React.useState<Selection>();
-
-	const { width: screenWidth } = useWindowDimensions();
-	const IMAGE_WIDTH = 250;
-	const IMAGE_MARGIN = 5;
-	const ITEM_WIDTH = IMAGE_WIDTH + IMAGE_MARGIN * 2;
 
 	const handleCreateCard = useCallback(
 		async (index: number) => {
-			let img = '';
-			if (settings?.sdkMode !== 'no image' && selectedImageIndex) {
-				img = await uploadMedia({
-					mediaUrl: imagePathsRef.current[currentIndex][selectedImageIndex],
-					fileName: `image_${route.params.word}_${Date.now()}.jpg`,
-					navigation,
-				});
-			}
-
 			await addCard(settings?.deckName || 'Default', {
 				keyword: route.params.word,
-				img,
+				img: '',
 				definition: [data[index].partOfSpeech, data[index].definitionCloze],
 				examples: data[index].examplesCloze,
 			});
@@ -61,16 +33,11 @@ const CardEditorScreen = ({ navigation, route }: CardEditorScreenProps) => {
 			const nextIndex = selectedArray.indexOf(index) + 1;
 			if (nextIndex < countSet) {
 				setCurrentIndex(selectedArray[nextIndex]);
-				setSelectedImageIndex(0);
-				flatListRef.current?.scrollToOffset({
-					offset: 0,
-					animated: true,
-				});
 			} else {
 				navigation.navigate('Home');
 			}
 		},
-		[selectedArray, selectedImageIndex, countSet, settings, data, route.params.word],
+		[selectedArray, countSet, settings, data, route.params.word, navigation],
 	);
 
 	const handleSelection = useCallback((selection: Selection) => {
@@ -108,100 +75,19 @@ const CardEditorScreen = ({ navigation, route }: CardEditorScreenProps) => {
 		});
 	}, [currentSelection, currentIndex]);
 
-	const getSnapToOffsets = useCallback(
-		(numItems: number) => {
-			return Array.from({ length: numItems }, (_, i) => i * ITEM_WIDTH);
-		},
-		[ITEM_WIDTH],
-	);
-
-	const onScrollEnd = useCallback(
-		(event: any) => {
-			const offsetX = event.nativeEvent.contentOffset.x;
-			const index = Math.round(offsetX / ITEM_WIDTH);
-			setSelectedImageIndex(index);
-		},
-		[ITEM_WIDTH],
-	);
 
 	const syncSettings = useCallback(async () => {
 		const fetchSettings = async () => {
 			const settings = await getSettings();
-			const [sdkMode, _] = parseSdkAndModel(settings.imageGenerationMode);
-			setSettings({ deckName: settings.deckName, sdkMode });
+			setSettings({ deckName: settings.deckName });
 		};
-
 		await fetchSettings();
 	}, []);
-
-	useEffect(() => {
-		imagePathsRef.current = imagePaths;
-	}, [imagePaths]);
-
-	useEffect(() => {
-		return () => {
-			cleanupTempImages(Object.values(imagePathsRef.current).flat(), navigation); // TODO не отработало при сохранении карточки
-		};
-	}, []);
-
-	useEffect(() => {
-		if (settings?.sdkMode === 'no image') return;
-		if (Object.keys(imagePaths).length > 0) return;
-
-		console.log('Generating images...');
-		const images = Object() as Record<number, string[]>;
-
-		const getImages = async () => {
-			for (const index of selectedArray) {
-				images[index] = await generateImages({
-					navigation,
-					word: route.params.word,
-					definition: route.params.posData[index].definition,
-					pos: route.params.posData[index].partOfSpeech,
-				});
-				images[index].unshift('');
-			}
-			setImagePaths(images);
-		};
-
-		getImages();
-	}, [imagePaths]);
-
-	const renderItem = ({ item }: { item: string }) =>
-		item === '' ? (
-			<Text style={styles.noImage}>No image</Text>
-		) : (
-			<Image source={{ uri: `file://${item}` }} style={styles.image} />
-		);
 
 	return (
 		<View style={styles.main}>
 			<KeyboardAwareScrollView style={styles.second}>
 				<Setting setting="deckName" settingName="Deck name" options={Options.deckNames} onChange={syncSettings} />
-				{settings && settings?.sdkMode !== 'no image' && (
-					<View style={styles.imageContainer}>
-						{imagePaths[currentIndex] ? (
-							<FlatList
-								ref={flatListRef}
-								data={imagePaths[currentIndex]}
-								renderItem={renderItem}
-								horizontal
-								showsHorizontalScrollIndicator={false}
-								snapToOffsets={getSnapToOffsets(imagePaths[currentIndex].length)}
-								decelerationRate="fast"
-								snapToAlignment="center"
-								onMomentumScrollEnd={onScrollEnd}
-								contentContainerStyle={{
-									paddingHorizontal: (screenWidth - ITEM_WIDTH) / 2,
-								}}
-							/>
-						) : (
-							<>
-								<ActivityIndicator style={styles.loadingImages} size="large" color={Colors.default.activityIndicator} />
-							</>
-						)}
-					</View>
-				)}
 				<Text style={styles.titleText}>{route.params.posData[currentIndex].partOfSpeech}</Text>
 				<TextInput
 					onSelectionChange={event =>
@@ -289,27 +175,7 @@ const styles = StyleSheet.create({
 		marginVertical: 8,
 		backgroundColor: Colors.default.examplesBackround,
 		borderRadius: 10,
-	},
-	imageContainer: {
-		marginVertical: 10,
-	},
-	image: {
-		width: 250,
-		height: 200,
-		margin: 5,
-	},
-	noImage: {
-		width: 250,
-		height: 200,
-		margin: 5,
-		textAlign: 'center',
-		textAlignVertical: 'center',
-		fontSize: 18,
-	},
-	loadingImages: {
-		height: 200,
-		margin: 5,
-	},
+	}
 });
 
 type Selection = {

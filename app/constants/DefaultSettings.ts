@@ -5,9 +5,6 @@ const defaultSettings: Settings = {
 	language: 'English',
 	levelOfLanguage: 'B2',
 	model: 'gemini/gemini-2.0-flash-lite',
-	imageGenerationMode: 'no image',
-	countOfImages: '4',
-	imageResolution: '512x384',
 	settingsInitialized: 'true',
 };
 

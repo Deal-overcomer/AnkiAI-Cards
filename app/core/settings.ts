@@ -52,9 +52,6 @@ export interface Settings {
 	language: string;
 	levelOfLanguage: string;
 	model: string;
-	imageGenerationMode: string;
-	countOfImages: string;
-	imageResolution: string;
 	settingsInitialized: string;
 }
 
