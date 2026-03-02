@@ -1,97 +1,131 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# AnkiAI-Cards
 
-# Getting Started
+AnkiAI-Cards is a React Native mobile app for Android that helps you build vocabulary flashcards effortlessly using AI. Enter any word and the app will generate structured definitions, parts of speech, and usage examples via your chosen AI provider. You then review the results, pick which entries to turn into cards, optionally apply cloze deletions, and send them directly into your AnkiDroid deck — all without leaving the app.
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+---
 
-## Step 1: Start Metro
+## Features
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+### 🏠 Home Screen — Word Input
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+Type a word and tap **GENERATE**. The app calls your selected AI model and fetches structured linguistic data in seconds.
 
-```sh
-# Using npm
-npm start
+![Home Screen](app/assets/dontlike.jpg)
 
-# OR using Yarn
-yarn start
+---
+
+### 📋 Result Screen — Review & Select
+
+The AI response is presented as a list of cards grouped by part of speech. Each card shows the definition and can be expanded to reveal usage examples. Tap a card to select it for export.
+
+![Result Screen](app/assets/dontlike.jpg)
+
+---
+
+### ✏️ Card Editor — Edit & Apply Cloze
+
+Before creating a card you can freely edit the definition and example sentences. Select any word or phrase in the text and tap **"Cloze selected word"** to wrap it in an Anki cloze deletion (`{{c1::...}}`). Step through multiple selected entries one by one.
+
+![Card Editor Screen](app/assets/dontlike.jpg)
+
+---
+
+### ⚙️ Settings — Customise Generation
+
+Configure everything that drives the AI prompt:
+
+| Setting            | Description                                    |
+| ------------------ | ---------------------------------------------- |
+| **Deck name**      | Target AnkiDroid deck for new cards            |
+| **Language**       | Language of the word being looked up           |
+| **Language level** | CEFR level (A1 → C2) for example complexity    |
+| **AI model**       | Google Gemini, OpenAI, or any OpenRouter model |
+| **API key**        | Stored securely on-device                      |
+
+You can enter a unique option! For example - create **English-drank-pirate** into **Language** configuration.
+
+![Settings Screen](app/assets/dontlike.jpg)
+
+---
+
+### 🤖 Multi-Provider AI Support
+
+The app supports three AI backends out of the box:
+
+- **Google Gemini** — via `@google/genai`
+- **OpenAI** — via the official `openai` SDK
+- **OpenRouter** — via `openai` SDK as weel, access hundreds of models with a single API key
+
+---
+
+### 🃏 Direct AnkiDroid Integration
+
+Generated cards are added to AnkiDroid using the AnkiDroid API. The card model includes a keyword, definition (with cloze), and example sentences. No manual import required.
+
+![AnkiDroid Application](app/assets/dontlike.jpg)
+
+---
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js ≥ 18
+- JDK 17
+- Android SDK (API 28+)
+- AnkiDroid installed on the target device/emulator
+- An API key for Gemini, OpenAI, or OpenRouter
+
+### Clone the repository
+
+```bash
+git clone https://github.com/<your-username>/AnkiAI-Cards.git
+cd AnkiAI-Cards
 ```
 
-## Step 2: Build and run your app
+### Install dependencies
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
+**terminal**
 
-### Android
+```bash
+# using npm
+npm install
 
-```sh
-# Using npm
+# or yarn
+yarn
+```
+
+### Run metro and android simulator
+
+**terminal**
+
+```bash
+# using npm
 npm run android
 
-# OR using Yarn
+# or yarn
 yarn android
 ```
 
-### iOS
+### Build a release APK for Android
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
+**terminal**
 
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
-
-```sh
-bundle install
+```bash
+cd android
+./gradlew assembleRelease
 ```
 
-Then, and every time you update your native dependencies, run:
+The output APK will be located at:
 
-```sh
-bundle exec pod install
+```
+android/app/build/outputs/apk/release/app-release.apk
 ```
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+> **Note:** Make sure you have a signing keystore configured in `android/app/build.gradle` before building a release APK intended for distribution.
 
-```sh
-# Using npm
-npm run ios
+---
 
-# OR using Yarn
-yarn ios
-```
+## Downloads
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
-
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
-
-## Step 3: Modify your app
-
-Now that you have successfully run the app, let's make changes!
-
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
-
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
-
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+Pre-built Android APKs are available on the [Releases](https://github.com/<your-username>/AnkiAI-Cards/releases) page.
