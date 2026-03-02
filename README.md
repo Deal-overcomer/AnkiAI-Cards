@@ -1,6 +1,10 @@
 # AnkiAI-Cards
 
+<img src="docs/logo/play_store_512.png" alt="PronKi Icon" style="width: 100px; border-radius: 8px; margin-right: 10px;" align="left">
+
 AnkiAI-Cards is a React Native mobile app for Android that helps you build vocabulary flashcards effortlessly using AI. Enter any word and the app will generate structured definitions, parts of speech, and usage examples via your chosen AI provider. You then review the results, pick which entries to turn into cards, optionally apply cloze deletions, and send them directly into your AnkiDroid deck — all without leaving the app.
+<br>
+<br>
 
 ---
 
@@ -10,7 +14,7 @@ AnkiAI-Cards is a React Native mobile app for Android that helps you build vocab
 
 Type a word and tap **GENERATE**. The app calls your selected AI model and fetches structured linguistic data in seconds.
 
-![Home Screen](app/assets/dontlike.jpg)
+<img src="docs/preview/HomeScreen.png" alt="HomeScreen" style="width: 60%; max-width: 400px">
 
 ---
 
@@ -18,7 +22,7 @@ Type a word and tap **GENERATE**. The app calls your selected AI model and fetch
 
 The AI response is presented as a list of cards grouped by part of speech. Each card shows the definition and can be expanded to reveal usage examples. Tap a card to select it for export.
 
-![Result Screen](app/assets/dontlike.jpg)
+<img src="docs/preview/ResultScreen.png" alt="ResultScreen" style="width: 60%; max-width: 400px">
 
 ---
 
@@ -26,7 +30,7 @@ The AI response is presented as a list of cards grouped by part of speech. Each 
 
 Before creating a card you can freely edit the definition and example sentences. Select any word or phrase in the text and tap **"Cloze selected word"** to wrap it in an Anki cloze deletion (`{{c1::...}}`). Step through multiple selected entries one by one.
 
-![Card Editor Screen](app/assets/dontlike.jpg)
+<img src="docs/preview/EditScreen.png" alt="EditScreen" style="width: 60%; max-width: 400px">
 
 ---
 
@@ -44,7 +48,7 @@ Configure everything that drives the AI prompt:
 
 You can enter a unique option! For example - create **English-drank-pirate** into **Language** configuration.
 
-![Settings Screen](app/assets/dontlike.jpg)
+<img src="docs/preview/SettingsScreen.png" alt="SettingsScreen" style="width: 60%; max-width: 400px">
 
 ---
 
@@ -62,7 +66,7 @@ The app supports three AI backends out of the box:
 
 Generated cards are added to AnkiDroid using the AnkiDroid API. The card model includes a keyword, definition (with cloze), and example sentences. No manual import required.
 
-![AnkiDroid Application](app/assets/dontlike.jpg)
+<img src="docs/preview/AnkiDroid.png" alt="AnkiDroid" style="width: 60%; max-width: 400px">
 
 ---
 
