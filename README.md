@@ -14,7 +14,7 @@ AnkiAI-Cards is a React Native mobile app for Android that helps you build vocab
 
 Type a word and tap **GENERATE**. The app calls your selected AI model and fetches structured linguistic data in seconds.
 
-<img src="docs/preview/HomeScreen.png" alt="HomeScreen" style="width: 60%; max-width: 400px">
+<img src="docs/preview/HomeScreen.png" alt="HomeScreen" style="width: 40%;">
 
 ---
 
@@ -22,7 +22,7 @@ Type a word and tap **GENERATE**. The app calls your selected AI model and fetch
 
 The AI response is presented as a list of cards grouped by part of speech. Each card shows the definition and can be expanded to reveal usage examples. Tap a card to select it for export.
 
-<img src="docs/preview/ResultScreen.png" alt="ResultScreen" style="width: 60%; max-width: 400px">
+<img src="docs/preview/ResultScreen.png" alt="ResultScreen" style="width: 40%;">
 
 ---
 
@@ -30,7 +30,7 @@ The AI response is presented as a list of cards grouped by part of speech. Each 
 
 Before creating a card you can freely edit the definition and example sentences. Select any word or phrase in the text and tap **"Cloze selected word"** to wrap it in an Anki cloze deletion (`{{c1::...}}`). Step through multiple selected entries one by one.
 
-<img src="docs/preview/EditScreen.png" alt="EditScreen" style="width: 60%; max-width: 400px">
+<img src="docs/preview/EditScreen.png" alt="EditScreen" style="width: 40%;">
 
 ---
 
@@ -48,7 +48,7 @@ Configure everything that drives the AI prompt:
 
 You can enter a unique option! For example - create **English-drank-pirate** into **Language** configuration.
 
-<img src="docs/preview/SettingsScreen.png" alt="SettingsScreen" style="width: 60%; max-width: 400px">
+<img src="docs/preview/SettingsScreen.png" alt="SettingsScreen" style="width: 40%;">
 
 ---
 
@@ -66,7 +66,7 @@ The app supports three AI backends out of the box:
 
 Generated cards are added to AnkiDroid using the AnkiDroid API. The card model includes a keyword, definition (with cloze), and example sentences. No manual import required.
 
-<img src="docs/preview/AnkiDroid.png" alt="AnkiDroid" style="width: 60%; max-width: 400px">
+<img src="docs/preview/AnkiDroid.png" alt="AnkiDroid" style="width: 40%;">
 
 ---
 
