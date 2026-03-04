@@ -56,9 +56,9 @@ You can enter a unique option! For example - create **English-drank-pirate** int
 
 The app supports three AI backends out of the box:
 
-- **Google Gemini** — via `@google/genai`
+- **Google Gemini** — via `@google/genai` SDK
 - **OpenAI** — via the official `openai` SDK
-- **OpenRouter** — via `openai` SDK as weel, access hundreds of models with a single API key
+- **OpenRouter** — via `openai` as weel, access hundreds of models with a single API key
 
 ---
 
