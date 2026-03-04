@@ -1,6 +1,6 @@
 # AnkiAI-Cards
 
-<img src="docs/logo/play_store_512.png" alt="PronKi Icon" style="width: 100px; border-radius: 8px; margin-right: 10px;" align="left">
+<img src="docs/logo/1024.png" alt="PronKi Icon" style="width: 100px; border-radius: 8px; margin-right: 10px;" align="left">
 
 AnkiAI-Cards is a React Native mobile app for Android that helps you build vocabulary flashcards effortlessly using AI. Enter any word and the app will generate structured definitions, parts of speech, and usage examples via your chosen AI provider. You then review the results, pick which entries to turn into cards, optionally apply cloze deletions, and send them directly into your AnkiDroid deck — all without leaving the app.
 <br>
