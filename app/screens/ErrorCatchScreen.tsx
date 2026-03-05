@@ -7,7 +7,7 @@ import Colors from '@constants/Colors';
 const ErrorCatchScreen = ({ route }: ErrorScreenNavigationProps) => {
 	return (
 		<View style={styles.view}>
-			<ScrollView contentContainerStyle={{ paddingBottom: '100%' }}>
+			<ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: '100%' }}>
 				<Text style={styles.textName}>{route.params.error?.name}</Text>
 				<Text style={styles.textMessage}>{route.params.error?.message}</Text>
 			</ScrollView>

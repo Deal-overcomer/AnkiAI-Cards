@@ -47,6 +47,7 @@ const ResultScreen = ({ navigation, route }: ResultScreenProps) => {
 	return (
 		<View style={styles.main}>
 			<ScrollView
+				showsVerticalScrollIndicator={false}
 				contentContainerStyle={{
 					paddingBottom: '100%',
 					alignItems: 'center',

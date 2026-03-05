@@ -33,7 +33,7 @@ const App = () => {
 							headerTitleStyle: { fontSize: 54, fontWeight: 'bold' },
 							title: route.params.word,
 							headerTitleAlign: 'center',
-							headerTintColor: Colors.root.header,
+							headerTintColor: Colors.root.text,
 							headerLeft: () => BackButton(navigation),
 						})}
 					/>
@@ -45,7 +45,7 @@ const App = () => {
 							headerStyle: { backgroundColor: Colors.default.main },
 							headerTitleStyle: { fontSize: 54, fontWeight: 'bold' },
 							headerTitleAlign: 'center',
-							headerTintColor: Colors.root.header,
+							headerTintColor: Colors.root.text,
 							headerLeft: () => BackButton(navigation),
 						})}
 					/>
@@ -57,7 +57,7 @@ const App = () => {
 							headerStyle: { backgroundColor: Colors.default.main },
 							headerTitleStyle: { fontSize: 54, fontWeight: 'bold' },
 							headerTitleAlign: 'center',
-							headerTintColor: Colors.root.header,
+							headerTintColor: Colors.root.text,
 							headerLeft: () => BackButton(navigation),
 						})}
 					/>
@@ -69,7 +69,7 @@ const App = () => {
 							headerStyle: { backgroundColor: Colors.default.main },
 							headerTitleStyle: { fontSize: 54, fontWeight: 'bold' },
 							headerTitleAlign: 'center',
-							headerTintColor: Colors.root.header,
+							headerTintColor: Colors.root.text,
 							headerLeft: () => BackButton(navigation),
 						})}
 					/>

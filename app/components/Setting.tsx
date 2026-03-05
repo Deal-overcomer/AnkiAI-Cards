@@ -88,8 +88,8 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-between',
 		alignItems: 'center',
 	},
-	textName: { fontSize: 20 },
-	textSetting: { fontSize: 18 },
+	textName: { fontSize: 20, color: Colors.root.text },
+	textSetting: { fontSize: 18, color: Colors.root.text },
 	settings: {
 		backgroundColor: Colors.default.examplesBackround,
 		width: '55%',

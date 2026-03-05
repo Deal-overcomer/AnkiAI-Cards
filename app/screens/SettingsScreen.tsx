@@ -9,7 +9,7 @@ import Colors from '@constants/Colors';
 
 const SettingsScreen = ({ route }: SettingsScreenProps) => (
 	<View style={styles.view}>
-		<ScrollView contentContainerStyle={{ paddingBottom: '100%' }}>
+		<ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: '100%' }}>
 			<Setting setting="deckName" settingName="Deck name" options={Options.deckNames} />
 			<Setting setting="language" settingName="Language" options={Options.languages} />
 			<Setting setting="levelOfLanguage" settingName="Language level" options={Options.englishLevels} />

@@ -92,10 +92,9 @@ const styles = StyleSheet.create({
 	},
 	textInput: {
 		backgroundColor: Colors.default.textInput,
-		width: 350,
+		width: '80%',
 		borderRadius: 100,
 		textAlign: 'center',
-		color: 'black',
 		fontSize: 20,
 	},
 	activityIndicator: {

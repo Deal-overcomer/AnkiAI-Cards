@@ -84,7 +84,7 @@ const CardEditorScreen = ({ navigation, route }: CardEditorScreenProps) => {
 
 	return (
 		<View style={styles.main}>
-			<KeyboardAwareScrollView style={styles.second}>
+			<KeyboardAwareScrollView showsVerticalScrollIndicator={false} style={styles.second}>
 				<Setting setting="deckName" settingName="Deck name" options={Options.deckNames} onChange={syncSettings} />
 				<Text style={styles.titleText}>{route.params.posData[currentIndex].partOfSpeech}</Text>
 				<TextInput
