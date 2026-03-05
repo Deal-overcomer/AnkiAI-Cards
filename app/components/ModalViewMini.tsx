@@ -9,7 +9,7 @@ const ModalViewMini = React.memo(({ text, visible, onRequestClose, ...rest }: Mo
       <View style={styles.overlay}>
         <View style={styles.view}>
           <Text style={styles.text}>{text}</Text>
-          <ButtonInput title="Close" onPress={onRequestClose} color="#00000089" />
+          <ButtonInput title="Close" onPress={onRequestClose} color={Colors.modal.second} />
         </View>
       </View>
     </Modal>
@@ -27,14 +27,13 @@ const styles = StyleSheet.create({
     width: '90%',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: Colors.default.modalView,
+    backgroundColor: Colors.modal.canvas,
     borderRadius: 30,
     borderStyle: 'solid',
-    borderColor: '#00000089',
+    borderColor: Colors.modal.second,
     borderWidth: 2,
   },
   text: {
-    color: '#000',
     fontSize: 20,
     textAlign: 'center',
     margin: 20,

@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 	},
 	textName: { fontSize: 20 },
-	textSetting: { fontSize: 18, color: '#000' },
+	textSetting: { fontSize: 18 },
 	settings: {
 		backgroundColor: Colors.default.examplesBackround,
 		width: '55%',

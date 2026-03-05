@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback } from 'react';
 import { View, Text, ScrollView, StyleSheet, Pressable } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -148,7 +148,6 @@ const styles = StyleSheet.create({
 		textAlign: 'center',
 		fontSize: 18,
 		marginVertical: 10,
-		color: '#000000c1',
 	},
 	textExample: {
 		textAlign: 'center',

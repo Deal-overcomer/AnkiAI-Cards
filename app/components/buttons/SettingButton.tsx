@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
 		elevation: 5,
 	},
 	fabDisabled: {
-		backgroundColor: '#6e6e6e',
+		backgroundColor: Colors.default.buttonDisabled,
 	},
 });
 

@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 	},
 	textName: {
-		color: '#770000',
+		color: Colors.root.errorTitle,
 		textAlign: 'center',
 		fontWeight: 'bold',
 		fontSize: 26,
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
 		marginTop: 16,
 		textAlign: 'center',
 		fontSize: 22,
-		color: '#3b1515',
+		color: Colors.root.errorMessage,
 	},
 });
 

@@ -28,8 +28,8 @@ const ModalTextInput = React.memo(
 						/>
 
 						<View style={{ flexDirection: 'row', gap: 30 }}>
-							<ButtonInput title="Cancel" onPress={onRequestClose} color="#00000089" width={100} />
-							<ButtonInput title="OK" onPress={() => onSubmit(value)} color="#00000089" width={160} />
+							<ButtonInput title="Cancel" onPress={onRequestClose} color={Colors.modal.second} width={100} />
+							<ButtonInput title="OK" onPress={() => onSubmit(value)} color={Colors.modal.second} width={160} />
 						</View>
 					</View>
 				</KeyboardAvoidingView>
@@ -49,15 +49,14 @@ const styles = StyleSheet.create({
 		width: '90%',
 		justifyContent: 'center',
 		alignItems: 'center',
-		backgroundColor: Colors.default.modalView,
+		backgroundColor: Colors.modal.canvas,
 		borderRadius: 30,
 		borderStyle: 'solid',
-		borderColor: '#00000089',
+		borderColor: Colors.modal.second,
 		borderWidth: 2,
 		padding: 10,
 	},
 	text: {
-		color: '#000',
 		fontSize: 20,
 		textAlign: 'center',
 		margin: 10,
@@ -67,9 +66,8 @@ const styles = StyleSheet.create({
 		height: 50,
 		borderRadius: 12,
 		borderWidth: 1,
-		borderColor: '#aaa',
-		backgroundColor: '#fff',
-		color: '#000',
+		borderColor: Colors.modal.second,
+		backgroundColor: Colors.modal.input,
 		fontSize: 18,
 		paddingHorizontal: 12,
 		marginBottom: 16,

@@ -35,12 +35,11 @@ const styles = StyleSheet.create({
     elevation: 10,
   },
   buttonText: {
-    color: '#000',
     fontWeight: 500,
   },
   buttonPressed: { transform: [{ scale: 0.95 }], elevation: 5 },
-  buttonDisabled: { backgroundColor: '#6e6e6e' },
-  textDisabled: { color: '#919191' },
+  buttonDisabled: { backgroundColor: Colors.default.buttonDisabled },
+  textDisabled: { color: Colors.default.textDisabled },
 });
 
 type ButtonInputProps = Partial<PressableProps> & {
