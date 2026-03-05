@@ -141,7 +141,7 @@ const CardEditorScreen = ({ navigation, route }: CardEditorScreenProps) => {
 
 			<ButtonInput
 				title="Create card"
-				width={300}
+				width='75%'
 				height={50}
 				fontsize={20}
 				onPress={() => handleCreateCard(currentIndex)}

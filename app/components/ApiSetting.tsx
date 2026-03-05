@@ -42,8 +42,8 @@ const ApiSetting = React.memo(({ firstInit }: SettingsProps) => {
 			/>
 			<Text style={styles.textName}>API Key</Text>
 			<View style={styles.viewButtons}>
-				<ButtonInput width={150} title="enter" onPress={() => setModalTextInputVisible(true)} />
-				<ButtonInput width={150} title="copy" onPress={handleOnCopy} />
+				<ButtonInput width="40%" title="enter" onPress={() => setModalTextInputVisible(true)} />
+				<ButtonInput width="40%" title="copy" onPress={handleOnCopy} />
 			</View>
 		</View>
 	);

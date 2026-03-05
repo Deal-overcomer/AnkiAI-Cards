@@ -3,7 +3,7 @@ import { StyleSheet, Text, Pressable, PressableProps } from 'react-native';
 import Colors from '@constants/Colors';
 
 const ButtonInput = React.memo(
-  ({ title = '', disabled, color, width = 200, height = 40, fontsize = 18, ...rest }: ButtonInputProps) => {
+  ({ title = '', disabled, color, width = '50%', height = 40, fontsize = 18, ...rest }: ButtonInputProps) => {
 
     return (
       <Pressable

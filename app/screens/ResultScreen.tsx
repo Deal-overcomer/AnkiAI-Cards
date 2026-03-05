@@ -111,7 +111,7 @@ const ResultScreen = ({ navigation, route }: ResultScreenProps) => {
 					disabled={selectedSet.size === 0}
 					title="Add to flashcards"
 					fontsize={36}
-					width={360}
+					width='85%'
 					height={60}
 					onPress={() => handleOpenCardEditor({ navigation, route })}
 				/>
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
 		marginTop: 20,
 		backgroundColor: Colors.default.posBackround,
 		borderRadius: 40,
-		padding: 5,
+		padding: 8,
 		elevation: 10,
 	},
 	viewExamples: {
