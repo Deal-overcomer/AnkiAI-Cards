@@ -83,7 +83,7 @@ Generated cards are added to AnkiDroid using the AnkiDroid API. The card model i
 ### Clone the repository
 
 ```bash
-git clone https://github.com/<your-username>/AnkiAI-Cards.git
+git clone https://github.com/Deal-overcomer/AnkiAI-Cards.git
 cd AnkiAI-Cards
 ```
 
@@ -126,10 +126,10 @@ The output APK will be located at:
 android/app/build/outputs/apk/release/app-release.apk
 ```
 
-> **Note:** Make sure you have a signing keystore configured in `android/app/build.gradle` before building a release APK intended for distribution.
+> **Note:** Make sure you have a signing keystore configured in `android/app/build.gradle` before building a release APK intended for distribution. Set your environments in `android/gradle.properties` as well.
 
 ---
 
 ## Downloads
 
-Pre-built Android APKs are available on the [Releases](https://github.com/<your-username>/AnkiAI-Cards/releases) page.
+Pre-built Android APKs are available on the [Releases](https://github.com/Deal-overcomer/AnkiAI-Cards/releases) page.
