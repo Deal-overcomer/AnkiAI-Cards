@@ -18,7 +18,7 @@ const getContentAI = (prompt: string, settings: { language: string; levelOfLangu
     Reponse in ${settings.language} language, use only ${settings.levelOfLanguage} words. 
     Make many parts of speech, in order: nouns, verbs, adjectives, adverbs, conjunctions, 
     prepositions, interjections, pronouns, determiners, etc. You can use any tenses.
-    Don't make double POS, make 'noun-soft_thing, noun-wild_animal, verb-lift_hands', etc.
+    Don't make double POS, make 'noun-soft-thing, noun-wild-animal, verb-lift-hands', etc.
     Make 3 examples.
 
     Make the definitionCloze and examplesCloze by removing the word from the definition and examples,
@@ -30,7 +30,7 @@ const getContentAI = (prompt: string, settings: { language: string; levelOfLangu
       word: "run";
       posData: [
         {
-          partOfSpeech: verb-move_fast;
+          partOfSpeech: verb-move-fast;
           definition: "To move swiftly on foot.";
           definitionCloze: "To move swiftly on foot.{{c1::}}";
           examples: [
