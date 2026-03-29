@@ -30,7 +30,7 @@ const getContentAI = (prompt: string, settings: { language: string; levelOfLangu
       word: "run";
       posData: [
         {
-          partOfSpeech: verb-move-fast;
+          partOfSpeech: verb-move-fast.;
           definition: "To move swiftly on foot.";
           definitionCloze: "To move swiftly on foot.{{c1::}}";
           examples: [
