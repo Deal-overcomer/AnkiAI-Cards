@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, Modal, ModalProps, View, StyleSheet, TextInput, KeyboardAvoidingView } from 'react-native';
+import { Text, Modal, ModalProps, View, StyleSheet, TextInput, KeyboardAvoidingView, Pressable } from 'react-native';
 import ButtonInput from './buttons/ButtonInput';
 import Colors from '@constants/Colors';
 
@@ -13,7 +13,7 @@ const ModalTextInput = React.memo(
 
 		return (
 			<Modal {...rest} visible={visible} onRequestClose={onRequestClose} animationType="fade" transparent={true}>
-				<KeyboardAvoidingView style={styles.overlay}>
+				<Pressable style={styles.overlay} onPress={onRequestClose}>
 					<View style={styles.view}>
 						{label ? <Text style={styles.text}>{label}</Text> : null}
 						<TextInput
@@ -32,7 +32,7 @@ const ModalTextInput = React.memo(
 							<ButtonInput title="OK" onPress={() => onSubmit(value)} color={Colors.modal.second} width={160} />
 						</View>
 					</View>
-				</KeyboardAvoidingView>
+				</Pressable>
 			</Modal>
 		);
 	},

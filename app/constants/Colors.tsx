@@ -17,7 +17,7 @@ const Colors = {
   modal: {
     canvas: 'rgba(86, 0, 129, 0.763)',
     second: 'rgb(52, 6, 81)',
-    input: 'rgb(188, 178, 192)',
+    input: 'rgb(255, 238, 255)',
   },
 }
 
