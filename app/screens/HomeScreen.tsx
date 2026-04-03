@@ -1,14 +1,15 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { View, StyleSheet, TextInput, ActivityIndicator } from 'react-native';
+import ButtonInput from '@components/buttons/ButtonInput';
+import SettingButton from '@components/buttons/SettingButton';
+import ModalViewMini from '@components/ModalViewMini';
+import Colors from '@constants/Colors';
+import { generateContent } from '@core/generatorAI';
+import { getApiKey, initApiKey, InitSettings } from '@core/settings';
 import { useFocusEffect } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import React, { useCallback, useEffect, useState } from 'react';
+import { ActivityIndicator, StyleSheet, TextInput, View } from 'react-native';
 import { RootStackParamList } from '../App';
-import ButtonInput from '@components/buttons/ButtonInput';
-import ModalViewMini from '@components/ModalViewMini';
-import SettingButton from '@components/buttons/SettingButton';
-import { getApiKey, initApiKey, InitSettings } from '@core/settings';
-import { generateContent } from '@core/generatorAI';
-import Colors from '@constants/Colors';
+
 
 const HomeScreen = ({ navigation }: HomeScreenProps) => {
 	const [text, setText] = useState('');
@@ -91,6 +92,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 	},
 	textInput: {
+		color: Colors.root.text,
 		backgroundColor: Colors.default.textInput,
 		width: '80%',
 		borderRadius: 100,

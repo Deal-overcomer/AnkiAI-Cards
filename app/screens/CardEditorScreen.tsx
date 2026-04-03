@@ -1,15 +1,15 @@
-import React, { useCallback } from 'react';
-import { Text, View, TextInput, StyleSheet } from 'react-native';
-import { RouteProp } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { KeyboardAwareScrollView, KeyboardStickyView } from 'react-native-keyboard-controller';
 import ButtonInput from '@components/buttons/ButtonInput';
 import Setting from '@components/Setting';
-import { RootStackParamList } from '../App';
+import Colors from '@constants/Colors';
+import * as Options from '@constants/Options';
 import { addCard } from '@core/ankiDroidApi';
 import { getSettings } from '@core/settings';
-import * as Options from '@constants/Options';
-import Colors from '@constants/Colors';
+import { RouteProp } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import React, { useCallback } from 'react';
+import { StyleSheet, Text, TextInput, View } from 'react-native';
+import { KeyboardAwareScrollView, KeyboardStickyView } from 'react-native-keyboard-controller';
+import { RootStackParamList } from '../App';
 
 
 const CardEditorScreen = ({ navigation, route }: CardEditorScreenProps) => {
@@ -162,12 +162,14 @@ const styles = StyleSheet.create({
 		backgroundColor: Colors.default.main,
 	},
 	titleText: {
+		color: Colors.root.text,
 		fontSize: 22,
 		textAlign: 'center',
 		marginTop: 10,
 		fontWeight: '600',
 	},
 	editableText: {
+		color: Colors.root.text,
 		fontSize: 18,
 		marginHorizontal: 16,
 		marginVertical: 8,

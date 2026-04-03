@@ -1,7 +1,8 @@
-import React from 'react';
-import { Text, Modal, ModalProps, View, StyleSheet, Pressable } from 'react-native';
-import ButtonInput from './buttons/ButtonInput';
 import Colors from '@constants/Colors';
+import React from 'react';
+import { Modal, ModalProps, Pressable, StyleSheet, Text, View } from 'react-native';
+import ButtonInput from './buttons/ButtonInput';
+
 
 const ModalViewMini = React.memo(({ text, visible, onRequestClose, ...rest }: ModalViewMiniProps) => {
   return (
@@ -37,6 +38,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
     margin: 20,
+    color: Colors.root.text,
   },
 });
 

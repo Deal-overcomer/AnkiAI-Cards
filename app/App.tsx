@@ -1,17 +1,22 @@
-import React, { useCallback } from 'react';
+import { SettingsProps } from '@components/ApiSetting';
+import CustomBackButton from '@components/buttons/CustomBackButton';
+import Colors from '@constants/Colors';
+import { ApiResponseProps } from '@core/generatorAI';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { KeyboardProvider } from 'react-native-keyboard-controller';
-import 'react-native-url-polyfill/auto';
-import CustomBackButton from '@components/buttons/CustomBackButton';
-import { SettingsProps } from '@components/ApiSetting';
+import CardEditorScreen from '@screens/CardEditorScreen';
 import ErrorCatchScreen, { ErrorCatchProps } from '@screens/ErrorCatchScreen';
 import HomeScreen from '@screens/HomeScreen';
 import ResultScreen from '@screens/ResultScreen';
 import SettingsScreen from '@screens/SettingsScreen';
-import CardEditorScreen from '@screens/CardEditorScreen';
-import { ApiResponseProps } from '@core/generatorAI';
-import Colors from '@constants/Colors';
+import React, { useCallback } from 'react';
+import { KeyboardProvider } from 'react-native-keyboard-controller';
+import 'react-native-url-polyfill/auto';
+
+
+// TODO: Починить стрелку в инпутах
+// TODO: Добавить переключение цвета темы в настройках
+// TODO: Пофиксить прыгающую кнопку create card
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 

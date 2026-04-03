@@ -1,10 +1,11 @@
-import React, { useCallback, useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import ModalTextInput from '@components/ModalTextInput';
-import DefaultSetting from '@constants/DefaultSettings';
 import Colors from '@constants/Colors';
+import DefaultSetting from '@constants/DefaultSettings';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Picker } from '@react-native-picker/picker';
+import React, { useCallback, useEffect } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+
 
 const Setting = React.memo(({ setting, settingName, options, onChange = () => { } }: SettingProps) => {
 	const [selectedValue, setSelectedValue] = React.useState('');
@@ -62,7 +63,7 @@ const Setting = React.memo(({ setting, settingName, options, onChange = () => { 
 			/>
 			<Text style={styles.textName}>{settingName}</Text>
 			<View style={styles.settings}>
-				<Picker selectedValue={selectedValue} mode="dropdown" onValueChange={value => setSelectedValue(value)}>
+				<Picker selectedValue={selectedValue} mode="dropdown" dropdownIconColor={Colors.root.text} onValueChange={value => setSelectedValue(value)} >
 					{options.map(option => (
 						<Picker.Item key={option} label={option} value={option} style={styles.textSetting} />
 					))}
@@ -89,7 +90,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 	},
 	textName: { fontSize: 20, color: Colors.root.text },
-	textSetting: { fontSize: 18, color: Colors.root.text },
+	textSetting: { fontSize: 18, color: Colors.root.text, backgroundColor: Colors.default.examplesBackround },
 	settings: {
 		backgroundColor: Colors.default.examplesBackround,
 		width: '55%',

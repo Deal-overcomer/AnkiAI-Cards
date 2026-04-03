@@ -1,11 +1,12 @@
-import { ScrollView, StyleSheet, View } from 'react-native';
+import ApiSetting from '@components/ApiSetting';
+import Setting from '@components/Setting';
+import Colors from '@constants/Colors';
+import * as Options from '@constants/Options';
 import { RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { RootStackParamList } from '../App';
-import Setting from '@components/Setting';
-import ApiSetting from '@components/ApiSetting';
-import * as Options from '@constants/Options';
-import Colors from '@constants/Colors';
+
 
 const SettingsScreen = ({ route }: SettingsScreenProps) => (
 	<View style={styles.view}>

@@ -1,7 +1,7 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as Keychain from 'react-native-keychain';
 import defaultSettings from '@constants/DefaultSettings';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { HomeScreenNavigationProp } from '@screens/HomeScreen';
+import * as Keychain from 'react-native-keychain';
 
 export const initApiKey = async ({ navigation }: initApiKey) => {
 	const apiKey = await Keychain.getGenericPassword();

@@ -1,8 +1,9 @@
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import Colors from '@constants/Colors';
 import { RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { RootStackParamList } from '../App';
-import Colors from '@constants/Colors';
+
 
 const ErrorCatchScreen = ({ route }: ErrorScreenNavigationProps) => {
 	return (

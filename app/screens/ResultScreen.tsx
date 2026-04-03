@@ -1,12 +1,13 @@
-import React, { useCallback } from 'react';
-import { View, Text, ScrollView, StyleSheet, Pressable } from 'react-native';
+import ButtonInput from '@components/buttons/ButtonInput';
+import Colors from '@constants/Colors';
+import Monicon from '@monicon/native';
 import { RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import Animated, { LinearTransition, Easing, FadeIn, FadeOut } from 'react-native-reanimated';
-import ButtonInput from '@components/buttons/ButtonInput';
+import React, { useCallback } from 'react';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import Animated, { Easing, FadeIn, FadeOut, LinearTransition } from 'react-native-reanimated';
 import { RootStackParamList } from '../App';
-import Monicon from '@monicon/native';
-import Colors from '@constants/Colors';
+
 
 const ResultScreen = ({ navigation, route }: ResultScreenProps) => {
 	const [openIndex, setOpenIndex] = React.useState<Set<number>>(new Set());
@@ -61,7 +62,7 @@ const ResultScreen = ({ navigation, route }: ResultScreenProps) => {
 					>
 						{selectedSet.has(index) && (
 							<View style={styles.icon}>
-								<Monicon name="mdi:check-outline" size={30} />
+								<Monicon name="mdi:check-outline" color={Colors.root.text} size={30} />
 							</View>
 						)}
 						<Pressable onPress={() => toggleSelectedList(index)}>
@@ -141,20 +142,27 @@ const styles = StyleSheet.create({
 		overflow: 'hidden',
 	},
 	textPos: {
+		color: Colors.root.text,
 		textAlign: 'center',
 		fontSize: 22,
 		fontWeight: 700,
 	},
 	textDefinition: {
+		color: Colors.root.text,
 		textAlign: 'center',
 		fontSize: 18,
 		marginVertical: 10,
 	},
 	textExample: {
+		color: Colors.root.text,
 		textAlign: 'center',
 		fontSize: 20,
 	},
-	icon: { position: 'absolute', right: 24, top: 4 },
+	icon: {
+		position: 'absolute',
+		right: 24,
+		top: 4
+	},
 });
 
 type ResultSceenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Result'>;

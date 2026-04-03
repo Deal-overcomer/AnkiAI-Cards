@@ -1,7 +1,8 @@
-import React from 'react';
-import { Pressable, StyleSheet, View, ViewStyle } from 'react-native';
 import { SettingsIcon } from '@assets/icons/SettingsIcon';
 import Colors from '@constants/Colors';
+import React from 'react';
+import { Pressable, StyleSheet, View, ViewStyle } from 'react-native';
+
 
 const SettingsFab = React.memo(({ onPress, style, disabled }: Props) => (
 	<View style={styles.main}>
@@ -17,7 +18,12 @@ const SettingsFab = React.memo(({ onPress, style, disabled }: Props) => (
 ))
 
 const styles = StyleSheet.create({
-	main: { position: 'absolute', top: 70, right: 25, zIndex: 100 },
+	main: {
+		position: 'absolute',
+		top: 70,
+		right: 25,
+		zIndex: 100
+	},
 	fab: {
 		width: 60,
 		height: 60,

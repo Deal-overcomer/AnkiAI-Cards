@@ -1,6 +1,7 @@
-import React from 'react';
-import { StyleSheet, Text, Pressable, PressableProps } from 'react-native';
 import Colors from '@constants/Colors';
+import React from 'react';
+import { Pressable, PressableProps, StyleSheet, Text } from 'react-native';
+
 
 const ButtonInput = React.memo(
   ({ title = '', disabled, color, width = '50%', height = 40, fontsize = 18, ...rest }: ButtonInputProps) => {
@@ -36,6 +37,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontWeight: 500,
+    color: Colors.root.text,
   },
   buttonPressed: { transform: [{ scale: 0.95 }], elevation: 5 },
   buttonDisabled: { backgroundColor: Colors.default.buttonDisabled },

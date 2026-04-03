@@ -1,9 +1,9 @@
 import { GoogleGenAI } from '@google/genai';
-import { OpenAI } from 'openai';
 import { HomeScreenNavigationProp } from '@screens/HomeScreen';
-import { getApiKey, getSettings } from './settings';
-import parseSdkAndModel from '@utils/parseSdkAndModel';
 import getContentAI from '@utils/getContentAI';
+import parseSdkAndModel from '@utils/parseSdkAndModel';
+import { OpenAI } from 'openai';
+import { getApiKey, getSettings } from './settings';
 
 export const generateContent = async ({ prompt, setIsLoading, navigation }: GenerateContentProps): Promise<void> => {
 	setIsLoading(true);

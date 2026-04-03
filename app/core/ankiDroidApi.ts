@@ -1,5 +1,5 @@
-import AnkiDroid from '@deal-overcomer/react-native-ankidroid';
 import { answerFmt1, css, questionFmt1 } from '@constants/ankiDroidApiC';
+import AnkiDroid from '@deal-overcomer/react-native-ankidroid';
 
 export const addCard = async (deckName: string, newCard: ankiDroidCard) => {
 	await AnkiDroid.requestPermission();

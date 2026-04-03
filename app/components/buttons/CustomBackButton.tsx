@@ -1,6 +1,7 @@
-import React from 'react';
-import { StyleSheet, TouchableOpacity, Text, TouchableOpacityProps } from 'react-native';
 import Colors from '@constants/Colors';
+import React from 'react';
+import { StyleSheet, Text, TouchableOpacity, TouchableOpacityProps } from 'react-native';
+
 
 const CustomBackButton = React.memo(({ ...props }: TouchableOpacityProps) => {
 

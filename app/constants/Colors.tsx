@@ -1,6 +1,6 @@
 const Colors = {
   root: {
-    text: 'rgb(0, 0, 0)',
+    text: 'rgb(255, 255, 255)',
     errorTitle: 'rgb(119, 0, 0)',
     errorMessage: 'rgb(59, 21, 21)',
   },

@@ -1,11 +1,12 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import Clipboard from '@react-native-clipboard/clipboard';
 import ModalTextInput from '@components/ModalTextInput';
-import ModalViewMini from './ModalViewMini';
-import ButtonInput from './buttons/ButtonInput';
-import { getApiKey, saveApiKey } from '@core/settings';
 import Colors from '@constants/Colors';
+import { getApiKey, saveApiKey } from '@core/settings';
+import Clipboard from '@react-native-clipboard/clipboard';
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import ButtonInput from './buttons/ButtonInput';
+import ModalViewMini from './ModalViewMini';
+
 
 const ApiSetting = React.memo(({ firstInit }: SettingsProps) => {
 	const [modalTextInputVisible, setModalTextInputVisible] = React.useState(firstInit);
@@ -65,7 +66,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-around',
 	},
-	textName: { fontSize: 20 },
+	textName: { fontSize: 20, color: Colors.root.text },
 });
 
 export type SettingsProps = { firstInit: boolean };

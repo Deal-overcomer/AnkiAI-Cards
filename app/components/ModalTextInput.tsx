@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { Text, Modal, ModalProps, View, StyleSheet, TextInput, KeyboardAvoidingView, Pressable } from 'react-native';
-import ButtonInput from './buttons/ButtonInput';
 import Colors from '@constants/Colors';
+import React, { useEffect, useState } from 'react';
+import { Modal, ModalProps, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import ButtonInput from './buttons/ButtonInput';
+
 
 const ModalTextInput = React.memo(
 	({ visible, onRequestClose, onSubmit, label, initialValue = '', placeholder = '', ...rest }: ModalTextInputProps) => {
@@ -60,6 +61,7 @@ const styles = StyleSheet.create({
 		fontSize: 20,
 		textAlign: 'center',
 		margin: 10,
+		color: Colors.root.text,
 	},
 	input: {
 		width: '90%',
