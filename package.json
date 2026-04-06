@@ -17,6 +17,7 @@
 		"@monicon/metro": "1.2.2",
 		"@monicon/native": "1.2.2",
 		"@react-native-clipboard/clipboard": "1.16.3",
+		"@react-native-community/blur": "4.4.1",
 		"@react-native-community/masked-view": "0.1.11",
 		"@react-native-picker/picker": "2.11.1",
 		"@react-native/new-app-screen": "0.80.0",

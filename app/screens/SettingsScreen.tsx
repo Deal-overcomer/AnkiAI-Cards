@@ -1,27 +1,36 @@
 import ApiSetting from '@components/ApiSetting';
 import Setting from '@components/Setting';
-import Colors from '@constants/Colors';
+import { ColorsI } from '@constants/Colors';
 import * as Options from '@constants/Options';
 import { RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useRefreshColors } from '@utils/useColors';
+import useStyles from '@utils/useStyles';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { RootStackParamList } from '../App';
 
+const SettingsScreen = ({ route }: SettingsScreenProps) => {
+	const { styles } = useStyles(styling);
 
-const SettingsScreen = ({ route }: SettingsScreenProps) => (
-	<View style={styles.view}>
-		<ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: '100%' }}>
-			<Setting setting="deckName" settingName="Deck name" options={Options.deckNames} />
-			<Setting setting="language" settingName="Language" options={Options.languages} />
-			<Setting setting="levelOfLanguage" settingName="Language level" options={Options.englishLevels} />
-			<Setting setting="model" settingName="AI model" options={Options.models} />
-			<ApiSetting firstInit={route.params.firstInit} />
-		</ScrollView>
-	</View>
-);
+	const refreshColors = useRefreshColors();
 
-const styles = StyleSheet.create({
-	view: { flex: 1, backgroundColor: Colors.default.main },
+	return (
+		<View style={styles.view}>
+			<ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: '100%' }}>
+				<Setting setting="deckName" settingName="Deck name" options={Options.deckNames} />
+				<Setting setting="language" settingName="Language" options={Options.languages} />
+				<Setting setting="levelOfLanguage" settingName="Language level" options={Options.englishLevels} />
+				<Setting setting="fontColor" settingName="Font color" options={Options.fontColors} createOption={false} onChange={refreshColors} />
+				<Setting setting="model" settingName="AI model" options={Options.models} />
+
+				<ApiSetting firstInit={route.params.firstInit} />
+			</ScrollView>
+		</View>
+	);
+}
+
+const styling = (colors: ColorsI) => StyleSheet.create({
+	view: { flex: 1, backgroundColor: colors.default.main },
 });
 
 export type SettingScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Settings'>;

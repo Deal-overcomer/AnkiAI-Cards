@@ -4,6 +4,7 @@ const defaultSettings: Settings = {
 	deckName: 'AnkiAICards',
 	language: 'English',
 	levelOfLanguage: 'B2',
+	fontColor: 'White',
 	model: 'gemini/gemini-2.0-flash-lite',
 	settingsInitialized: 'true',
 };

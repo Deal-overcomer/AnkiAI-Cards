@@ -1,18 +1,22 @@
 import ButtonInput from '@components/buttons/ButtonInput';
-import Colors from '@constants/Colors';
+import { ColorsI } from '@constants/Colors';
 import Monicon from '@monicon/native';
 import { RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import useStyles from '@utils/useStyles';
 import React, { useCallback } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import Animated, { Easing, FadeIn, FadeOut, LinearTransition } from 'react-native-reanimated';
 import { RootStackParamList } from '../App';
 
 
+const duration: number = 150;
+
 const ResultScreen = ({ navigation, route }: ResultScreenProps) => {
 	const [openIndex, setOpenIndex] = React.useState<Set<number>>(new Set());
 	const [selectedSet, setSelectedSet] = React.useState<Set<number>>(new Set());
-	const duration: number = 150;
+
+	const { styles, colors } = useStyles(styling)
 
 	const toggleOpenIndex = useCallback((index: number) => {
 		setOpenIndex(prev => {
@@ -62,13 +66,15 @@ const ResultScreen = ({ navigation, route }: ResultScreenProps) => {
 					>
 						{selectedSet.has(index) && (
 							<View style={styles.icon}>
-								<Monicon name="mdi:check-outline" color={Colors.root.text} size={30} />
+								<Monicon name="mdi:check-outline" color={colors.root.text} size={30} />
 							</View>
 						)}
+
 						<Pressable onPress={() => toggleSelectedList(index)}>
 							<Text style={styles.textPos}>{value.partOfSpeech}</Text>
 							<Text style={styles.textDefinition}>{value.definition}</Text>
 						</Pressable>
+
 						<Pressable onPress={() => toggleOpenIndex(index)}>
 							<Animated.View
 								layout={LinearTransition.easing(Easing.inOut(Easing.ease)).duration(duration)}
@@ -106,55 +112,59 @@ const ResultScreen = ({ navigation, route }: ResultScreenProps) => {
 								)}
 							</Animated.View>
 						</Pressable>
+
 					</Animated.View>
 				))}
-				<ButtonInput
-					disabled={selectedSet.size === 0}
-					title="Add to flashcards"
-					fontsize={36}
-					width='85%'
-					height={60}
-					onPress={() => handleOpenCardEditor({ navigation, route })}
-				/>
+
+				<Animated.View style={{ width: '85%' }} layout={LinearTransition.easing(Easing.inOut(Easing.ease)).duration(duration)}>
+					<ButtonInput
+						disabled={selectedSet.size === 0}
+						title="Add to flashcards"
+						fontsize={36}
+						width='100%'
+						height={60}
+						onPress={() => handleOpenCardEditor({ navigation, route })}
+					/>
+				</Animated.View>
 			</ScrollView>
 		</View>
 	);
 };
 
-const styles = StyleSheet.create({
+const styling = (colors: ColorsI) => StyleSheet.create({
 	main: {
 		flex: 1,
-		backgroundColor: Colors.default.main,
+		backgroundColor: colors.default.main,
 	},
 	viewPos: {
 		width: '95%',
 		marginTop: 20,
-		backgroundColor: Colors.default.posBackround,
+		backgroundColor: colors.default.posBackround,
 		borderRadius: 40,
 		padding: 8,
 		elevation: 10,
 	},
 	viewExamples: {
-		backgroundColor: Colors.default.examplesBackround,
+		backgroundColor: colors.default.examplesBackround,
 		marginBottom: 10,
 		borderRadius: 20,
 		padding: 5,
 		overflow: 'hidden',
 	},
 	textPos: {
-		color: Colors.root.text,
+		color: colors.root.text,
 		textAlign: 'center',
 		fontSize: 22,
 		fontWeight: 700,
 	},
 	textDefinition: {
-		color: Colors.root.text,
+		color: colors.root.text,
 		textAlign: 'center',
 		fontSize: 18,
 		marginVertical: 10,
 	},
 	textExample: {
-		color: Colors.root.text,
+		color: colors.root.text,
 		textAlign: 'center',
 		fontSize: 20,
 	},

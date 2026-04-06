@@ -1,11 +1,12 @@
 import ButtonInput from '@components/buttons/ButtonInput';
 import Setting from '@components/Setting';
-import Colors from '@constants/Colors';
+import { ColorsI } from '@constants/Colors';
 import * as Options from '@constants/Options';
 import { addCard } from '@core/ankiDroidApi';
 import { getSettings } from '@core/settings';
 import { RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import useStyles from '@utils/useStyles';
 import React, { useCallback } from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
 import { KeyboardAwareScrollView, KeyboardStickyView } from 'react-native-keyboard-controller';
@@ -13,11 +14,13 @@ import { RootStackParamList } from '../App';
 
 
 const CardEditorScreen = ({ navigation, route }: CardEditorScreenProps) => {
-	const deckNameRef = React.useRef<string | undefined>(undefined);
-
 	const [data, setData] = React.useState(route.params.posData);
 	const [currentIndex, setCurrentIndex] = React.useState(0);
 	const [currentSelection, setCurrentSelection] = React.useState<Selection>();
+
+	const deckNameRef = React.useRef<string | undefined>(undefined);
+
+	const { styles } = useStyles(styling)
 
 	const handleCreateCard = useCallback(
 		async (index: number) => {
@@ -87,6 +90,7 @@ const CardEditorScreen = ({ navigation, route }: CardEditorScreenProps) => {
 			<KeyboardAwareScrollView showsVerticalScrollIndicator={false} style={styles.second}>
 				<Setting setting="deckName" settingName="Deck name" options={Options.deckNames} onChange={syncSettings} />
 				<Text style={styles.titleText}>{route.params.posData[currentIndex].partOfSpeech}</Text>
+
 				<TextInput
 					onSelectionChange={event =>
 						handleSelection({
@@ -109,6 +113,7 @@ const CardEditorScreen = ({ navigation, route }: CardEditorScreenProps) => {
 					}}
 				/>
 				<Text style={styles.titleText}>examples</Text>
+
 				{data[currentIndex].examplesCloze.map((examples, index) => (
 					<TextInput
 						onSelectionChange={event =>
@@ -150,30 +155,30 @@ const CardEditorScreen = ({ navigation, route }: CardEditorScreenProps) => {
 	);
 };
 
-const styles = StyleSheet.create({
+const styling = (colors: ColorsI) => StyleSheet.create({
 	main: {
 		alignItems: 'center',
-		backgroundColor: Colors.default.main,
+		backgroundColor: colors.default.main,
 		flex: 1,
 		paddingBottom: 34,
 	},
 	second: {
 		width: '100%',
-		backgroundColor: Colors.default.main,
+		backgroundColor: colors.default.main,
 	},
 	titleText: {
-		color: Colors.root.text,
+		color: colors.root.text,
 		fontSize: 22,
 		textAlign: 'center',
 		marginTop: 10,
 		fontWeight: '600',
 	},
 	editableText: {
-		color: Colors.root.text,
+		color: colors.root.text,
 		fontSize: 18,
 		marginHorizontal: 16,
 		marginVertical: 8,
-		backgroundColor: Colors.default.examplesBackround,
+		backgroundColor: colors.default.examplesBackround,
 		borderRadius: 10,
 	}
 });

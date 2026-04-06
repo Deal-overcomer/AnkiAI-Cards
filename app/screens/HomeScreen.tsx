@@ -1,11 +1,12 @@
 import ButtonInput from '@components/buttons/ButtonInput';
 import SettingButton from '@components/buttons/SettingButton';
 import ModalViewMini from '@components/ModalViewMini';
-import Colors from '@constants/Colors';
+import { ColorsI } from '@constants/Colors';
 import { generateContent } from '@core/generatorAI';
 import { getApiKey, initApiKey, InitSettings } from '@core/settings';
 import { useFocusEffect } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import useStyles from '@utils/useStyles';
 import React, { useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator, StyleSheet, TextInput, View } from 'react-native';
 import { RootStackParamList } from '../App';
@@ -16,22 +17,19 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [modalText, setModalText] = useState(false);
 	const [modalApi, setModalApi] = useState(false);
+
 	const textInputRef = React.useRef<TextInput>(null);
 	const textRef = React.useRef<string>(text);
 
+	const { styles, colors } = useStyles(styling)
+
 	const handlePress = useCallback(async () => {
 		const apiKey = await getApiKey();
-		if (!apiKey) {
-			setModalApi(true);
-		} else if (textRef.current.trim() && !isLoading) {
-			await generateContent({
-				prompt: textRef.current.trim().toLowerCase(),
-				setIsLoading,
-				navigation,
-			});
-		} else {
-			setModalText(true);
-		}
+		const prompt = textRef.current.trim().toLocaleLowerCase()
+
+		if (!apiKey) setModalApi(true);
+		else if (prompt && !isLoading) await generateContent({ prompt, setIsLoading, navigation });
+		else setModalText(true);
 	}, [navigation, isLoading]);
 
 	const handleCloseModals = useCallback(() => {
@@ -56,7 +54,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
 	useEffect(() => {
 		const init = async () => {
 			await InitSettings();
-			await initApiKey({ navigation: navigation });
+			await initApiKey({ navigation });
 		};
 
 		init();
@@ -64,39 +62,41 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
 
 	return (
 		<View style={styles.main}>
-			<ModalViewMini text="Please enter a word to generate" visible={modalText} onRequestClose={handleCloseModals} />
-			<ModalViewMini text="Please enter your API key" visible={modalApi} onRequestClose={handleCloseModals} />
 			<SettingButton disabled={isLoading} onPress={() => navigation.navigate('Settings', { firstInit: false })} />
 			<TextInput
+				ref={textInputRef}
 				style={styles.textInput}
 				placeholder="Enter your word"
 				onChangeText={setText}
 				onSubmitEditing={handlePress}
-				ref={textInputRef}
 				value={text}
 				editable={!isLoading}
+				textAlign='center'
+				cursorColor={colors.default.cursor}
+				placeholderTextColor={colors.root.placeholder}
 			/>
-			{isLoading && (
-				<ActivityIndicator style={styles.activityIndicator} size="large" color={Colors.default.activityIndicator} />
-			)}
 			<ButtonInput title="GENERATE" disabled={isLoading} onPress={handlePress} />
+
+			{isLoading && <ActivityIndicator style={styles.activityIndicator} size="large" color={colors.default.activityIndicator} />}
+
+			<ModalViewMini text="Please enter a word to generate" visible={modalText} onRequestClose={handleCloseModals} />
+			<ModalViewMini text="Please enter your API key" visible={modalApi} onRequestClose={handleCloseModals} />
 		</View>
-	);
+	)
 };
 
-const styles = StyleSheet.create({
+const styling = (colors: ColorsI) => StyleSheet.create({
 	main: {
 		flex: 1,
-		backgroundColor: Colors.default.main,
+		backgroundColor: colors.default.main,
 		alignItems: 'center',
 		justifyContent: 'center',
 	},
 	textInput: {
-		color: Colors.root.text,
-		backgroundColor: Colors.default.textInput,
+		color: colors.root.text,
+		backgroundColor: colors.default.textInput,
 		width: '80%',
 		borderRadius: 100,
-		textAlign: 'center',
 		fontSize: 20,
 	},
 	activityIndicator: {

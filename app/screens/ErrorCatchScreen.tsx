@@ -1,11 +1,14 @@
-import Colors from '@constants/Colors';
+import { ColorsI } from '@constants/Colors';
 import { RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import useStyles from '@utils/useStyles';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { RootStackParamList } from '../App';
 
 
 const ErrorCatchScreen = ({ route }: ErrorScreenNavigationProps) => {
+	const { styles } = useStyles(styling)
+
 	return (
 		<View style={styles.view}>
 			<ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: '100%' }}>
@@ -16,16 +19,16 @@ const ErrorCatchScreen = ({ route }: ErrorScreenNavigationProps) => {
 	);
 };
 
-const styles = StyleSheet.create({
+const styling = (colors: ColorsI) => StyleSheet.create({
 	view: {
 		flex: 1,
 		padding: 16,
-		backgroundColor: Colors.default.posBackround,
+		backgroundColor: colors.default.posBackround,
 		justifyContent: 'center',
 		alignItems: 'center',
 	},
 	textName: {
-		color: Colors.root.errorTitle,
+		color: colors.root.errorTitle,
 		textAlign: 'center',
 		fontWeight: 'bold',
 		fontSize: 26,
@@ -34,7 +37,7 @@ const styles = StyleSheet.create({
 		marginTop: 16,
 		textAlign: 'center',
 		fontSize: 22,
-		color: Colors.root.errorMessage,
+		color: colors.root.errorMessage,
 	},
 });
 

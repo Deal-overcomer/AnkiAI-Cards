@@ -1,6 +1,9 @@
+import { fontColorT } from "@core/settings";
+
 const Colors = {
   root: {
     text: 'rgb(255, 255, 255)',
+    placeholder: "rgb(235, 235, 235)",
     errorTitle: 'rgb(119, 0, 0)',
     errorMessage: 'rgb(59, 21, 21)',
   },
@@ -13,12 +16,25 @@ const Colors = {
     examplesBackround: '  rgb(0, 88, 101)',
     buttonDisabled: 'rgb(110, 110, 110)',
     textDisabled: 'rgb(145, 145, 145)',
+    cursor: 'rgb(0, 197, 181)',
   },
   modal: {
-    canvas: 'rgba(86, 0, 129, 0.763)',
-    second: 'rgb(52, 6, 81)',
-    input: 'rgb(255, 238, 255)',
+    canvas: 'rgba(0, 0, 0, 0.214)',
+    second: 'rgb(46, 140, 131)',
+    input: 'rgb(229, 229, 229)',
+    cursor: 'rgb(29, 122, 113)',
+    text: 'rgb(0, 0, 0)',
+    placeholder: "rgb(56, 56, 56)",
   },
 }
+
+export const textColors: Record<fontColorT, string> = {
+  White: 'rgb(255, 255, 255)',
+  Black: 'rgb(0, 0, 0)',
+  Blue: 'rgb(0, 3, 96)',
+  Pink: 'rgb(255, 192, 203)',
+};
+
+export type ColorsI = typeof Colors;
 
 export default Colors;

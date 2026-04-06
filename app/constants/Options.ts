@@ -1,6 +1,12 @@
+import { fontColorT } from '@core/settings';
+
 export const deckNames = ['AnkiAICards', 'MyDeck', 'Default', 'Main'];
 
 export const englishLevels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+
+export const languages = ['English', 'Spanish', 'French', 'German', 'Russian'];
+
+export const fontColors: fontColorT[] = ['White', 'Black', 'Blue', 'Pink'];
 
 export const models = [
 	'gemini/gemini-2.0-flash-lite',
@@ -26,5 +32,3 @@ export const models = [
 	'openrouter/google/gemini-2.5-flash',
 	'openrouter/google/gemini-2.5-pro',
 ];
-
-export const languages = ['English', 'Spanish', 'French', 'German', 'Russian'];

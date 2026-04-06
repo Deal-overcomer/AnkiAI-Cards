@@ -2,6 +2,7 @@ import ModalTextInput from '@components/ModalTextInput';
 import Colors from '@constants/Colors';
 import { getApiKey, saveApiKey } from '@core/settings';
 import Clipboard from '@react-native-clipboard/clipboard';
+import useStyles from '@utils/useStyles';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import ButtonInput from './buttons/ButtonInput';
@@ -11,6 +12,8 @@ import ModalViewMini from './ModalViewMini';
 const ApiSetting = React.memo(({ firstInit }: SettingsProps) => {
 	const [modalTextInputVisible, setModalTextInputVisible] = React.useState(firstInit);
 	const [modalViewMiniVisible, setModalViewMiniVisible] = React.useState(false);
+
+	const { styles } = useStyles(styling)
 
 	const handleOnSubmit = React.useCallback(async (value: string) => {
 		if (value) {
@@ -29,6 +32,12 @@ const ApiSetting = React.memo(({ firstInit }: SettingsProps) => {
 
 	return (
 		<View style={styles.view}>
+			<Text style={styles.textName}>API Key</Text>
+			<View style={styles.viewButtons}>
+				<ButtonInput width="40%" title="enter" onPress={() => setModalTextInputVisible(true)} />
+				<ButtonInput width="40%" title="copy" onPress={handleOnCopy} />
+			</View>
+
 			<ModalViewMini
 				text="Copied!"
 				visible={modalViewMiniVisible}
@@ -41,20 +50,15 @@ const ApiSetting = React.memo(({ firstInit }: SettingsProps) => {
 				label="API Key"
 				placeholder="Enter API Key"
 			/>
-			<Text style={styles.textName}>API Key</Text>
-			<View style={styles.viewButtons}>
-				<ButtonInput width="40%" title="enter" onPress={() => setModalTextInputVisible(true)} />
-				<ButtonInput width="40%" title="copy" onPress={handleOnCopy} />
-			</View>
 		</View>
 	);
 })
 
-const styles = StyleSheet.create({
+const styling = (colors: typeof Colors) => StyleSheet.create({
 	view: {
 		marginTop: 12,
 		marginHorizontal: 16,
-		backgroundColor: Colors.default.posBackround,
+		backgroundColor: colors.default.posBackround,
 		padding: 10,
 		paddingBottom: 20,
 		elevation: 10,
@@ -66,7 +70,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-around',
 	},
-	textName: { fontSize: 20, color: Colors.root.text },
+	textName: { fontSize: 20, color: colors.root.text },
 });
 
 export type SettingsProps = { firstInit: boolean };

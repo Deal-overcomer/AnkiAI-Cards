@@ -31,7 +31,7 @@ export const InitSettings = async () => {
 
 export const getSettings = async (): Promise<Settings> => {
 	const entries = await AsyncStorage.multiGet(Object.keys(defaultSettings));
-	return Object.fromEntries(entries) as Record<keyof Settings, string>;
+	return Object.fromEntries(entries) as Record<keyof Settings, string> as Settings;
 };
 
 const debugSettings = async () => {
@@ -47,10 +47,13 @@ const debugSettings = async () => {
 };
 (global as any).debugSettings = debugSettings;
 
+export type fontColorT = 'White' | 'Black' | 'Blue' | 'Pink';
+
 export interface Settings {
 	deckName: string;
 	language: string;
 	levelOfLanguage: string;
+	fontColor: fontColorT;
 	model: string;
 	settingsInitialized: string;
 }
