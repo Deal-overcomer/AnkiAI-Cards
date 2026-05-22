@@ -1,6 +1,6 @@
 import ButtonInput from '@components/buttons/ButtonInput';
 import Setting from '@components/Setting';
-import { ColorsI } from '@constants/Colors';
+import { TColors } from '@constants/Colors';
 import * as Options from '@constants/Options';
 import { addCard } from '@core/ankiDroidApi';
 import { getSettings } from '@core/settings';
@@ -16,7 +16,7 @@ import { RootStackParamList } from '../App';
 const CardEditorScreen = ({ navigation, route }: CardEditorScreenProps) => {
 	const [data, setData] = React.useState(route.params.posData);
 	const [currentIndex, setCurrentIndex] = React.useState(0);
-	const [currentSelection, setCurrentSelection] = React.useState<Selection>();
+	const [currentSelection, setCurrentSelection] = React.useState<ISelection>();
 
 	const deckNameRef = React.useRef<string | undefined>(undefined);
 
@@ -41,7 +41,7 @@ const CardEditorScreen = ({ navigation, route }: CardEditorScreenProps) => {
 		[data, currentIndex, route.params.word, navigation],
 	);
 
-	const handleSelection = useCallback((selection: Selection) => {
+	const handleSelection = useCallback((selection: ISelection) => {
 		setCurrentSelection(selection);
 	}, []);
 
@@ -150,21 +150,26 @@ const CardEditorScreen = ({ navigation, route }: CardEditorScreenProps) => {
 				height={50}
 				fontsize={20}
 				onPress={() => handleCreateCard(currentIndex)}
+				style={styles.buttonInput}
 			/>
 		</View>
 	);
 };
 
-const styling = (colors: ColorsI) => StyleSheet.create({
+const styling = (colors: TColors) => StyleSheet.create({
 	main: {
 		alignItems: 'center',
 		backgroundColor: colors.default.main,
 		flex: 1,
 		paddingBottom: 34,
+		paddingTop: 12,
 	},
 	second: {
 		width: '100%',
 		backgroundColor: colors.default.main,
+	},
+	buttonInput: {
+		marginTop: 20,
 	},
 	titleText: {
 		color: colors.root.text,
@@ -183,7 +188,7 @@ const styling = (colors: ColorsI) => StyleSheet.create({
 	}
 });
 
-type Selection = {
+interface ISelection {
 	selectedField: 'definition' | `example_${number}`;
 	selectionIndexes: { start: number; end: number };
 };

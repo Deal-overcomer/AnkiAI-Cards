@@ -47,9 +47,9 @@ export const addCard = async (deckName: string, newCard: ankiDroidCard) => {
 	await myAnkiDeck.addNote(valueFields, modelFields);
 };
 
-export type ankiDroidCard = {
+export interface ankiDroidCard {
 	keyword: string;
 	img: string;
 	definition: string[];
 	examples: string[];
-};
+}

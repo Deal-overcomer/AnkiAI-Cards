@@ -1,6 +1,6 @@
-import { Settings } from '@core/settings';
+import { ISettings } from '@core/settings';
 
-const defaultSettings: Settings = {
+const defaultSettings: ISettings = {
 	deckName: 'AnkiAICards',
 	language: 'English',
 	levelOfLanguage: 'B2',

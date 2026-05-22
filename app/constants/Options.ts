@@ -1,4 +1,4 @@
-import { fontColorT } from '@core/settings';
+import { TFontColor } from '@core/settings';
 
 export const deckNames = ['AnkiAICards', 'MyDeck', 'Default', 'Main'];
 
@@ -6,7 +6,7 @@ export const englishLevels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
 
 export const languages = ['English', 'Spanish', 'French', 'German', 'Russian'];
 
-export const fontColors: fontColorT[] = ['White', 'Black', 'Blue', 'Pink'];
+export const fontColors: TFontColor[] = ['White', 'Black', 'Blue', 'Pink'];
 
 export const models = [
 	'gemini/gemini-2.0-flash-lite',

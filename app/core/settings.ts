@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { HomeScreenNavigationProp } from '@screens/HomeScreen';
 import * as Keychain from 'react-native-keychain';
 
-export const initApiKey = async ({ navigation }: initApiKey) => {
+export const initApiKey = async ({ navigation }: IInitApiKey) => {
 	const apiKey = await Keychain.getGenericPassword();
 	if (!apiKey) {
 		navigation.navigate('Settings', { firstInit: true });
@@ -29,9 +29,9 @@ export const InitSettings = async () => {
 	}
 };
 
-export const getSettings = async (): Promise<Settings> => {
+export const getSettings = async (): Promise<ISettings> => {
 	const entries = await AsyncStorage.multiGet(Object.keys(defaultSettings));
-	return Object.fromEntries(entries) as Record<keyof Settings, string> as Settings;
+	return Object.fromEntries(entries) as Record<keyof ISettings, string> as ISettings;
 };
 
 const debugSettings = async () => {
@@ -47,17 +47,17 @@ const debugSettings = async () => {
 };
 (global as any).debugSettings = debugSettings;
 
-export type fontColorT = 'White' | 'Black' | 'Blue' | 'Pink';
+export type TFontColor = 'White' | 'Black' | 'Blue' | 'Pink';
 
-export interface Settings {
+export interface ISettings {
 	deckName: string;
 	language: string;
 	levelOfLanguage: string;
-	fontColor: fontColorT;
+	fontColor: TFontColor;
 	model: string;
 	settingsInitialized: string;
 }
 
-interface initApiKey {
+interface IInitApiKey {
 	navigation: HomeScreenNavigationProp;
 }

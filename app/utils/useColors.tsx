@@ -1,20 +1,20 @@
-import Colors, { ColorsI, textColors } from '@constants/Colors';
-import { getSettings, Settings } from '@core/settings';
+import Colors, { TColors, textColors } from '@constants/Colors';
+import { getSettings, ISettings } from '@core/settings';
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
 
 
-type ColorsContextType = {
-	colors: ColorsI;
+interface IColorsContext {
+	colors: TColors;
 	refreshColors: () => void;
 };
 
-const ColorsContext = createContext<ColorsContextType>({ colors: Colors, refreshColors: () => { } });
+const ColorsContext = createContext<IColorsContext>({ colors: Colors, refreshColors: () => { } });
 
 export const ColorsProvider = ({ children }: { children: React.ReactNode }) => {
-	const [colors, setColors] = useState<ColorsI>(Colors);
+	const [colors, setColors] = useState<TColors>(Colors);
 
 	const loadColors = useCallback(() => {
-		getSettings().then((settings: Settings) => {
+		getSettings().then((settings: ISettings) => {
 			setColors({
 				...Colors,
 				root: {

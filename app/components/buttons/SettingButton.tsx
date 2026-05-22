@@ -5,7 +5,7 @@ import React from 'react';
 import { Pressable, StyleSheet, View, ViewStyle } from 'react-native';
 
 
-const SettingsFab = React.memo(({ onPress, style, disabled }: Props) => {
+const SettingsFab = React.memo(({ onPress, style, disabled }: SettingsFabProps) => {
 	const { styles } = useStyles(styling)
 
 	return (
@@ -48,7 +48,7 @@ const styling = (colors: typeof Colors) => StyleSheet.create({
 	},
 });
 
-type Props = {
+interface SettingsFabProps {
 	onPress: () => void;
 	style?: ViewStyle;
 	disabled?: boolean;

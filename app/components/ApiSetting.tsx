@@ -56,7 +56,7 @@ const ApiSetting = React.memo(({ firstInit }: SettingsProps) => {
 
 const styling = (colors: typeof Colors) => StyleSheet.create({
 	view: {
-		marginTop: 12,
+		gap: 20,
 		marginHorizontal: 16,
 		backgroundColor: colors.default.posBackround,
 		padding: 10,
@@ -73,6 +73,6 @@ const styling = (colors: typeof Colors) => StyleSheet.create({
 	textName: { fontSize: 20, color: colors.root.text },
 });
 
-export type SettingsProps = { firstInit: boolean };
+export interface SettingsProps { firstInit: boolean };
 
 export default ApiSetting;

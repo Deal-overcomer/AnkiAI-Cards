@@ -1,4 +1,4 @@
-import { ColorsI } from '@constants/Colors';
+import { TColors } from '@constants/Colors';
 import { RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import useStyles from '@utils/useStyles';
@@ -19,7 +19,7 @@ const ErrorCatchScreen = ({ route }: ErrorScreenNavigationProps) => {
 	);
 };
 
-const styling = (colors: ColorsI) => StyleSheet.create({
+const styling = (colors: TColors) => StyleSheet.create({
 	view: {
 		flex: 1,
 		padding: 16,
@@ -41,7 +41,7 @@ const styling = (colors: ColorsI) => StyleSheet.create({
 	},
 });
 
-export type ErrorCatchProps = {
+export interface ErrorCatchProps {
 	error?: Error;
 };
 

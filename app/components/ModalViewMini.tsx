@@ -15,7 +15,7 @@ const ModalViewMini = React.memo(({ text, visible, onRequestClose, ...rest }: Mo
         <Pressable style={styles.view} onPress={(e) => e.stopPropagation()} android_disableSound>
           <BlurView style={[StyleSheet.absoluteFill, { borderRadius: 30 }]} overlayColor={colors.modal.canvas} />
           <Text style={styles.text}>{text}</Text>
-          <ButtonInput title="Close" onPress={onRequestClose} color={colors.modal.second} />
+          <ButtonInput title="Close" onPress={onRequestClose} color={colors.modal.second} style={styles.buttonInput} />
         </Pressable>
       </Pressable>
     </Modal>
@@ -45,9 +45,12 @@ const styling = (colors: typeof Colors) => StyleSheet.create({
     margin: 20,
     color: colors.root.text,
   },
+  buttonInput: {
+    marginTop: 20,
+  },
 });
 
-type ModalViewMiniProps = ModalProps & {
+interface ModalViewMiniProps extends ModalProps {
   text: string;
 };
 

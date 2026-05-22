@@ -34,7 +34,7 @@ const ModalTextInput = React.memo(
 							autoFocus
 						/>
 
-						<View style={{ flexDirection: 'row', gap: 30 }}>
+						<View style={{ flexDirection: 'row', gap: 30, marginTop: 20 }}>
 							<ButtonInput title="Cancel" onPress={onRequestClose} color={colors.modal.second} width={100} />
 							<ButtonInput title="OK" onPress={() => onSubmit(value)} color={colors.modal.second} width={160} />
 						</View>

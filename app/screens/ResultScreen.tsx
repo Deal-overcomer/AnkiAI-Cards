@@ -1,5 +1,5 @@
 import ButtonInput from '@components/buttons/ButtonInput';
-import { ColorsI } from '@constants/Colors';
+import { TColors } from '@constants/Colors';
 import Monicon from '@monicon/native';
 import { RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -53,10 +53,7 @@ const ResultScreen = ({ navigation, route }: ResultScreenProps) => {
 		<View style={styles.main}>
 			<ScrollView
 				showsVerticalScrollIndicator={false}
-				contentContainerStyle={{
-					paddingBottom: '100%',
-					alignItems: 'center',
-				}}
+				contentContainerStyle={styles.contentContainer}
 			>
 				{route.params.posData.map((value, index) => (
 					<Animated.View
@@ -131,14 +128,19 @@ const ResultScreen = ({ navigation, route }: ResultScreenProps) => {
 	);
 };
 
-const styling = (colors: ColorsI) => StyleSheet.create({
+const styling = (colors: TColors) => StyleSheet.create({
+	contentContainer: {
+		paddingBottom: '100%',
+		alignItems: 'center',
+		gap: 20,
+		paddingTop: 20,
+	},
 	main: {
 		flex: 1,
 		backgroundColor: colors.default.main,
 	},
 	viewPos: {
 		width: '95%',
-		marginTop: 20,
 		backgroundColor: colors.default.posBackround,
 		borderRadius: 40,
 		padding: 8,

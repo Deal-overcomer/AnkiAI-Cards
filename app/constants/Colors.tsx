@@ -1,4 +1,4 @@
-import { fontColorT } from "@core/settings";
+import { TFontColor } from "@core/settings";
 
 const Colors = {
   root: {
@@ -28,13 +28,13 @@ const Colors = {
   },
 }
 
-export const textColors: Record<fontColorT, string> = {
+export const textColors: Record<TFontColor, string> = {
   White: 'rgb(255, 255, 255)',
   Black: 'rgb(0, 0, 0)',
   Blue: 'rgb(0, 3, 96)',
   Pink: 'rgb(255, 192, 203)',
 };
 
-export type ColorsI = typeof Colors;
+export type TColors = typeof Colors;
 
 export default Colors;

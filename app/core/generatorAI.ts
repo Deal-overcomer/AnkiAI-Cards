@@ -38,7 +38,7 @@ export const generateContent = async ({ prompt, setIsLoading, navigation }: Gene
 	}
 };
 
-const geminiGetResponse = async ({ apiKey, content, model }: getResponse): Promise<string> => {
+const geminiGetResponse = async ({ apiKey, content, model }: IGetResponse): Promise<string> => {
 	const gemini = new GoogleGenAI({ apiKey: apiKey || '' });
 	const response: any = await gemini.models.generateContent({
 		model,
@@ -48,14 +48,14 @@ const geminiGetResponse = async ({ apiKey, content, model }: getResponse): Promi
 	return response.text;
 };
 
-const openAIGetResponse = async ({ apiKey, content, model }: getResponse): Promise<string> => {
+const openAIGetResponse = async ({ apiKey, content, model }: IGetResponse): Promise<string> => {
 	const openai = new OpenAI({ apiKey: apiKey || '' });
 	const response = await openai.responses.create({ model, input: content });
 
 	return response.output_text;
 };
 
-const openRouterGetResponse = async ({ apiKey, content, model }: getResponse): Promise<string | null> => {
+const openRouterGetResponse = async ({ apiKey, content, model }: IGetResponse): Promise<string | null> => {
 	const openai = new OpenAI({ baseURL: 'https://openrouter.ai/api/v1', apiKey: apiKey || '' });
 	const response = await openai.chat.completions.create({
 		model,
@@ -65,7 +65,7 @@ const openRouterGetResponse = async ({ apiKey, content, model }: getResponse): P
 	return response.choices[0].message.content;
 };
 
-export type ApiResponseProps = {
+export interface ApiResponseProps {
 	word: string;
 	posData: {
 		partOfSpeech: string;
@@ -74,7 +74,7 @@ export type ApiResponseProps = {
 		examples: string[];
 		examplesCloze: string[];
 	}[];
-};
+}
 
 interface GenerateContentProps {
 	prompt: string;
@@ -82,8 +82,8 @@ interface GenerateContentProps {
 	navigation: HomeScreenNavigationProp;
 }
 
-type getResponse = {
+interface IGetResponse {
 	apiKey: string | null;
 	content: string;
 	model: string;
-};
+}

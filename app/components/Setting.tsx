@@ -87,7 +87,6 @@ const Setting = React.memo(({ setting, settingName, options, createOption = true
 const styling = (colors: typeof Colors) => StyleSheet.create({
 	view: {
 		marginHorizontal: 16,
-		marginTop: 12,
 		backgroundColor: colors.default.posBackround,
 		padding: 10,
 		elevation: 10,
@@ -105,7 +104,7 @@ const styling = (colors: typeof Colors) => StyleSheet.create({
 	},
 });
 
-type SettingProps = {
+interface SettingProps {
 	setting: keyof typeof DefaultSetting;
 	settingName: string;
 	options: string[];

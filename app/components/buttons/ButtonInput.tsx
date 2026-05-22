@@ -13,6 +13,7 @@ const ButtonInput = React.memo(
         {...rest}
         disabled={disabled}
         style={({ pressed }) => [
+          rest.style as any,
           {
             backgroundColor: color || colors.default.buttonInput,
             width: width as any,
@@ -33,7 +34,6 @@ const styling = (colors: typeof Colors) => StyleSheet.create({
   buttonView: {
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 20,
     borderRadius: 10,
     elevation: 10,
   },
@@ -46,7 +46,7 @@ const styling = (colors: typeof Colors) => StyleSheet.create({
   textDisabled: { color: colors.default.textDisabled },
 });
 
-type ButtonInputProps = Partial<PressableProps> & {
+interface ButtonInputProps extends Partial<PressableProps> {
   title?: string;
   disabled?: boolean;
   color?: string;

@@ -9,7 +9,7 @@ import HomeScreen from '@screens/HomeScreen';
 import ResultScreen from '@screens/ResultScreen';
 import SettingsScreen from '@screens/SettingsScreen';
 import useColors, { ColorsProvider } from '@utils/useColors';
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
 import 'react-native-url-polyfill/auto';
 
@@ -27,8 +27,8 @@ const App = () => (
 const AppContent = () => {
 	const colors = useColors()
 
-	const BackButton = useCallback((navigation: NativeStackNavigationProp<any>) => {
-		return <CustomBackButton onPress={() => navigation.goBack()} />;
+	const BackButton = useCallback((navigation: NativeStackNavigationProp<RootStackParamList>) => {
+		return <CustomBackButton onPress={() => navigation.goBack()} />
 	}, []);
 
 	return (

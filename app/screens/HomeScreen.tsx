@@ -1,7 +1,7 @@
 import ButtonInput from '@components/buttons/ButtonInput';
 import SettingButton from '@components/buttons/SettingButton';
 import ModalViewMini from '@components/ModalViewMini';
-import { ColorsI } from '@constants/Colors';
+import { TColors } from '@constants/Colors';
 import { generateContent } from '@core/generatorAI';
 import { getApiKey, initApiKey, InitSettings } from '@core/settings';
 import { useFocusEffect } from '@react-navigation/native';
@@ -75,7 +75,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
 				cursorColor={colors.default.cursor}
 				placeholderTextColor={colors.root.placeholder}
 			/>
-			<ButtonInput title="GENERATE" disabled={isLoading} onPress={handlePress} />
+			<ButtonInput title="GENERATE" disabled={isLoading} onPress={handlePress} style={styles.buttonInput} />
 
 			{isLoading && <ActivityIndicator style={styles.activityIndicator} size="large" color={colors.default.activityIndicator} />}
 
@@ -85,7 +85,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
 	)
 };
 
-const styling = (colors: ColorsI) => StyleSheet.create({
+const styling = (colors: TColors) => StyleSheet.create({
 	main: {
 		flex: 1,
 		backgroundColor: colors.default.main,
@@ -100,6 +100,9 @@ const styling = (colors: ColorsI) => StyleSheet.create({
 		fontSize: 20,
 	},
 	activityIndicator: {
+		marginTop: 20,
+	},
+	buttonInput: {
 		marginTop: 20,
 	},
 });
