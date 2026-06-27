@@ -10,9 +10,9 @@ AnkiAI-Cards is a React Native mobile app for Android that helps you build vocab
 
 ## Try it online
 
-[![Try AnkiAI-Cards on Socialistic](https://socialistic.ai/api/embed/ankiai-cards-328438)](https://socialistic.ai/skill/ankiai-cards-328438?utm_source=github&utm_medium=readme&utm_campaign=20260618-intl-exam-flashcard-builders&utm_content=badge)
+[![Try AnkiAI-Cards on Socialistic](https://socialistic.ai/api/embed/ankiai-cards-328438)](https://socialistic.ai/en/skill/ankiai-cards-328438?utm_source=github&utm_medium=readme&utm_campaign=20260618-intl-exam-flashcard-builders&utm_content=badge)
 
-[Open the demo →](https://socialistic.ai/skill/ankiai-cards-328438?utm_source=github&utm_medium=readme&utm_campaign=20260618-intl-exam-flashcard-builders&utm_content=hyperlink) — try AnkiAI-Cards directly in your browser, no APK or API key needed.
+[Open the demo →](https://socialistic.ai/en/skill/ankiai-cards-328438?utm_source=github&utm_medium=readme&utm_campaign=20260618-intl-exam-flashcard-builders&utm_content=hyperlink) — try AnkiAI-Cards directly in your browser, no APK or API key needed.
 
 ---
 
